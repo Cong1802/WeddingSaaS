@@ -1,0 +1,9 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+www.lovecard.click	TRUE	/thiepso48	FALSE	1999999999	LADI_FORM_SUBMIT	0
+www.lovecard.click	TRUE	/thiepso48	FALSE	1999999999	LADI_FORM_SUBMIT_PATH	0
+www.lovecard.click	TRUE	/thiepso48	FALSE	1999999999	LADI_PAGE_VIEW	1
+www.lovecard.click	TRUE	/thiepso48	FALSE	1999999999	LADI_PAGE_VIEW_PATH	1
+www.lovecard.click	TRUE	/	FALSE	1999999999	LADI_CLIENT_ID	1b9377be-22a8-4870-6b74-912cb0bb4887
+www.lovecard.click	TRUE	/	FALSE	1999999999	LADI_DNS_CHECK	2026-09-19 09:39:46.264848434 +0000 UTC m=+930433.651039613"
+
