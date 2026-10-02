@@ -709,16 +709,13 @@ export default function LandingPage({
       </div>
 
       {/* ----------------------------------------------------
-          2. SECTION 2: VÌ SAO NÊN CHỌN WEDDINGSAAS?
-      ---------------------------------------------------- */}
-      {/* ----------------------------------------------------
-          2. SECTION 2: VÌ SAO NÊN CHỌN WEDDINGSAAS?
+          2. SECTION 2: VÌ SAO NÊN CHỌN WEDDINGSAAS? (Seamless Cream/Blush Upgrade)
       ---------------------------------------------------- */}
       <section id="why-us" style={{
         width: '100%',
         position: 'relative',
-        background: '#ffffff',
-        padding: '80px 0 90px 0',
+        background: 'linear-gradient(180deg, #fffdfd 0%, #fff7f8 50%, #fff1f3 100%)',
+        padding: '60px 0 70px 0',
         overflow: 'hidden'
       }}>
 
@@ -734,13 +731,30 @@ export default function LandingPage({
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '40px',
+            gap: '48px',
             alignItems: 'center'
           }}>
             {/* Left Content Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '640px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '600px' }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '4px 14px',
+                borderRadius: '20px',
+                backgroundColor: '#ffe4e6',
+                color: '#e11d48',
+                fontSize: '12px',
+                fontWeight: '700',
+                width: 'fit-content',
+                marginBottom: '16px'
+              }}>
+                <Sparkles size={13} color="#f43f5e" />
+                <span>Giải Pháp Đột Phá</span>
+              </div>
+
               <h2 style={{
-                fontSize: 'clamp(30px, 3.8vw, 44px)',
+                fontSize: 'clamp(28px, 3.5vw, 42px)',
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: '700',
                 color: '#0f172a',
@@ -748,124 +762,187 @@ export default function LandingPage({
                 margin: '0 0 16px 0',
                 letterSpacing: '-0.3px'
               }}>
-                Vì sao nên chọn <span style={{ color: '#0f172a', fontWeight: '800' }}>WeddingSaaS?</span>
+                Vì sao nên chọn <span style={{ color: '#e11d48', fontWeight: '800' }}>WeddingSaaS?</span>
               </h2>
 
               <p style={{
                 fontSize: '15px',
                 color: '#475569',
-                lineHeight: 1.65,
-                margin: '0 0 40px 0',
-                maxWidth: '540px',
+                lineHeight: 1.7,
+                margin: '0 0 32px 0',
+                maxWidth: '520px',
                 fontWeight: '500'
               }}>
-                Chúng tôi mang đến giải pháp thiệp cưới online toàn diện, giúp bạn kết nối yêu thương một cách hiện đại và ý nghĩa nhất.
+                Chúng tôi mang đến giải pháp thiệp cưới online toàn diện, giúp bạn thể hiện dấu ấn cá nhân và gửi trao yêu thương một cách hiện đại, tinh tế nhất.
               </p>
 
               {/* 4 Feature Items Grid */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                gridTemplateColumns: 'repeat(2, 1fr)',
                 gap: '20px'
               }}>
                 {/* Feature 1 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '14px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  backdropFilter: 'blur(8px)',
+                  padding: '16px',
+                  borderRadius: '16px',
+                  border: '1px solid #fecdd3',
+                  boxShadow: '0 4px 15px rgba(244, 63, 94, 0.05)',
+                  transition: 'all 0.2s ease'
+                }}>
                   <div style={{
-                    width: '54px',
-                    height: '54px',
-                    borderRadius: '16px',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%)',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 8px 20px rgba(244, 63, 94, 0.15)',
-                    marginBottom: '12px',
-                    border: '1.5px solid #fecdd3'
+                    color: '#e11d48',
+                    flexShrink: 0
                   }}>
-                    <Gift size={24} color="#f43f5e" />
+                    <Gift size={20} color="#f43f5e" />
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b', marginBottom: '4px' }}>Chuyên nghiệp</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Giao diện hiện đại, dễ sử dụng</div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b', marginBottom: '2px' }}>Chuyên nghiệp</div>
+                    <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Giao diện tinh tế, thao tác cực dễ</div>
+                  </div>
                 </div>
 
                 {/* Feature 2 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '14px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  backdropFilter: 'blur(8px)',
+                  padding: '16px',
+                  borderRadius: '16px',
+                  border: '1px solid #fecdd3',
+                  boxShadow: '0 4px 15px rgba(244, 63, 94, 0.05)',
+                  transition: 'all 0.2s ease'
+                }}>
                   <div style={{
-                    width: '54px',
-                    height: '54px',
-                    borderRadius: '16px',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%)',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 8px 20px rgba(244, 63, 94, 0.15)',
-                    marginBottom: '12px',
-                    border: '1.5px solid #fecdd3'
+                    color: '#e11d48',
+                    flexShrink: 0
                   }}>
-                    <CreditCard size={24} color="#f43f5e" />
+                    <CreditCard size={20} color="#f43f5e" />
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b', marginBottom: '4px' }}>Tiết kiệm chi phí</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Hiệu quả hơn thiệp truyền thống</div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b', marginBottom: '2px' }}>Tối ưu chi phí</div>
+                    <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Tiết kiệm đến 80% so với thiệp in</div>
+                  </div>
                 </div>
 
                 {/* Feature 3 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '14px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  backdropFilter: 'blur(8px)',
+                  padding: '16px',
+                  borderRadius: '16px',
+                  border: '1px solid #fecdd3',
+                  boxShadow: '0 4px 15px rgba(244, 63, 94, 0.05)',
+                  transition: 'all 0.2s ease'
+                }}>
                   <div style={{
-                    width: '54px',
-                    height: '54px',
-                    borderRadius: '16px',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%)',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 8px 20px rgba(244, 63, 94, 0.15)',
-                    marginBottom: '12px',
-                    border: '1.5px solid #fecdd3'
+                    color: '#e11d48',
+                    flexShrink: 0
                   }}>
-                    <Palette size={24} color="#f43f5e" />
+                    <Palette size={20} color="#f43f5e" />
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b', marginBottom: '4px' }}>Cá nhân hóa cao</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Tùy chỉnh theo phong cách riêng</div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b', marginBottom: '2px' }}>Cá nhân hóa</div>
+                    <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Tự do phối màu & album ảnh kỷ niệm</div>
+                  </div>
                 </div>
 
                 {/* Feature 4 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '14px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  backdropFilter: 'blur(8px)',
+                  padding: '16px',
+                  borderRadius: '16px',
+                  border: '1px solid #fecdd3',
+                  boxShadow: '0 4px 15px rgba(244, 63, 94, 0.05)',
+                  transition: 'all 0.2s ease'
+                }}>
                   <div style={{
-                    width: '54px',
-                    height: '54px',
-                    borderRadius: '16px',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%)',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 8px 20px rgba(244, 63, 94, 0.15)',
-                    marginBottom: '12px',
-                    border: '1.5px solid #fecdd3'
+                    color: '#e11d48',
+                    flexShrink: 0
                   }}>
-                    <Headphones size={24} color="#f43f5e" />
+                    <Headphones size={20} color="#f43f5e" />
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b', marginBottom: '4px' }}>Hỗ trợ 24/7</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Luôn đồng hành cùng bạn</div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b', marginBottom: '2px' }}>Hỗ trợ 24/7</div>
+                    <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Đội ngũ tận tâm tư vấn 1-1</div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Image Column (Replaced 'Love is sweet' quote) */}
+            {/* Right Image Column Seamless Blended Visual */}
             <div style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: '340px'
+              position: 'relative'
             }}>
+              <div style={{
+                position: 'absolute',
+                width: '320px',
+                height: '320px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(254, 205, 211, 0.5) 0%, rgba(255, 241, 243, 0) 70%)',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1,
+                pointerEvents: 'none'
+              }} />
               <img 
                 src={whyUsCoupleImg} 
-                alt="Love is sweet" 
+                alt="Thiệp cưới online WeddingSaaS" 
                 style={{
                   maxWidth: '100%',
-                  maxHeight: '450px',
+                  maxHeight: '440px',
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 16px 32px rgba(225, 29, 72, 0.15))'
+                  filter: 'drop-shadow(0 20px 40px rgba(225, 29, 72, 0.12))',
+                  position: 'relative',
+                  zIndex: 2,
+                  transition: 'transform 0.3s ease'
                 }} 
               />
             </div>
