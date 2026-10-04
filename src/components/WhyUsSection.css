@@ -1,0 +1,56 @@
+.why-us { width: 100%; color: #4f3535; }
+.why-us__inner { width: min(1840px, 100%); padding: 0 64px; margin: auto; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.why-us__visual { position: relative; width: 100%; min-width: 0; align-self: stretch; }
+.why-us__showcase { position: absolute; top: 53%; transform: translateY(-50%); display: block; width: 112%; max-width: none; height: auto; margin-left: -12%; }
+.why-us__visual::after { content: ''; position: absolute; inset: 0 -8% -12% -10%; pointer-events: none; background: radial-gradient(ellipse at 45% 92%, #fff3ee85, transparent 56%); }
+.why-us__content { position: relative; min-width: 0; }
+.why-us__heading { text-align: left; }
+.why-us__badge { display: inline-flex; align-items: center; gap: 9px; background: #fff0f0b8; color: #f53d66; border: 1px solid #ffd4d9; border-radius: 30px; padding: 9px 20px; font-size: 14px; font-weight: 600; }
+.why-us__heading h2 { font-family: var(--font-sans); font-size: clamp(44px, 3.6vw, 64px); font-weight: 700; line-height: 1.06; margin: 20px 0 28px; letter-spacing: -1px; }
+.why-us__heading h2 em { display: block; color: #f2426c; margin-top: 3px; font-family: 'Great Vibes', 'Charm', cursive; font-style: normal; font-weight: 400; letter-spacing: 0; line-height: 1.4; }
+.why-us__heading > p { margin: 0; font-size: 18px; line-height: 1.65; color: #857b79; }
+.why-us__features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+.why-us__feature { position: relative; min-width: 0; display: flex; gap: 18px; align-items: flex-start; padding: 22px 20px; border: 1px solid #ffe1df; border-radius: 24px; background: #fffdfad9; box-shadow: 0 8px 22px #bb716909; overflow: hidden; }
+.why-us__feature::after, .why-us__feature::before { content: ''; position: absolute; width: 24px; height: 30px; background: radial-gradient(ellipse at 30% 35%, #fff7f7 10%, #ffc1c9 55%, #f48c9e 80%); border-radius: 65% 0 65% 10%; opacity: .4; pointer-events: none; }
+.why-us__feature::after { top: -5px; right: -5px; transform: rotate(-28deg); }
+.why-us__feature::before { bottom: -8px; left: -7px; transform: rotate(135deg); }
+.why-us__icon { display: grid; place-items: center; flex: 0 0 70px; height: 70px; border-radius: 50%; background: #ffe9eb; color: #ff3563; }
+.why-us__feature h3 { font-family: var(--font-sans); font-size: 19px; font-weight: 700; line-height: 1.4; margin: 4px 0 10px; color: #312726; }
+.why-us__feature p { font-size: 14px; line-height: 1.65; color: #897c7b; margin: 0; }
+.why-us__divider { display: flex; gap: 15px; align-items: center; color: #bd727b; margin: 38px auto 0; max-width: 420px; }
+.why-us__divider span { height: 1px; flex: 1; background: linear-gradient(to right, transparent, #db9da5); }
+.why-us__divider span:last-child { transform: rotate(180deg); }
+@media (max-width: 1400px) {
+  .why-us__inner { padding: 0 40px; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; }
+  .why-us__heading > p { font-size: 16px; }
+  .why-us__feature { padding: 20px 16px; gap: 12px; }
+  .why-us__icon { flex-basis: 56px; height: 56px; }
+  .why-us__icon svg { width: 28px; }
+  .why-us__feature h3 { font-size: 18px; }
+}
+@media (max-width: 1100px) {
+  .why-us__inner { padding: 0 28px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px; }
+  .why-us__feature { flex-direction: column; }
+  .why-us__heading h2 { font-size: 48px; }
+}
+@media (max-width: 760px) {
+  .why-us__inner { grid-template-columns: minmax(0, 1fr); padding: 0 22px; gap: 12px; }
+  .why-us__content { grid-row: 1; }
+  .why-us__heading { text-align: center; }
+  .why-us__heading h2 { font-size: clamp(40px, 9vw, 58px); margin-bottom: 22px; }
+  .why-us__heading > p { font-size: 15px; line-height: 1.75; }
+  .why-us__features { margin-top: 24px; gap: 12px; }
+  .why-us__feature { padding: 18px 16px; border-radius: 20px; }
+  .why-us__feature h3 { font-size: 18px; margin-top: 0; }
+  .why-us__feature p { font-size: 14px; }
+  .why-us__icon { flex-basis: auto; width: 54px; height: 54px; }
+  .why-us__visual { width: min(100%, 560px); justify-self: center; aspect-ratio: 1.5; }
+  .why-us__showcase { width: 100%; margin-left: 0; top: 50%; }
+  .why-us__divider { margin-top: 26px; }
+}
+@media (max-width: 350px) {
+  .why-us__inner { padding: 0 16px; }
+  .why-us__features { grid-template-columns: minmax(0, 1fr); }
+  .why-us__feature { flex-direction: row; }
+  .why-us__icon { flex: 0 0 48px; height: 48px; }
+}

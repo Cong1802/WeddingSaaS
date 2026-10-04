@@ -327,7 +327,7 @@ export default function App() {
   if (currentPage === 'landing') {
     return (
       <>
-        <LandingPage
+        <LandingPage publicSettings={publicSettings}
           onGoToEditor={handleGoToEditor}
           onOpenAuthModal={() => {
             setIsPendingEditorAccess(false);

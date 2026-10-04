@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Great+Vibes&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Imperial+Script&family=Alex+Brush&family=Charm:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Great+Vibes&display=swap");
 @import "tailwindcss";
 
 :root {
   --font-serif: "Playfair Display", serif;
   --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-cursive: "Great Vibes", cursive;
+  --font-cursive: "Imperial Script", cursive;
 
   --bg-dark: #0b0f17;
   --panel-bg: rgba(21, 29, 44, 0.95);

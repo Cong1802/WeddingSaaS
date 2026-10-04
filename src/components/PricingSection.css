@@ -1,0 +1,62 @@
+.wedding-pricing { color: #4f3033; }
+.landing-experience > .wedding-pricing { padding: 48px 0 36px; }
+.wedding-pricing__inner { width: min(1580px, calc(100% - 80px)); margin: auto; }
+.wedding-pricing__heading { text-align: center; margin: 0 auto 44px; }
+.wedding-pricing__eyebrow { color: #ff2458; font-size: 16px; font-weight: 600; letter-spacing: 1px; }
+.wedding-pricing__heading h2 { margin: 12px 0 0; font: 700 clamp(30px, 2.6vw, 46px)/1.25 var(--font-serif); color: #292020; }
+.wedding-pricing__heading em { color: #f04468; font: 400 1.2em/1.3 'Great Vibes', 'Charm', cursive; }
+.wedding-pricing__divider { display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffb9c7; margin: 3px auto 9px; }
+.wedding-pricing__divider span { width: 45px; height: 1px; background: linear-gradient(90deg, transparent, #ffb9c7); }
+.wedding-pricing__divider span:last-child { transform: rotate(180deg); }
+.wedding-pricing__heading > p { color: #827a79; font-size: 16px; line-height: 1.7; }
+.wedding-pricing__grid { display: grid; grid-template-columns: .97fr 1fr 1.05fr 1.09fr; gap: 16px; align-items: stretch; }
+.wedding-pricing__card { position: relative; min-width: 0; display: flex; flex-direction: column; padding: 34px 30px 24px; border: 1px solid #ffe2e3; border-radius: 20px; background: linear-gradient(145deg, #fffdfbeb, #fff9f7e3); box-shadow: 0 10px 24px #d8818808; }
+.wedding-pricing__card--pro { border-color: #ff4773; background: linear-gradient(145deg, #fff1f4ee, #fff9f8ed); box-shadow: 0 12px 24px #f3416b20; }
+.wedding-pricing__popular { position: absolute; top: -19px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; padding: 8px 18px; white-space: nowrap; border: 2px solid #fff5f6; border-radius: 30px; background: linear-gradient(110deg, #f52259, #ff4773); color: white; font-size: 12px; font-weight: 700; z-index: 2; }
+.wedding-pricing__ornament { position: absolute; right: 8px; top: 9px; width: 112px; height: 132px; background-size: 400% 100%; background-repeat: no-repeat; pointer-events: none; }
+.wedding-pricing__card--basic .wedding-pricing__ornament,
+.wedding-pricing__card--pro .wedding-pricing__ornament { clip-path: inset(0 0 0 8%); }
+.wedding-pricing__intro { position: relative; z-index: 1; padding-right: 50px; }
+.wedding-pricing__intro h3 { margin: 0 0 8px; font: 700 22px/1.25 var(--font-serif); }
+.wedding-pricing__subtitle { margin: 0; color: #cc8578; font-size: 13px; line-height: 1.5; }
+.wedding-pricing__card--pro .wedding-pricing__subtitle { color: #827a79; }
+.wedding-pricing__card--vip h3 { color: #9c640b; }
+.wedding-pricing__price { position: relative; margin: 14px 0 12px; color: #4f2525; font-size: clamp(28px, 2.25vw, 40px); line-height: 1.3; font-weight: 700; letter-spacing: -1px; white-space: nowrap; }
+.wedding-pricing__price > span { margin-left: 8px; font-size: 14px; letter-spacing: 0; font-weight: 400; color: #5c5251; }
+.wedding-pricing__description { position: relative; margin: 0 0 22px; min-height: 34px; font-size: 13px; line-height: 1.6; color: #8c8583; }
+.wedding-pricing__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 24px; padding: 0; list-style: none; }
+.wedding-pricing__features li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.45; letter-spacing: -.2px; color: #5c5654; }
+.wedding-pricing__features svg { flex: 0 0 19px; margin-top: 1px; color: #ff2458; }
+.wedding-pricing__features .is-unavailable { color: #a39b99; }
+.wedding-pricing__features .is-unavailable svg { color: #c9c3c1; }
+.wedding-pricing__choose { margin-top: auto; width: 100%; min-height: 50px; display: flex; justify-content: center; align-items: center; gap: 8px; border: 1px solid #ff8ba8; border-radius: 13px; background: #fff0f240; color: #ff2458; font-size: 13px; font-weight: 700; padding: 12px 10px; cursor: pointer; }
+.wedding-pricing__card--pro .wedding-pricing__choose { border-color: transparent; background: linear-gradient(120deg, #fb2b61, #ec4470); box-shadow: 0 8px 18px #f335622b; color: white; }
+.wedding-pricing__card--vip .wedding-pricing__choose { color: #a66b12; background: #ffeacf; border-color: #ffdbac; }
+.wedding-pricing__choose:focus-visible { outline: 3px solid #ae3456; outline-offset: 4px; }
+.wedding-pricing__benefits { display: grid; grid-template-columns: repeat(4, 1fr); width: min(1060px, 100%); margin: 20px auto 0; padding: 20px 28px; list-style: none; border-radius: 22px; background: #fffaf68a; }
+.wedding-pricing__benefits li { display: flex; align-items: center; justify-content: center; gap: 16px; color: #756665; font-size: 12px; line-height: 1.6; }
+.wedding-pricing__benefits li + li { border-left: 1px solid #ffd0d8; }
+.wedding-pricing__benefits svg { flex-shrink: 0; width: 32px; height: 32px; color: #ff3266; stroke-width: 1.7; }
+@media (max-width: 1350px) {
+  .wedding-pricing__inner { width: calc(100% - 48px); }
+  .wedding-pricing__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; }
+  .wedding-pricing__card { padding: 30px; }
+  .wedding-pricing__price { font-size: 36px; }
+}
+@media (max-width: 650px) {
+  .landing-experience > .wedding-pricing { padding: 32px 0 24px; }
+  .wedding-pricing__inner { width: calc(100% - 40px); }
+  .wedding-pricing__heading { margin-bottom: 30px; }
+  .wedding-pricing__eyebrow { font-size: 13px; }
+  .wedding-pricing__heading h2 { font-size: 29px; }
+  .wedding-pricing__heading em { display: block; font-size: 41px; }
+  .wedding-pricing__heading > p { font-size: 13px; }
+  .wedding-pricing__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .wedding-pricing__card { padding: 28px 24px 24px; }
+  .wedding-pricing__intro h3 { font-size: 23px; }
+  .wedding-pricing__features li { font-size: 14px; }
+  .wedding-pricing__benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; padding: 20px 12px; }
+  .wedding-pricing__benefits li { justify-content: flex-start; gap: 9px; font-size: 10px; }
+  .wedding-pricing__benefits li + li { border-left: 0; }
+  .wedding-pricing__benefits svg { width: 26px; height: 26px; }
+}

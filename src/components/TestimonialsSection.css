@@ -1,0 +1,88 @@
+.wedding-reviews { width: 100%; padding: 38px 0 42px; color: #513638; }
+.wedding-reviews__inner { max-width: 1340px; padding: 0 66px; margin: auto; }
+.wedding-reviews__heading { text-align: center; margin: 0 auto 40px; }
+.wedding-reviews__badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 19px; border: 1px solid #ffd2da; border-radius: 30px; background: #fff0f0b8; color: #f44169; font-size: 13px; font-weight: 600; }
+.wedding-reviews__heading h2 { font-family: var(--font-sans); font-size: clamp(28px, 3vw, 47px); line-height: 1.25; font-weight: 700; margin: 18px 0 12px; }
+.wedding-reviews__heading em { display: block; color: #f04468; font-family: 'Great Vibes', 'Charm', cursive; font-style: normal; font-weight: 400; letter-spacing: 0; line-height: 1.4; font-size: 1.08em; }
+.wedding-reviews__divider { display: flex; align-items: center; gap: 13px; max-width: 290px; color: #a96c72; margin: 13px auto; }
+.wedding-reviews__divider span { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #d5a0a5); }
+.wedding-reviews__divider span:last-child { transform: rotate(180deg); }
+.wedding-reviews__heading > p { font-size: 15px; line-height: 1.8; margin: 0 auto; color: #887b79; }
+.wedding-reviews__carousel { position: relative; }
+.wedding-reviews__slider { padding: 18px 0 30px; }
+.wedding-reviews__slider .swiper-wrapper { align-items: stretch; }
+.wedding-reviews__slider .swiper-slide { height: auto; }
+.wedding-reviews__slider .wedding-reviews__card { height: 100%; transition: transform .3s ease, border-color .3s ease, background-color .3s ease; }
+.wedding-reviews__card { min-width: 0; position: relative; border: 1px solid #ffdcdf; border-radius: 19px; background: #fffdfbea; padding: 22px; box-shadow: 0 10px 25px #c5776b14; display: flex; flex-direction: column; }
+.wedding-reviews__slider .swiper-slide-active .wedding-reviews__card { transform: translateY(-15px); border-color: #ffb8c8; background: #fff8f9ed; box-shadow: 0 12px 28px #e34c7022; }
+.wedding-reviews__slider .swiper-slide-active .wedding-reviews__card::after { content: ''; position: absolute; top: 0; right: 0; width: 52px; height: 52px; border-radius: 0 19px 0 100%; background: radial-gradient(circle at 65% 30%, #f595a7 0 10%, #ffd9de 12% 24%, transparent 26%), radial-gradient(circle at 90% 58%, #f3b4c0 0 10%, transparent 13%); pointer-events: none; }
+.wedding-reviews__card-top { display: flex; align-items: center; gap: 14px; }
+.wedding-reviews__card-top img { width: 82px; height: 82px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.wedding-reviews__stars { display: inline-flex; align-items: center; gap: 3px; color: #ffb026; white-space: nowrap; }
+.wedding-reviews__quote { color: #ffe3e7; margin-left: auto; flex-shrink: 0; }
+.wedding-reviews__card blockquote { margin: 19px 0 18px; color: #807472; font-size: 14px; line-height: 1.85; flex: 1; }
+.wedding-reviews__card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 15px; border-top: 1px solid #fff0f0; }
+.wedding-reviews__card h3 { margin: 0 0 3px; font-size: 13px; line-height: 1.6; font-weight: 700; color: #634748; }
+.wedding-reviews__card time { font-size: 11px; color: #bf9b9d; }
+.wedding-reviews__card-bottom button { display: grid; place-items: center; flex: 0 0 36px; height: 36px; border: 0; border-radius: 50%; color: #f8406a; background: #ffecef; cursor: pointer; }
+.wedding-reviews__arrow { display: grid; place-items: center; position: absolute; top: calc(50% - 24px); z-index: 1; width: 45px; height: 45px; border: 1px solid #ffe1e6; border-radius: 50%; background: white; color: #f4446d; cursor: pointer; box-shadow: 0 5px 15px #de889214; }
+.wedding-reviews__arrow--left { left: -59px; }
+.wedding-reviews__arrow--right { right: -59px; }
+.wedding-reviews__dots { display: flex; align-items: center; justify-content: center; gap: 9px; margin: 8px 0 26px; }
+.wedding-reviews__dots button { position: relative; width: 24px; height: 24px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.wedding-reviews__dots button::before { content: ''; position: absolute; width: 9px; height: 9px; top: 7px; left: 7px; border-radius: 10px; background: #ffd0d8; }
+.wedding-reviews__dots button.is-active::before { width: 21px; left: 1px; background: #f04468; }
+.wedding-reviews__action { text-align: center; }
+.wedding-reviews__action > button { display: inline-flex; justify-content: center; align-items: center; gap: 15px; padding: 16px 27px; border: 0; border-radius: 11px; background: linear-gradient(125deg, #f44370, #e5375e); box-shadow: 0 10px 24px #e83a6226; color: white; font-size: 14px; font-weight: 700; cursor: pointer; }
+.wedding-reviews__proof { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 16px; color: #745557; font-size: 11px; }
+.wedding-reviews__avatars { display: flex; padding-left: 8px; }
+.wedding-reviews__avatars img { width: 32px; height: 32px; object-fit: cover; border-radius: 50%; border: 2px solid #fff8f5; margin-left: -8px; }
+.wedding-reviews__proof .wedding-reviews__stars svg { width: 13px; height: 13px; }
+.wedding-reviews button:focus-visible { outline: 3px solid #ae3456; outline-offset: 3px; }
+@media (max-width: 1100px) { .wedding-reviews__inner { padding: 0 55px; } .wedding-reviews__card { padding: 18px; } .wedding-reviews__card-top { gap: 8px; flex-wrap: wrap; } .wedding-reviews__card-top img { width: 64px; height: 64px; } .wedding-reviews__quote { display: none; } .wedding-reviews__stars { gap: 1px; } .wedding-reviews__stars svg { width: 15px; } .wedding-reviews__arrow--left { left: -48px; } .wedding-reviews__arrow--right { right: -48px; } }
+@media (max-width: 760px) { .wedding-reviews__inner { padding: 0 38px; } .wedding-reviews__cards { grid-template-columns: minmax(0, 1fr); }  .wedding-reviews__slider .swiper-slide-active .wedding-reviews__card { transform: none; } .wedding-reviews__card-top { flex-wrap: nowrap; gap: 16px; } .wedding-reviews__card { padding: 22px; } .wedding-reviews__card-top img { width: 76px; height: 76px; } .wedding-reviews__quote { display: block; } .wedding-reviews__heading { margin-bottom: 22px; } .wedding-reviews__heading > p { font-size: 13px; } .wedding-reviews__desktop-break { display: none; } .wedding-reviews__arrow { width: 36px; height: 36px; } .wedding-reviews__arrow--left { left: -31px; } .wedding-reviews__arrow--right { right: -31px; } .wedding-reviews__action > button { font-size: 12px; padding: 15px 18px; } .wedding-reviews__proof { font-size: 10px; } }
+
+/* Keep readable cards and generous touch targets on tablets and phones. */
+.wedding-reviews__card-bottom button { flex-basis: 44px; height: 44px; }
+.wedding-reviews__dots { gap: 0; }
+.wedding-reviews__dots button { width: 44px; height: 44px; }
+.wedding-reviews__dots button::before { top: 17px; left: 17px; }
+.wedding-reviews__dots button.is-active::before { left: 11px; }
+@media (max-width: 1000px) {
+  .wedding-reviews__inner { max-width: 680px; padding: 0 24px; }
+  .wedding-reviews__heading { margin-bottom: 24px; }
+  .wedding-reviews__cards { grid-template-columns: minmax(0, 1fr); padding-top: 0; }
+  
+  .wedding-reviews__slider .swiper-slide-active .wedding-reviews__card { transform: none; }
+  .wedding-reviews__card { padding: 24px; }
+  .wedding-reviews__card-top { flex-wrap: nowrap; gap: 14px; }
+  .wedding-reviews__quote { display: block; }
+  .wedding-reviews__carousel { padding-bottom: 56px; }
+  .wedding-reviews__arrow { top: auto; bottom: 0; width: 44px; height: 44px; }
+  .wedding-reviews__arrow--left { left: calc(50% - 56px); }
+  .wedding-reviews__arrow--right { right: calc(50% - 56px); }
+  .wedding-reviews__dots { margin: 4px 0 16px; }
+  .wedding-reviews__desktop-break { display: none; }
+}
+@media (max-width: 480px) {
+  .wedding-reviews { padding: 28px 0 32px; }
+  .wedding-reviews__inner { padding: 0 18px; }
+  .wedding-reviews__heading h2 { font-size: clamp(26px, 7.4vw, 34px); }
+  .wedding-reviews__heading > p { font-size: 14px; line-height: 1.7; }
+  .wedding-reviews__card { padding: 20px 18px; }
+  .wedding-reviews__card-top img { width: 60px; height: 60px; }
+  .wedding-reviews__card-top { gap: 12px; }
+  .wedding-reviews__quote { width: 26px; }
+  .wedding-reviews__stars svg { width: 16px; height: 16px; }
+  .wedding-reviews__card blockquote { font-size: 14px; line-height: 1.8; }
+  .wedding-reviews__card h3 { font-size: 14px; }
+  .wedding-reviews__card time { font-size: 12px; }
+  .wedding-reviews__action > button { width: 100%; font-size: 14px; padding: 15px 14px; gap: 10px; }
+  .wedding-reviews__proof { font-size: 11px; row-gap: 10px; }
+}
+@media (max-width: 350px) {
+  .wedding-reviews__quote { display: none; }
+  .wedding-reviews__action > button { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) { .wedding-reviews__slider .wedding-reviews__card { transition: none; } }

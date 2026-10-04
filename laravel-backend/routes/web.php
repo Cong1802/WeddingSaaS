@@ -7,6 +7,6 @@ Route::get('/{any?}', function () {
     if (file_exists($indexPath)) {
         return response()->file($indexPath);
     }
-    return view('welcome');
+    return response('Giao diện đang được cập nhật. Vui lòng tải lại sau ít giây.', 503)
+        ->header('Retry-After', '3');
 })->where('any', '^(?!api).*$');
-

@@ -17,6 +17,7 @@ export default defineConfig({
   },
   build: {
     outDir: './laravel-backend/public/dist',
-    emptyOutDir: true
+    // Keep the current index and hashed assets available while rebuilding.
+    emptyOutDir: false
   }
 });

@@ -1,0 +1,72 @@
+.wedding-features { padding: 34px 0 24px; color: #382b2b; }
+.landing-experience > .wedding-features { padding-top: 34px; padding-bottom: 24px; }
+.wedding-features__inner { width: min(1498px, calc(100% - 80px)); margin: auto; display: grid; grid-template-columns: minmax(0, 860px) minmax(0, 1fr); column-gap: 0; align-items: start; }
+.wedding-features::after { content: ''; position: absolute; inset: -60px 0; z-index: -1; pointer-events: none; background: var(--features-artwork) center / cover no-repeat; mask-image: linear-gradient(to bottom, transparent, #000 90px, #000 calc(100% - 90px), transparent); }
+.wedding-features__content { position: relative; z-index: 1; min-width: 0; }
+.wedding-features__heading { padding-left: 86px; }
+.wedding-features__badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border: 1px solid #ffcbd6; border-radius: 30px; color: #ff3266; background: #fff7f580; font-size: 14px; }
+.wedding-features__heading h2 { margin: 16px 0 18px; font: 700 clamp(36px, 3.4vw, 56px)/1.2 var(--font-serif); letter-spacing: -1px; }
+.wedding-features__heading em { display: block; margin-top: 0; color: #f04468; font: 400 54px/1.2 'Great Vibes', 'Charm', cursive; letter-spacing: 0; }
+.wedding-features__heading > p { max-width: 620px; margin: 22px 0 36px; color: #747777; font-size: 18px; line-height: 1.6; }
+.wedding-features__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.wedding-features__card { position: relative; min-width: 0; min-height: 138px; display: flex; align-items: center; justify-content: center; gap: 15px; padding: 12px 68px 12px 22px; border: 1px solid #ffdae180; border-radius: 22px; background: linear-gradient(120deg, #fffdfbf0, #fff9f8e8 65%, #ffeef1d9); box-shadow: 0 0 18px #b8757e1a, inset 0 1px 0 #ffffffb3; overflow: hidden; }
+.wedding-features__ornament { flex: 0 0 65px; }
+.wedding-features__icon { width: 65px; height: 65px; display: grid; place-items: center; border-radius: 50%; color: #ff2458; background: linear-gradient(145deg, #ffe8ef, #ffdde7); }
+.wedding-features__card-copy { position: relative; z-index: 1; min-width: 0; }
+.wedding-features__flowers { position: absolute; right: 0; bottom: 4px; width: 65px; height: 112px; object-fit: cover; object-position: center bottom; pointer-events: none; filter: saturate(1.1); }
+.wedding-features__number { display: block; color: #ff2458; font: 600 22px/1.15 var(--font-serif); }
+.wedding-features__card h3 { margin: 3px 0 7px; font: 600 20px/1.25 var(--font-sans); letter-spacing: -.35px; }
+.wedding-features__card p { margin: 0; color: #747777; font-size: 14px; line-height: 1.4; }
+.wedding-features__visual { position: relative; min-width: 0; margin: 0; align-self: stretch; }
+.wedding-features__visual > img { position: absolute; bottom: -26px; left: 120px; display: block; width: 650px; max-width: none; height: auto;  }
+.wedding-features__footer { position: relative; z-index: 1; grid-column: 1 / -1; display: flex; align-items: center; gap: 44px; margin-top: 20px; }
+.wedding-features__create { display: inline-flex; align-items: center; justify-content: center; gap: 20px; flex-shrink: 0; padding: 18px 30px; min-height: 58px; border: 0; border-radius: 15px; background: linear-gradient(110deg, #f31b53, #f43d6a); color: white; font-size: 16px; font-weight: 700; box-shadow: 0 10px 24px #e83a6226; cursor: pointer; }
+.wedding-features__create:focus-visible { outline: 3px solid #ae3456; outline-offset: 4px; }
+.wedding-features__benefits { display: flex; flex-wrap: wrap; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.wedding-features__benefits li { display: flex; align-items: center; gap: 10px; color: #514344; font-size: 14px; }
+.wedding-features__benefits li + li { border-left: 1px solid #ffb4c4; padding-left: 24px; }
+.wedding-features__benefits svg { flex-shrink: 0; color: #ff2458; stroke-width: 1.6; }
+@media (min-width: 901px) and (max-width: 1550px) {
+  .wedding-features__inner { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .wedding-features__heading { padding-left: 30px; }
+  .wedding-features__heading h2 { font-size: 40px; }
+  .wedding-features__heading em { font-size: 60px; }
+  .wedding-features__heading > p { font-size: 16px; }
+  .wedding-features__card { gap: 14px; padding: 16px 44px 16px 16px; }
+  .wedding-features__ornament { flex-basis: 56px; }
+  .wedding-features__icon { width: 56px; height: 56px; }
+  .wedding-features__card h3 { font-size: 18px; }
+  .wedding-features__card p { font-size: 13px; }
+  .wedding-features__flowers { width: 38px; height: 90px; }
+  .wedding-features__visual > img { width: calc(100% + 70px); left: -10px; bottom: 0; }
+  .wedding-features__footer { gap: 24px; }
+  .wedding-features__benefits { gap: 16px; }
+  .wedding-features__benefits li { font-size: 12px; }
+  .wedding-features__benefits li + li { padding-left: 16px; }
+}
+@media (max-width: 900px) {
+  .wedding-features__inner { width: min(760px, calc(100% - 40px)); grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .wedding-features__heading { padding-left: 0; text-align: center; }
+  .wedding-features__heading h2 { font-size: clamp(30px, 5.5vw, 44px); }
+  .wedding-features__heading em { font-size: clamp(44px, 8vw, 65px); }
+  .wedding-features__heading > p { margin-left: auto; margin-right: auto; font-size: 15px; }
+  .wedding-features__card { gap: 16px; padding-left: 16px; }
+  .wedding-features__ornament { flex-basis: 58px; }
+  .wedding-features__icon { width: 58px; height: 58px; }
+  .wedding-features__visual { width: min(100%, 540px); justify-self: center; }
+  .wedding-features__visual > img { position: relative; width: 100%; left: 0; bottom: 0; }
+  .wedding-features__footer { flex-direction: column; margin-top: 0; gap: 22px; }
+  .wedding-features__benefits { justify-content: center; gap: 14px; }
+  .wedding-features__benefits li { font-size: 12px; }
+  .wedding-features__benefits li + li { padding-left: 14px; }
+}
+@media (max-width: 540px) {
+  .wedding-features__heading h2 { font-size: 29px; }
+  .wedding-features__heading em { font-size: 43px; }
+  .wedding-features__heading > p { font-size: 13px; margin-bottom: 24px; }
+  .wedding-features__grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .wedding-features__card h3 { font-size: 18px; }
+  .wedding-features__create { width: 100%; padding: 17px 18px; font-size: 14px; }
+  .wedding-features__benefits li { font-size: 11px; gap: 7px; }
+  .wedding-features__benefits li + li { padding-left: 0; border: 0; }
+}

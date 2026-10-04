@@ -1,0 +1,28 @@
+.landing-hero { width: 100%; padding: 150px 0 28px; overflow: hidden; }
+.landing-hero__inner { width: min(1390px, 100%); margin: auto; padding: 0 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 24px; }
+.landing-hero__copy { position: relative; z-index: 1; min-width: 0; }
+.landing-hero__badge { display: inline-flex; align-items: center; gap: 9px; padding: 8px 17px; border: 1px solid #ffd3d9; background: #fff0f0b5; border-radius: 30px; color: #f4426b; font-size: 12px; font-weight: 600; }
+.landing-hero h1 { margin: 30px 0 34px; font-family: var(--font-sans); font-size: clamp(34px, 3vw, 56px); font-weight: 700; color: #4f3033; letter-spacing: -1.4px; line-height: 1.2; }
+.landing-hero h1 em { display: block; margin-top: 12px; color: #f04468; font-family: 'Great Vibes', 'Charm', cursive; font-size: .94em; font-style: normal; font-weight: 400; letter-spacing: 0; line-height: 1.4; }
+.landing-hero__description { max-width: 620px; font-size: 18px; line-height: 1.75; color: #897675; margin: 0; }
+.landing-hero__benefits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 26px 0 34px; }
+.landing-hero__benefit { text-align: center; min-width: 0; }
+.landing-hero__icon { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 10px; background: #ffe9eb; color: #ff3865; border-radius: 16px; }
+.landing-hero__benefit h2 { font-size: 16px; color: #4f3033; font-weight: 700; line-height: 1.4; margin: 0 0 4px; }
+.landing-hero__benefit p { font-size: 13.5px; color: #765b5e; font-weight: 500; line-height: 1.4; margin: 0; }
+.landing-hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.landing-hero__actions button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 28px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.landing-hero__primary { border: 1px solid #ed3e65; background: linear-gradient(120deg, #f44370, #e5375e); color: white; box-shadow: 0 12px 26px #e63f652b; }
+.landing-hero__secondary { border: 1px solid #ffdade; background: #fffffff0; color: #f04468; }
+.landing-hero__actions button:hover { transform: translateY(-2px); }
+.landing-hero__actions button:focus-visible { outline: 3px solid #ae3456; outline-offset: 4px; }
+.landing-hero__trust { display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 1.6; color: #a08886; margin: 25px 0 0; }
+.landing-hero__trust svg { color: #ff416c; flex-shrink: 0; }
+.landing-hero__visual { width: 100%; min-width: 0; align-self: stretch; position: relative; }
+.landing-hero__visual img { position: absolute; top: 52%; transform: translateY(-50%); display: block; width: 132%; max-width: none; height: auto; margin-left: -2%; -webkit-mask-image: linear-gradient(to bottom, #000, #000 82%, transparent); mask-image: linear-gradient(to bottom, #000, #000 82%, transparent); }
+@media (min-width: 1400px) { .landing-hero { min-height: 836px; } }
+@media (max-width: 1100px) { .landing-hero { padding-top: 155px; } .landing-hero__inner { padding: 0 32px; gap: 18px; } .landing-hero h1 { font-size: 35px; } .landing-hero__description { font-size: 14px; } .landing-hero__actions button { font-size: 13px; padding: 14px 18px; } .landing-hero__benefits { gap: 12px; } .landing-hero__benefit h2 { font-size: 15px; } .landing-hero__benefit p { font-size: 13px; } }
+@media (max-width: 760px) { .landing-hero { padding: 145px 0 20px; } .landing-hero__inner { grid-template-columns: minmax(0, 1fr); padding: 0 22px; gap: 8px; } .landing-hero__copy { text-align: center; } .landing-hero__badge { font-size: 10px; padding: 8px 12px; } .landing-hero h1 { font-size: clamp(31px, 6.2vw, 45px); margin: 24px 0; } .landing-hero__description { margin: auto; } .landing-hero__benefits { max-width: 540px; margin: 24px auto; } .landing-hero__actions { justify-content: center; } .landing-hero__trust { justify-content: center; font-size: 10px; } .landing-hero__visual { max-width: 650px; justify-self: center; } .landing-hero__visual img { width: 125%; margin-left: -9%; } }
+@media (max-width: 420px) { .landing-hero__inner { padding: 0 16px; } .landing-hero__benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; } .landing-hero__benefit h2 { font-size: 12px; } .landing-hero__actions { flex-direction: column; } .landing-hero__actions button { width: 100%; font-size: 14px; } }
+@media (prefers-reduced-motion: reduce) { .landing-hero__actions button:hover { transform: none; } }
+@media (max-width: 760px) { .landing-hero__visual { aspect-ratio: 1.6; } }

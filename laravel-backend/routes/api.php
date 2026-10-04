@@ -6,6 +6,7 @@ use App\Http\Controllers\WeddingCardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\NewsletterController;
 
 // Public Auth Routes
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -19,6 +20,7 @@ Route::get('/public/templates', [AdminController::class, 'getPublicTemplates']);
 Route::get('/public/plans', [AdminController::class, 'getPublicPlans']);
 Route::get('/public/music', [AdminController::class, 'getPublicMusicTracks']);
 Route::get('/public/settings', [AdminController::class, 'getPublicSettings']);
+Route::post('/public/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,1');
 
 // Authenticated User Routes (Requires Sanctum Token)
 Route::middleware('auth:sanctum')->group(function () {
