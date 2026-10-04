@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
+  Menu,
   Sparkles, 
   Check, 
   ArrowRight, 
@@ -39,6 +40,7 @@ import SiteFooter from './SiteFooter';
 import TestimonialsSection from './TestimonialsSection';
 import FaqSection from './FaqSection';
 import './LandingPage.css';
+import MobileLandingMenu, { landingLinks } from './MobileLandingMenu';
 import heroBannerImg from '../assets/hero-banner.png';
 import heroBanner2Img from '../assets/hero-banner-2.png';
 import heroBgImg from '../assets/hero-bg.png';
@@ -46,6 +48,7 @@ import logoImg from '../assets/logo.png';
 import whyUsCoupleImg from '../assets/why-us-couple.png';
 import FeaturesSection from './FeaturesSection';
 import PricingSection from './PricingSection';
+import useLandingReveal from './useLandingReveal';
 
 // Master Plan Image Assets
 import introBackground from '../../images/section-01-hero/hero-why-us-continuous.png';
@@ -76,7 +79,11 @@ export default function LandingPage({
   publicSettings = {}
 }) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  useLandingReveal();
   const [activeNav, setActiveNav] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
+  const createCard = () => user?.role === 'admin' ? onOpenAdmin?.() : onGoToEditor();
 
   const handleNavClick = (id) => {
     setActiveNav(id);
@@ -284,8 +291,9 @@ export default function LandingPage({
           justifyContent: 'space-between',
           boxSizing: 'border-box'
         }}>
+          
           {/* Brand Logo */}
-          <div 
+          <div className="landing-header__brand" 
             style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} 
             onClick={() => handleNavClick('home')}
           >
@@ -298,14 +306,7 @@ export default function LandingPage({
 
           {/* Navigation Menu */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }} className="landing-header__nav">
-            {[
-              { id: 'home', label: 'Trang chủ' },
-              { id: 'templates', label: 'Mẫu thiệp' },
-              { id: 'features', label: 'Tính năng' },
-              { id: 'pricing', label: 'Bảng giá' },
-              { id: 'steps', label: 'Hướng dẫn' },
-              { id: 'contact', label: 'Liên hệ' },
-            ].map((item) => (
+            {landingLinks.map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
@@ -346,9 +347,9 @@ export default function LandingPage({
           </nav>
 
           {/* Header Right Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div className="landing-header__actions" style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             {user ? (
-              <div style={{ position: 'relative' }}>
+              <div className="landing-header__account" style={{ position: 'relative' }}>
                 <button
                   onClick={() => setIsUserMenuOpen(prev => !prev)}
                   style={{
@@ -417,7 +418,7 @@ export default function LandingPage({
               </div>
             ) : (
               <button
-                onClick={onOpenAuthModal}
+                className="landing-header__login" onClick={onOpenAuthModal}
                 style={{
                   padding: '8px 22px',
                   color: '#4F3033',
@@ -434,6 +435,7 @@ export default function LandingPage({
             )}
 
             <button
+              className="landing-header__create"
               onClick={() => {
                 if (user?.role === 'admin') {
                   if (onOpenAdmin) onOpenAdmin();
@@ -458,10 +460,14 @@ export default function LandingPage({
             >
               <span>{user?.role === 'admin' ? 'Trang Quản Trị' : 'Tạo thiệp ngay'}</span>
             </button>
+            <button type="button" className="landing-header__menu-toggle" onClick={() => setIsMobileMenuOpen(true)} aria-label="Mở menu" aria-expanded={isMobileMenuOpen} aria-controls="landing-mobile-menu"><Menu size={23} /></button>
+
+
           </div>
         </div>
       </header>
 
+      <MobileLandingMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu} activeNav={activeNav} onNavigate={handleNavClick} onCreate={createCard} onLogin={onOpenAuthModal} user={user} onMyCards={onOpenMyCards} onAdmin={onOpenAdmin} onLogout={onLogout} />
       {/* ---------------- MAIN CONTENT PAGE SCROLL ---------------- */}
       <main className="landing-flow" style={{ width: '100%' }}>
         {/* ==================== SECTION 01: HERO SECTION ==================== */}

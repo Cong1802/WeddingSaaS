@@ -71,7 +71,7 @@ class AdminController extends Controller
     {
         $this->checkAdmin($request);
 
-        $users = User::where('role', 'user')
+        $users = User::query()
             ->withCount('cards')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -112,9 +112,12 @@ class AdminController extends Controller
         $this->checkAdmin($request);
 
         $user = User::findOrFail($id);
+        if (is_string($request->input('email'))) {
+            $request->merge(['email' => strtolower(trim($request->input('email')))]);
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => "required|email|unique:users,email,{$id}",
+            'email' => ['required', 'email', \Illuminate\Validation\Rule::unique('users', 'email')->ignore($user->id)],
             'phone' => 'nullable|string|max:50',
             'paid_credits' => 'nullable|integer|min:0',
         ]);
@@ -174,6 +177,7 @@ class AdminController extends Controller
             DB::transaction(function () use ($user) {
                 Order::where('user_id', $user->id)->delete();
                 WeddingCard::where('user_id', $user->id)->delete();
+                $user->tokens()->delete();
                 $user->delete();
             });
 
@@ -200,7 +204,8 @@ class AdminController extends Controller
 
         return response()->json([
             'success' => true,
-            'templates' => $templates
+            'templates' => $templates,
+            'designs' => $this->templateDesigns(),
         ], 200);
     }
 
@@ -210,12 +215,12 @@ class AdminController extends Controller
 
         $validated = $request->validate([
             'id' => 'nullable|integer',
-            'code' => 'required|string|max:100',
+            'code' => ['nullable', 'string', 'max:100'],
             'name' => 'required|string|max:255',
             'category' => 'required|string',
             'tag' => 'nullable|string',
             'thumbnail' => 'required|string',
-            'file_url' => 'nullable|string',
+            'file_url' => ['nullable', 'string', \Illuminate\Validation\Rule::in(array_column($this->templateDesigns(), 'url'))],
             'price' => 'numeric|min:0',
             'is_active' => 'boolean',
             'sort_order' => 'integer',
@@ -223,9 +228,13 @@ class AdminController extends Controller
 
         if (isset($validated['id']) && $validated['id']) {
             $template = Template::findOrFail($validated['id']);
+            unset($validated['code'], $validated['price']);
             $template->update($validated);
             $msg = 'Đã cập nhật mẫu thiệp thành công!';
         } else {
+            $validated['code'] = 'template_'.\Illuminate\Support\Str::uuid();
+            $validated['price'] = 0;
+            $validated['file_url'] = $validated['file_url'] ?? '/template.html';
             $template = Template::create($validated);
             $msg = 'Đã thêm mẫu thiệp mới thành công!';
         }
@@ -286,15 +295,25 @@ class AdminController extends Controller
 
         $validated = $request->validate([
             'id' => 'nullable|integer',
-            'code' => 'required|string',
+            'code' => ['required', 'string', 'max:100', \Illuminate\Validation\Rule::unique('plans', 'code')->ignore($request->integer('id'))],
             'name' => 'required|string',
+            'subtitle' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'period' => 'required|string',
+            'period' => 'nullable|string',
             'description' => 'nullable|string',
-            'features' => 'nullable|array',
+            'action' => 'nullable|string',
+            'features' => 'nullable|array|max:100',
+            'features.*' => 'string|max:5000',
             'is_popular' => 'boolean',
             'is_active' => 'boolean',
         ]);
+
+        if (isset($validated['features'])) {
+            $validated['features'] = array_map(function ($feature) {
+                $feature = strip_tags($feature, '<strong><b><em><i><u><s><br>');
+                return preg_replace('/<(strong|b|em|i|u|s|br)\b[^>]*>/i', '<$1>', $feature);
+            }, $validated['features']);
+        }
 
         if (isset($validated['id']) && $validated['id']) {
             $plan = Plan::findOrFail($validated['id']);
@@ -361,16 +380,21 @@ class AdminController extends Controller
     {
         $this->checkAdmin($request);
 
-        $order = Order::findOrFail($id);
-        if ($order->status === 'completed') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Đơn hàng này đã được phê duyệt trước đó.'
-            ], 400);
-        }
-
-        $order->status = 'completed';
-        $order->save();
+        $order = DB::transaction(function () use ($id) {
+            $order = Order::lockForUpdate()->findOrFail($id);
+            abort_if($order->status !== 'pending', 409, 'Only pending orders can be approved.');
+            $order->update(['status' => 'completed']);
+            if ($order->template_code) {
+                \App\Services\CardAccess::grant($order->user_id, $order->template_code);
+            } else {
+                // Orders placed before licenses existed remain administratively reconcilable.
+                User::whereKey($order->user_id)->increment('paid_credits');
+                $owner = User::findOrFail($order->user_id);
+                $code = WeddingCard::where('user_id', $owner->id)->where('slug', \App\Services\CardAccess::primarySlug($owner))->value('template_id');
+                if ($code) \App\Services\CardAccess::grant($owner->id, $code);
+            }
+            return $order;
+        });
 
         return response()->json([
             'success' => true,
@@ -383,9 +407,12 @@ class AdminController extends Controller
     {
         $this->checkAdmin($request);
 
-        $order = Order::findOrFail($id);
-        $order->status = 'cancelled';
-        $order->save();
+        $order = DB::transaction(function () use ($id) {
+            $order = Order::lockForUpdate()->findOrFail($id);
+            abort_if($order->status !== 'pending', 409, 'Only pending orders can be cancelled.');
+            $order->update(['status' => 'cancelled']);
+            return $order;
+        });
 
         return response()->json([
             'success' => true,
@@ -432,7 +459,8 @@ class AdminController extends Controller
         $this->checkAdmin($request);
 
         $targetUser = User::findOrFail($id);
-        $amount = (int)($request->input('amount', 1));
+        $data = $request->validate(['amount' => 'required|integer|min:1|max:10000']);
+        $amount = $data['amount'];
         $targetUser->increment('paid_credits', $amount);
 
         return response()->json([
@@ -450,6 +478,8 @@ class AdminController extends Controller
         $this->checkAdmin($request);
 
         $settings = SystemSetting::all()->pluck('value', 'key');
+        $settings['mail_password_configured'] = !empty($settings['mail_password']);
+        unset($settings['mail_password']);
 
         return response()->json([
             'success' => true,
@@ -462,7 +492,22 @@ class AdminController extends Controller
         $this->checkAdmin($request);
 
         $inputs = $request->except(['_token']);
+        $request->validate([
+            'mail_enabled' => 'sometimes|in:0,1',
+            'mail_host' => 'required_if:mail_enabled,1|nullable|string|max:255',
+            'mail_port' => 'required_if:mail_enabled,1|nullable|integer|min:1|max:65535',
+            'mail_encryption' => 'sometimes|in:tls,ssl,none',
+            'mail_username' => 'nullable|string|max:255',
+            'mail_password' => 'nullable|string|max:1000',
+            'mail_from_address' => 'required_if:mail_enabled,1|nullable|email|max:255',
+            'mail_from_name' => 'nullable|string|max:255',
+        ]);
+        unset($inputs['mail_password_configured']);
         foreach ($inputs as $key => $value) {
+            if ($key === 'mail_password') {
+                if ($value === null || $value === '' || $value === '********') continue;
+                $value = \Illuminate\Support\Facades\Crypt::encryptString($value);
+            }
             SystemSetting::updateOrCreate(
                 ['key' => $key],
                 ['value' => (string)$value]
@@ -480,14 +525,24 @@ class AdminController extends Controller
      */
     public function getUserCards(Request $request)
     {
-        $user = $request->user();
-        $cards = WeddingCard::where('user_id', $user->id)
+        $user = $request->user()->fresh();
+        $primarySlug = \App\Services\CardAccess::primarySlug($user);
+        $cards = WeddingCard::where('user_id', $user->id)->where('slug', $primarySlug)
             ->orderBy('updated_at', 'desc')
             ->get();
+        $designs = Template::whereIn('code', $cards->pluck('template_id'))->get()->keyBy('code');
+        $cards->each(fn ($card) => $card->setAttribute('template', $designs->get($card->template_id)));
+        $cards->each(fn ($card) => $card->setAttribute('access', \App\Services\CardAccess::status($user->id, $card->template_id)));
 
         return response()->json([
             'success' => true,
-            'cards' => $cards
+            'cards' => $cards,
+            'card_slug' => $primarySlug,
+            'card_url' => $primarySlug ? url('/v/'.$primarySlug) : null,
+            'licenses' => \App\Models\TemplateLicense::where('user_id', $user->id)->get(),
+            'archived_count' => max(0, WeddingCard::where('user_id', $user->id)->count() - $cards->count()),
+            'primary_selection_pending' => (bool) $user->primary_selection_pending,
+            'legacy_cards' => $user->primary_selection_pending ? WeddingCard::where('user_id', $user->id)->get(['id', 'slug', 'card_data']) : [],
         ], 200);
     }
 
@@ -495,6 +550,7 @@ class AdminController extends Controller
     {
         $user = $request->user();
         $card = WeddingCard::where('id', $id)->where('user_id', $user->id)->firstOrFail();
+        abort_if(\App\Services\CardAccess::primarySlug($user) === $card->slug, 409, 'URL thiệp chính được giữ cố định. Bạn có thể ẩn thiệp thay vì xóa.');
         $card->delete();
 
         return response()->json([
@@ -507,6 +563,23 @@ class AdminController extends Controller
     {
         $templates = Template::where('is_active', true)->orderBy('sort_order', 'asc')->get();
         return response()->json(['success' => true, 'templates' => $templates]);
+    }
+
+    private function templateDesigns(): array
+    {
+        $designs = [
+            ['url' => '/template.html', 'name' => 'Thiệp truyền thống đỏ vàng'],
+            ['url' => '/https___www.lovecard.click_thiepso48/www.lovecard.click/thiepso48.html', 'name' => 'Thiệp số 48'],
+        ];
+        $directory = public_path('templates');
+        if (is_dir($directory)) {
+            foreach (\Illuminate\Support\Facades\File::allFiles($directory) as $file) {
+                if (strtolower($file->getExtension()) !== 'html') continue;
+                $relative = str_replace('\\', '/', $file->getRelativePathname());
+                $designs[] = ['url' => '/templates/'.$relative, 'name' => $relative];
+            }
+        }
+        return $designs;
     }
 
     public function getPublicPlans()
@@ -543,16 +616,12 @@ class AdminController extends Controller
             'sort_order' => 'integer',
         ]);
 
-        $music = \App\Models\MusicTrack::updateOrCreate(
-            ['id' => $validated['id'] ?? null],
-            [
-                'title' => $validated['title'],
-                'artist' => $validated['artist'] ?? null,
-                'url' => $validated['url'],
-                'is_active' => $validated['is_active'] ?? true,
-                'sort_order' => $validated['sort_order'] ?? 1,
-            ]
-        );
+        if (!empty($validated['id'])) {
+            $music = \App\Models\MusicTrack::findOrFail($validated['id']);
+            $music->update($validated);
+        } else {
+            $music = \App\Models\MusicTrack::create($validated);
+        }
 
         return response()->json([
             'success' => true,
@@ -570,7 +639,7 @@ class AdminController extends Controller
         ]);
 
         $file = $request->file('file');
-        $filename = 'music_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filename = 'music_' . time() . '_' . uniqid() . '.' . $file->guessExtension();
         
         $destinationPath = public_path('uploads/music');
         if (!file_exists($destinationPath)) {
@@ -592,11 +661,11 @@ class AdminController extends Controller
         $this->checkAdmin($request);
 
         $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,webp,gif,svg,ico|max:10240', // max 10MB
+            'file' => 'required|file|mimes:jpg,jpeg,png,webp,gif,ico|max:10240', // max 10MB
         ]);
 
         $file = $request->file('file');
-        $filename = 'img_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filename = 'img_' . time() . '_' . uniqid() . '.' . $file->guessExtension();
         
         $destinationPath = public_path('uploads/images');
         if (!file_exists($destinationPath)) {
@@ -649,7 +718,13 @@ class AdminController extends Controller
 
     public function getPublicSettings()
     {
-        $settings = SystemSetting::all()->pluck('value', 'key');
+        $settings = SystemSetting::whereIn('key', [
+            'site_name', 'site_title', 'site_description', 'site_keywords', 'site_logo', 'site_favicon',
+            'contact_email', 'contact_phone', 'contact_address',
+            'social_facebook', 'social_zalo', 'social_instagram', 'social_tiktok', 'social_youtube',
+            'privacy_url', 'terms_url', 'blog_url', 'careers_url', 'partners_url',
+            'vietqr_bank_bin', 'vietqr_account_no', 'vietqr_account_name', 'vietqr_qr_image',
+        ])->pluck('value', 'key');
         return response()->json([
             'success' => true,
             'settings' => $settings

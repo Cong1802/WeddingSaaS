@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { pageFromLocation, pathForPage } from './navigation';
 import Header from './components/Header';
 import EditorSidebar from './components/EditorSidebar';
 import WeddingCardPreview from './components/WeddingCardPreview';
@@ -15,32 +16,23 @@ import MobileTopActionPills from './components/MobileTopActionPills';
 import AuthModal from './components/AuthModal';
 import AdminCMS from './components/AdminCMS';
 import MyCardsModal from './components/MyCardsModal';
+import MyCardsDashboard from './components/MyCardsDashboard';
 import PurchaseModal from './components/PurchaseModal';
 import LandingPage from './components/LandingPage';
 import { TEMPLATES } from './templates/templateRegistry';
+import useTemplates, { normalizeTemplate } from './templates/useTemplates';
 
 export default function App() {
-  const getInitialPage = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = urlParams.get('page');
-    const path = window.location.pathname;
-    const hash = window.location.hash;
-    if (page === 'admin' || urlParams.has('admin') || path === '/admin' || hash.includes('admin')) {
-      return 'admin';
-    }
-    return 'landing';
+  const [currentPage, updateCurrentPage] = useState(() => pageFromLocation());
+  const setCurrentPage = (page) => {
+    const path = pathForPage(page);
+    if (window.location.pathname !== path) window.history.pushState({}, '', path);
+    updateCurrentPage(page);
   };
-  const [currentPage, setCurrentPage] = useState(getInitialPage); // 'landing' | 'editor' | 'admin'
 
   React.useEffect(() => {
     const handleUrlChange = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const page = urlParams.get('page');
-      const path = window.location.pathname;
-      const hash = window.location.hash;
-      if (page === 'admin' || urlParams.has('admin') || path === '/admin' || hash.includes('admin')) {
-        setCurrentPage('admin');
-      }
+      updateCurrentPage(pageFromLocation());
     };
     window.addEventListener('hashchange', handleUrlChange);
     window.addEventListener('popstate', handleUrlChange);
@@ -49,6 +41,7 @@ export default function App() {
       window.removeEventListener('popstate', handleUrlChange);
     };
   }, []);
+  const templates = useTemplates();
   const [pendingTemplate, setPendingTemplate] = useState(null);
   const [isPendingEditorAccess, setIsPendingEditorAccess] = useState(false);
 
@@ -62,7 +55,7 @@ export default function App() {
   const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(() => new URLSearchParams(window.location.search).has('reset_token'));
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isMyCardsModalOpen, setIsMyCardsModalOpen] = useState(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
@@ -71,9 +64,18 @@ export default function App() {
   const [mapTargetSection, setMapTargetSection] = useState('groom');
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
+  React.useEffect(() => {
+    setSelectedTemplate(current => templates.find(template => template.id === current.id) || current);
+  }, [templates]);
+
   // Auth User & Token State
   const [token, setToken] = useState(() => localStorage.getItem('auth_token'));
   const [user, setUser] = useState(null);
+  const editorHydrated = React.useRef(null);
+  const requestedEditorTemplate = React.useRef(false);
+  const [authChecking, setAuthChecking] = useState(() => !!localStorage.getItem('auth_token'));
+  const [authError, setAuthError] = useState(false);
+  const [authRetry, setAuthRetry] = useState(0);
 
   // Card Data State (Declared at top level to satisfy React Rules of Hooks)
   const [cardData, setCardData] = useState({
@@ -119,7 +121,7 @@ export default function App() {
       if (s) return s;
     }
     if (urlParams.get('v')) return urlParams.get('v');
-    if (pathname !== '/' && !pathname.startsWith('/api') && !pathname.startsWith('/admin') && !pathname.startsWith('/dist') && !pathname.includes('.')) {
+    if (pathname !== '/' && pathname !== '/editor' && pathname !== '/my-cards' && !pathname.startsWith('/api') && !pathname.startsWith('/admin') && !pathname.startsWith('/dist') && !pathname.includes('.')) {
       const cleanPath = pathname.replace(/^\//, '').replace(/\/$/, '');
       if (cleanPath) return cleanPath;
     }
@@ -164,15 +166,25 @@ export default function App() {
 
   // Tải thông tin người dùng từ Backend nếu có Token
   React.useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+    setAuthError(false);
     if (token) {
+      setAuthChecking(true);
       fetch('/api/auth/me', {
+        signal: controller.signal,
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
         }
       })
-      .then(res => res.json())
+      .then(async res => {
+        if (res.status === 401 || res.status === 403) return { success: false };
+        if (!res.ok) throw new Error('Session check failed');
+        return res.json();
+      })
       .then(data => {
+        if (!active) return;
         if (data.success && data.user) {
           setUser(data.user);
         } else {
@@ -183,10 +195,14 @@ export default function App() {
         }
       })
       .catch(() => {
-        setUser(null);
-      });
+        if (active) setAuthError(true);
+      })
+      .finally(() => { if (active) setAuthChecking(false); });
+    } else {
+      setAuthChecking(false);
     }
-  }, [token]);
+    return () => { active = false; controller.abort(); };
+  }, [token, authRetry]);
 
   // Continuously remove LadiPage watermark elements injected into parent document.body
   React.useEffect(() => {
@@ -216,6 +232,8 @@ export default function App() {
   };
 
   const handleGoToEditor = (template = null, packageType = 'pro') => {
+    if (typeof template === 'string') template = templates.find(item => item.id === template);
+    requestedEditorTemplate.current = !!template;
     if (template) {
       setSelectedTemplate(template);
     }
@@ -304,8 +322,71 @@ export default function App() {
     setCurrentPage('admin');
   };
 
+  React.useEffect(() => {
+    if (currentPage !== 'editor' || !token || editorHydrated.current === token) return;
+    let active = true;
+    fetch('/api/user/cards', { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } })
+      .then(response => { if (!response.ok) throw Error('Không tải được thiệp.'); return response.json(); })
+      .then(data => {
+        if (!active) return;
+        editorHydrated.current = token;
+        const card = data.cards[0];
+        if (!card) return;
+        if (data.primary_selection_pending || (!card.access.active && !requestedEditorTemplate.current)) { setCurrentPage('my-cards'); return; }
+        setCardData(card.card_data);
+        if (!requestedEditorTemplate.current && card.template) setSelectedTemplate(normalizeTemplate(card.template));
+      }).catch(() => { if (active) setCurrentPage('my-cards'); });
+    return () => { active = false; };
+  }, [currentPage, token]);
+
   if (guestSlugParam) {
     return <GuestCardViewer slug={guestSlugParam} />;
+  }
+
+  if (['admin', 'my-cards', 'editor'].includes(currentPage) && token && (authChecking || authError)) {
+    return (
+      <div style={{ minHeight: '100dvh', background: '#050912', color: '#cbd5e1', display: 'grid', placeItems: 'center' }}>
+        <div role="status" aria-live="polite" style={{ textAlign: 'center' }}>
+          <p>{authError ? 'Không thể kiểm tra phiên đăng nhập. Vui lòng thử lại.' : 'Đang kiểm tra phiên đăng nhập…'}</p>
+          {authError && <button onClick={() => { setAuthChecking(true); setAuthError(false); setAuthRetry(value => value + 1); }}>Thử lại</button>}
+        </div>
+      </div>
+    );
+  }
+
+  if (currentPage === 'my-cards') {
+    return (
+      <>
+        <MyCardsDashboard
+          settings={publicSettings}
+          user={user}
+          token={token}
+          onBackToLanding={() => setCurrentPage('landing')}
+          onGoToEditor={(template = null, packageType = 'pro', card = null) => {
+            if (card) {
+              editorHydrated.current = token;
+              if (card.card_data) setCardData(card.card_data);
+              const t = card.template ? normalizeTemplate(card.template) : templates.find(t => t.id === card.template_id) || TEMPLATES.find(t => t.id === card.template_id);
+              if (t) setSelectedTemplate(t);
+              setCurrentPage('editor');
+              return;
+            }
+            handleGoToEditor(template, packageType);
+          }}
+          onOpenAuthModal={() => setIsAuthModalOpen(true)}
+          onOpenAdmin={handleOpenAdmin}
+          onLogout={handleLogout}
+        />
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onAuthSuccess={(userData, userToken) => {
+            setUser(userData);
+            setToken(userToken);
+          }}
+        />
+      </>
+    );
   }
 
   if (currentPage === 'admin') {
@@ -335,7 +416,7 @@ export default function App() {
           }}
           user={user}
           onLogout={handleLogout}
-          onOpenMyCards={() => setIsMyCardsModalOpen(true)}
+          onOpenMyCards={() => { setCurrentPage('my-cards'); window.scrollTo(0, 0); }}
           onOpenAdmin={handleOpenAdmin}
           onOpenPurchase={() => setIsPurchaseModalOpen(true)}
         />
@@ -349,6 +430,7 @@ export default function App() {
           onAuthSuccess={(userData, userToken) => {
             setUser(userData);
             setToken(userToken);
+            if (!userData) return;
             if (userData.role === 'admin') {
               setIsPendingEditorAccess(false);
               setCurrentPage('admin');
@@ -372,7 +454,7 @@ export default function App() {
             if (card.card_data) {
               setCardData(card.card_data);
             }
-            const t = TEMPLATES.find(t => t.id === card.template_id);
+            const t = card.template ? normalizeTemplate(card.template) : templates.find(t => t.id === card.template_id) || TEMPLATES.find(t => t.id === card.template_id);
             if (t) setSelectedTemplate(t);
             setCurrentPage('editor');
           }}
@@ -380,6 +462,8 @@ export default function App() {
 
         <PurchaseModal
           isOpen={isPurchaseModalOpen}
+          templateCode={selectedTemplate.id}
+          templateName={selectedTemplate.name}
           onClose={() => {
             setIsPurchaseModalOpen(false);
             setIsPendingEditorAccess(false);
@@ -410,7 +494,7 @@ export default function App() {
         selectedTemplateName={selectedTemplate.name}
         user={user}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
-        onOpenMyCardsModal={() => setIsMyCardsModalOpen(true)}
+        onOpenMyCardsModal={() => setCurrentPage('my-cards')}
         onOpenAdminModal={handleOpenAdmin}
         onOpenPurchaseModal={() => setIsPurchaseModalOpen(true)}
         onLogout={handleLogout}
@@ -546,6 +630,7 @@ export default function App() {
         onAuthSuccess={(userData, userToken) => {
           setUser(userData);
           setToken(userToken);
+          if (!userData) return;
           if (userData.role === 'admin') {
             setIsPendingEditorAccess(false);
             setCurrentPage('admin');
@@ -568,7 +653,7 @@ export default function App() {
           if (card.card_data) {
             setCardData(card.card_data);
           }
-          const t = TEMPLATES.find(t => t.id === card.template_id);
+          const t = card.template ? normalizeTemplate(card.template) : templates.find(t => t.id === card.template_id) || TEMPLATES.find(t => t.id === card.template_id);
           if (t) setSelectedTemplate(t);
           setCurrentPage('editor');
         }}
@@ -576,6 +661,8 @@ export default function App() {
 
       <PurchaseModal
         isOpen={isPurchaseModalOpen}
+        templateCode={selectedTemplate.id}
+        templateName={selectedTemplate.name}
         onClose={() => {
           setIsPurchaseModalOpen(false);
           setIsPendingEditorAccess(false);

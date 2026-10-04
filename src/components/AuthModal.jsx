@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ChevronRight, Crown, Eye, EyeOff, Heart, LockKeyhole, Mail, UserRound, X } from 'lucide-react';
+import { ChevronRight, Eye, EyeOff, Heart, LockKeyhole, Mail, UserRound, X } from 'lucide-react';
 import artwork from '../assets/auth-wedding-panel.png';
 import flowers from '../../images/section-05-features/features-sprig.png';
 import './AuthModal.css';
 
 export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
+  const [recovery, setRecovery] = useState(null);
+  const [resetToken, setResetToken] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,10 +19,25 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
   const [googleClientId, setGoogleClientId] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const dialogRef = useRef(null);
+  const recoveryLink = useRef(null);
+  const initializedOpen = useRef(false);
 
   useEffect(() => {
-    if (!isOpen) return;
-    setFormData({ name: '', email: '', password: '' });
+    if (!isOpen) { initializedOpen.current = false; return; }
+    if (!initializedOpen.current) {
+      const params = new URLSearchParams(window.location.search);
+      const link = recoveryLink.current || { token: params.get('reset_token'), email: params.get('reset_email') };
+      recoveryLink.current = link;
+      setRecovery(link.token ? 'reset' : null);
+      setResetToken(link.token || '');
+      setFormData({ name: '', email: link.email || '', password: '', password_confirmation: '' });
+      if (link.token) {
+        params.delete('reset_token');
+        params.delete('reset_email');
+        window.history.replaceState({}, '', `${window.location.pathname}${params.size ? `?${params}` : ''}${window.location.hash}`);
+      }
+      initializedOpen.current = true;
+    }
     setError('');
     setSuccessMsg('');
     setShowPassword(false);
@@ -47,12 +64,12 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    fetch('/api/public/settings')
+    fetch('/api/auth/config')
       .then(res => res.json())
       .then(data => {
-        if (data.success && data.settings?.google_client_id) {
-          setGoogleClientId(data.settings.google_client_id);
-          loadGoogleSDK(data.settings.google_client_id);
+        if (data.google_client_id) {
+          setGoogleClientId(data.google_client_id);
+          loadGoogleSDK(data.google_client_id);
         }
       })
       .catch(() => {});
@@ -82,24 +99,13 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
     setError('');
 
     try {
-      // Decode JWT token payload from Google
-      const base64Url = response.credential.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-      const payload = JSON.parse(jsonPayload);
-
       const res = await fetch('/api/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          google_id: payload.sub,
-          email: payload.email,
-          name: payload.name || payload.email.split('@')[0],
-          avatar: payload.picture,
-        }),
+        body: JSON.stringify({ credential: response.credential }),
       });
 
       const data = await res.json();
@@ -134,7 +140,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
     setError('');
     setSuccessMsg('');
 
-    const endpoint = login ? '/api/auth/login' : '/api/auth/register';
+    const endpoint = recovery ? `/api/auth/${recovery === 'forgot' ? 'forgot-password' : 'reset-password'}` : login ? '/api/auth/login' : '/api/auth/register';
 
     try {
       const response = await fetch(endpoint, {
@@ -143,16 +149,23 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(recovery === 'reset' ? { ...credentials, token: resetToken } : credentials),
       });
 
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.message || 'Đã xảy ra lỗi, vui lòng thử lại.');
+        throw new Error(Object.values(data.errors || {}).flat()[0] || data.message || 'Đã xảy ra lỗi, vui lòng thử lại.');
       }
 
       setSuccessMsg(data.message);
+      if (recovery === 'reset') {
+        recoveryLink.current = null;
+        localStorage.removeItem('auth_token');
+        onAuthSuccess(null, null);
+        setResetToken(''); setRecovery(null); setIsLogin(true);
+        setFormData({ name: '', email: credentials.email, password: '' });
+      }
       if (data.token && data.user) {
         localStorage.setItem('auth_token', data.token);
         onAuthSuccess(data.user, data.token);
@@ -173,57 +186,10 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
       return;
     }
 
-    // Fallback demo simulation if Client ID is not configured yet in Admin CMS
-    setLoading(true);
-    setError('');
-
-    const mockGoogleId = 'google_id_' + Math.floor(Math.random() * 1000000);
-    const mockEmail = `user.${Math.floor(Math.random() * 1000)}@gmail.com`;
-    const mockName = 'Khách Google User';
-    const mockAvatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${mockGoogleId}`;
-
-    try {
-      const response = await fetch('/api/auth/google', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          google_id: mockGoogleId,
-          email: mockEmail,
-          name: mockName,
-          avatar: mockAvatar,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || 'Đăng nhập Google thất bại');
-      }
-
-      setSuccessMsg('Đăng nhập Google thành công!');
-      localStorage.setItem('auth_token', data.token);
-      onAuthSuccess(data.user, data.token);
-      setTimeout(() => {
-        onClose();
-      }, 600);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setError('Đăng nhập Google chưa sẵn sàng. Vui lòng dùng email và mật khẩu.');
   };
 
-  const changeTab = (login) => { setIsLogin(login); setError(''); setSuccessMsg(''); setShowPassword(false); };
-  const handleDemoLogin = (event) => {
-    const credentials = { email: 'admin@example.com', password: 'password123', name: 'Quản Trị Viên' };
-    setFormData(credentials);
-    setIsLogin(true);
-    handleSubmit(event, credentials, true);
-  };
-
+  const changeTab = (login) => { setRecovery(null); setIsLogin(login); setError(''); setSuccessMsg(''); setShowPassword(false); };
   return (
     <div className="auth-modal-overlay animate-fade-in" onClick={onClose}>
       <div className="auth-modal" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="auth-modal-title" onClick={event => event.stopPropagation()}>
@@ -237,7 +203,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
         </aside>
         <div className="auth-modal__body">
           <header className="auth-modal__heading">
-            <h2 id="auth-modal-title">{isLogin ? 'Chào mừng bạn!' : 'Bắt đầu cùng chúng mình!'}</h2>
+            <h2 id="auth-modal-title">{recovery ? 'Đặt lại mật khẩu' : isLogin ? 'Chào mừng bạn!' : 'Bắt đầu cùng chúng mình!'}</h2>
             <p>{isLogin ? 'Đăng nhập để lưu và quản lý thiệp cưới của bạn' : 'Tạo tài khoản để lưu thiệp cho ngày trọng đại'}</p>
           </header>
           <div className="auth-modal__tabs" aria-label="Chọn đăng nhập hoặc đăng ký">
@@ -251,20 +217,25 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
             <input type="text" name="fake_email_prevent_autofill" style={{ display: 'none' }} tabIndex={-1} aria-hidden="true" />
             <input type="password" name="fake_password_prevent_autofill" style={{ display: 'none' }} tabIndex={-1} aria-hidden="true" />
 
-            {!isLogin && <div className="auth-modal__field">
+            {!isLogin && !recovery && <div className="auth-modal__field">
               <label htmlFor="auth-name">Họ & Tên</label>
               <div className="auth-modal__input"><UserRound size={19} aria-hidden="true" /><input id="auth-name" name="name" autoComplete="off" required value={formData.name} onChange={handleChange} placeholder="Nhập họ và tên của bạn" /></div>
             </div>}
             <div className="auth-modal__field">
-              <label htmlFor="auth-email">Email hoặc Số điện thoại</label>
-              <div className="auth-modal__input"><Mail size={19} aria-hidden="true" /><input id="auth-email" name="email" type="text" autoComplete="off" required value={formData.email} onChange={handleChange} placeholder="Nhập email hoặc số điện thoại" /></div>
+              <label htmlFor="auth-email">{recovery ? 'Email' : 'Email hoặc Số điện thoại'}</label>
+              <div className="auth-modal__input"><Mail size={19} aria-hidden="true" /><input id="auth-email" name="email" type={recovery ? 'email' : 'text'} autoComplete="username" required maxLength={255} value={formData.email} onChange={handleChange} placeholder={recovery ? 'Nhập email đã đăng ký' : 'Nhập email hoặc số điện thoại'} /></div>
             </div>
-            <div className="auth-modal__field">
+            {recovery !== 'forgot' && <div className="auth-modal__field">
               <label htmlFor="auth-password">Mật khẩu</label>
-              <div className="auth-modal__input"><LockKeyhole size={19} aria-hidden="true" /><input id="auth-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="new-password" required minLength={6} value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu" /><button type="button" className="auth-modal__password-toggle" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} aria-pressed={showPassword}>{showPassword ? <Eye size={18} /> : <EyeOff size={18} />}</button></div>
-            </div>
-            {isLogin && <a className="auth-modal__forgot" href="#footer-contact" onClick={onClose}>Quên mật khẩu?</a>}
-            <button type="submit" className="auth-modal__submit" disabled={loading}>{loading ? 'Đang xử lý...' : isLogin ? 'Đăng Nhập' : 'Đăng Ký Tài Khoản'}<span aria-hidden="true"><ChevronRight size={20} /></span></button>
+              <div className="auth-modal__input"><LockKeyhole size={19} aria-hidden="true" /><input id="auth-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={isLogin && !recovery ? 'current-password' : 'new-password'} required minLength={isLogin && !recovery ? 1 : 12} maxLength={128} value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu" /><button type="button" className="auth-modal__password-toggle" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} aria-pressed={showPassword}>{showPassword ? <Eye size={18} /> : <EyeOff size={18} />}</button></div>
+            </div>}
+            {recovery === 'reset' && <div className="auth-modal__field">
+              <label htmlFor="auth-confirm-password">Nhập lại mật khẩu mới</label>
+              <div className="auth-modal__input"><LockKeyhole size={19} /><input id="auth-confirm-password" name="password_confirmation" type="password" autoComplete="new-password" required minLength={12} maxLength={128} value={formData.password_confirmation || ''} onChange={handleChange} /></div>
+            </div>}
+            {(!isLogin || recovery === 'reset') && <p>Mật khẩu cần ít nhất 12 ký tự, gồm chữ và số.</p>}
+            {isLogin && !recovery && <button type="button" className="auth-modal__forgot" onClick={() => { setRecovery('forgot'); setError(''); setSuccessMsg(''); }}>Quên mật khẩu?</button>}
+            <button type="submit" className="auth-modal__submit" disabled={loading}>{loading ? 'Đang xử lý...' : recovery === 'forgot' ? 'Gửi hướng dẫn' : recovery === 'reset' ? 'Lưu mật khẩu mới' : isLogin ? 'Đăng Nhập' : 'Đăng Ký Tài Khoản'}<span aria-hidden="true"><ChevronRight size={20} /></span></button>
           </form>
           <div className="auth-modal__divider"><span />hoặc<span /></div>
           <button type="button" className="auth-modal__google" onClick={handleGoogleLogin} disabled={loading}>

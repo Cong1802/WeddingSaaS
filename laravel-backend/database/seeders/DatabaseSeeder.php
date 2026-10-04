@@ -15,28 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Quản Trị Viên (Admin)',
-                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
-                'role' => 'admin',
-                'paid_credits' => 9999,
-                'avatar' => 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'admin@gmail.com'],
-            [
-                'name' => 'Quản Trị Viên (Gmail Admin)',
-                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
-                'role' => 'admin',
-                'paid_credits' => 9999,
-                'avatar' => 'https://api.dicebear.com/7.x/avataaars/svg?seed=AdminGmail'
-            ]
-        );
-
         $presetSongs = [
             ['title' => '50 Năm Về Sau', 'artist' => 'Bùi Anh Tuấn', 'url' => 'https://cdn.jsdelivr.net/gh/saygoodbyethe3-bit/music-hosting/50 Năm Về Sau.mp3'],
             ['title' => 'Hơn Cả Yêu', 'artist' => 'Đức Phúc', 'url' => 'https://cdn.jsdelivr.net/gh/saygoodbyethe3-bit/music-hosting/Hon-Ca-Yeu.mp3'],

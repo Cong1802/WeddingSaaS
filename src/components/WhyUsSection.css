@@ -39,18 +39,12 @@
   .why-us__heading { text-align: center; }
   .why-us__heading h2 { font-size: clamp(40px, 9vw, 58px); margin-bottom: 22px; }
   .why-us__heading > p { font-size: 15px; line-height: 1.75; }
-  .why-us__features { margin-top: 24px; gap: 12px; }
-  .why-us__feature { padding: 18px 16px; border-radius: 20px; }
+  .why-us__features { grid-template-columns: minmax(0, 1fr); margin-top: 24px; gap: 12px; }
+  .why-us__feature { flex-direction: row; padding: 18px 16px; border-radius: 20px; align-items: center; }
   .why-us__feature h3 { font-size: 18px; margin-top: 0; }
   .why-us__feature p { font-size: 14px; }
-  .why-us__icon { flex-basis: auto; width: 54px; height: 54px; }
+  .why-us__icon { flex: 0 0 54px; width: 54px; height: 54px; }
   .why-us__visual { width: min(100%, 560px); justify-self: center; aspect-ratio: 1.5; }
   .why-us__showcase { width: 100%; margin-left: 0; top: 50%; }
   .why-us__divider { margin-top: 26px; }
-}
-@media (max-width: 350px) {
-  .why-us__inner { padding: 0 16px; }
-  .why-us__features { grid-template-columns: minmax(0, 1fr); }
-  .why-us__feature { flex-direction: row; }
-  .why-us__icon { flex: 0 0 48px; height: 48px; }
 }

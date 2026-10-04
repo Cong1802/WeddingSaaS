@@ -17,7 +17,9 @@ class Order extends Model
         'package_name',
         'amount',
         'status',
-        'payment_method'
+        'payment_method',
+        'template_code',
+        'plan_code',
     ];
 
     public function user()

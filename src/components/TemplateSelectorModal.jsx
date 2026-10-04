@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { X, Check, ArrowLeft } from 'lucide-react';
-import { TEMPLATES } from '../templates/templateRegistry';
+import useTemplates from '../templates/useTemplates';
 
 export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplateId, onSelectTemplate }) {
+  const templates = useTemplates();
   const [filterCategory, setFilterCategory] = useState('Tất Cả');
 
   if (!isOpen) return null;
 
-  const categories = ['Tất Cả', 'Sang Trọng', 'Hiện Đại', 'Cổ Điển'];
+  const categories = ['Tất Cả', ...new Set(templates.map(template => template.category))];
 
   const filteredTemplates = filterCategory === 'Tất Cả'
-    ? TEMPLATES
-    : TEMPLATES.filter(t => t.category === filterCategory);
+    ? templates
+    : templates.filter(t => t.category === filterCategory);
 
   return (
     <div 

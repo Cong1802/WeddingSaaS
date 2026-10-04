@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import PlanFeaturesEditor from './PlanFeaturesEditor';
+import FeatureText from './FeatureText';
+import { adminModuleFromLocation } from '../navigation';
 import toast, { Toaster } from 'react-hot-toast';
+import defaultLogo from '../assets/logo.png';
+import AdminMailSettings from './AdminMailSettings';
 import { 
   Sparkles, Users, LayoutGrid, CreditCard, ShoppingBag, HeartHandshake, 
   Settings, LogOut, ArrowLeft, Plus, Search, CheckCircle, Clock, XCircle, 
@@ -7,7 +12,7 @@ import {
   Crown, Phone, Calendar, User, ExternalLink, Save, Link, AlertTriangle, Image, Menu, X
 } from 'lucide-react';
 
-function ImageUploadField({ label, value, onChange, token, showNotification, accept = "image/*" }) {
+function ImageUploadField({ label, value, onChange, token, showNotification, accept = "image/png,image/jpeg,image/webp,image/gif,image/x-icon,.ico" }) {
   const [uploading, setUploading] = useState(false);
 
   const handleFileChange = async (e) => {
@@ -86,14 +91,31 @@ function ImageUploadField({ label, value, onChange, token, showNotification, acc
 }
 
 export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onLogout }) {
-  const getInitialModule = () => {
-    const hash = window.location.hash.replace('#', '');
-    if (['dashboard', 'templates', 'users', 'plans', 'orders', 'cards', 'music', 'settings'].includes(hash)) {
-      return hash;
-    }
-    return 'dashboard';
+  const [activeModule, setActiveModule] = useState(() => adminModuleFromLocation());
+  const navigateModule = (module) => {
+    const path = `/admin/${module}`;
+    if (window.location.pathname !== path) window.history.pushState({}, '', path);
+    setActiveModule(module);
+    setViewingUserDetail(null);
+    setSearchQuery('');
+    setIsMobileSidebarOpen(false);
   };
-  const [activeModule, setActiveModule] = useState(getInitialModule); // 'dashboard' | 'templates' | 'users' | 'plans' | 'orders' | 'cards' | 'settings'
+  useEffect(() => {
+    const syncModule = () => {
+      setActiveModule(adminModuleFromLocation());
+      setViewingUserDetail(null);
+      setSearchQuery('');
+      setIsMobileSidebarOpen(false);
+    };
+    const path = `/admin/${adminModuleFromLocation()}`;
+    if (window.location.pathname !== path || window.location.hash) window.history.replaceState({}, '', path);
+    window.addEventListener('popstate', syncModule);
+    window.addEventListener('hashchange', syncModule);
+    return () => {
+      window.removeEventListener('popstate', syncModule);
+      window.removeEventListener('hashchange', syncModule);
+    };
+  }, []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -101,10 +123,30 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Admin Auth Gate State
-  const [loginEmail, setLoginEmail] = useState('admin@example.com');
-  const [loginPassword, setLoginPassword] = useState('password123');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+  const adminFetch = async (...args) => {
+    const response = await fetch(...args);
+    if (response.status === 401 || response.status === 403) {
+      onLogout?.();
+      throw new Error('Phiên đăng nhập đã hết hạn hoặc quyền quản trị đã thay đổi. Vui lòng đăng nhập lại.');
+    }
+    return response;
+  };
+  const [brandLogo, setBrandLogo] = useState(defaultLogo);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/public/settings', { headers: { Accept: 'application/json' } })
+      .then(response => response.json())
+      .then(data => {
+        if (active && data.success && data.settings?.site_logo) setBrandLogo(data.settings.site_logo);
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
 
   // Data states
   const [stats, setStats] = useState({
@@ -119,6 +161,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
     recent_orders: []
   });
   const [users, setUsers] = useState([]);
+  const [templateDesigns, setTemplateDesigns] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [plans, setPlans] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -142,7 +185,9 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
     telegram_notify_bot_token: '',
     telegram_chat_id: '',
     google_client_id: '',
-    google_client_secret: ''
+    google_client_secret: '',
+    mail_enabled: '0', mail_host: '', mail_port: '587', mail_encryption: 'tls',
+    mail_username: '', mail_password: '', mail_from_address: '', mail_from_name: 'WeddingSaaS'
   });
 
   // Modal states for CRUD operations
@@ -214,42 +259,42 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
 
     try {
       if (activeModule === 'dashboard') {
-        const res = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setStats(data.stats);
         else throw new Error(data.message);
       } else if (activeModule === 'users') {
-        const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setUsers(data.users);
         else throw new Error(data.message);
       } else if (activeModule === 'templates') {
-        const res = await fetch('/api/admin/templates', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/templates', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        if (res.ok && data.success) setTemplates(data.templates);
+        if (res.ok && data.success) { setTemplates(data.templates); setTemplateDesigns(data.designs || []); }
         else throw new Error(data.message);
       } else if (activeModule === 'plans') {
-        const res = await fetch('/api/admin/plans', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/plans', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setPlans(data.plans);
         else throw new Error(data.message);
       } else if (activeModule === 'orders') {
-        const res = await fetch('/api/admin/orders', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/orders', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setOrders(data.orders);
         else throw new Error(data.message);
       } else if (activeModule === 'cards') {
-        const res = await fetch('/api/admin/cards', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/cards', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setCards(data.cards);
         else throw new Error(data.message);
       } else if (activeModule === 'music') {
-        const res = await fetch('/api/admin/music', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/music', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setMusicTracks(data.music);
         else throw new Error(data.message);
       } else if (activeModule === 'settings') {
-        const res = await fetch('/api/admin/settings', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await adminFetch('/api/admin/settings', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok && data.success) setSettings(prev => ({ ...prev, ...data.settings }));
         else throw new Error(data.message);
@@ -259,6 +304,19 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
     } finally {
       setLoading(false);
     }
+  };
+
+  // Admin Direct Login Handler
+  const handleToggleUserRole = async (target) => {
+    if (!window.confirm(`Đổi quyền tài khoản ${target.email}?`)) return;
+    try {
+      const response = await adminFetch(`/api/admin/users/${target.id}/toggle-role`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      await handleViewUserDetail(target.id);
+      fetchModuleData();
+      showNotification(data.message);
+    } catch (error) { showNotification(error.message, true); }
   };
 
   // Admin Direct Login Handler
@@ -364,13 +422,13 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
               width: '64px',
               height: '64px',
               borderRadius: '20px',
-              background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+              background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 12px 28px rgba(168, 85, 247, 0.4)'
+              overflow: 'hidden'
             }}>
-              <Lock size={32} color="#fff" />
+              <img src={brandLogo} alt="Logo website" style={{ width: '100%', height: '100%', objectFit: 'contain' }} onError={() => setBrandLogo(defaultLogo)} />
             </div>
             <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', margin: 0 }}>Trang Quản Trị Admin CMS</h2>
             <p style={{ fontSize: '13px', color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>
@@ -384,29 +442,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
             </div>
           )}
 
-          {/* Quick 1-Click Demo Admin Login */}
-          <button
-            onClick={(e) => handleAdminLogin(e, 'admin@example.com', 'password123')}
-            disabled={authLoading}
-            style={{
-              padding: '14px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '800',
-              border: 'none',
-              cursor: 'pointer',
-              boxShadow: '0 8px 20px rgba(168, 85, 247, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px'
-            }}
-          >
-            <Key size={18} />
-            <span>{authLoading ? 'Đang xác thực...' : '🔑 Đăng Nhập Nhanh Admin Demo'}</span>
-          </button>
+
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#475569', fontSize: '12px' }}>
             <div style={{ flex: 1, height: '1px', backgroundColor: '#1e293b' }}></div>
@@ -462,18 +498,19 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleSaveTemplate = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/admin/templates', {
+      const res = await adminFetch('/api/admin/templates', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(templateForm)
+        body: JSON.stringify((( { code, price, ...fields }) => fields)(templateForm))
       });
       const data = await res.json();
       if (res.ok && data.success) {
         showNotification(data.message);
         setEditingTemplate(null);
+        window.dispatchEvent(new Event('templates-updated'));
         fetchModuleData();
       } else {
         showNotification(data.message, true);
@@ -485,7 +522,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
 
   const handleToggleTemplate = async (id) => {
     try {
-      const res = await fetch(`/api/admin/templates/${id}/toggle`, {
+      const res = await adminFetch(`/api/admin/templates/${id}/toggle`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -502,7 +539,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleDeleteTemplate = async (id) => {
     if (!confirm('Bạn có chắc muốn xóa mẫu thiệp này?')) return;
     try {
-      const res = await fetch(`/api/admin/templates/${id}`, {
+      const res = await adminFetch(`/api/admin/templates/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -530,7 +567,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
         features: featuresArr
       };
 
-      const res = await fetch('/api/admin/plans', {
+      const res = await adminFetch('/api/admin/plans', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -553,7 +590,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
 
   const handleTogglePlan = async (id) => {
     try {
-      const res = await fetch(`/api/admin/plans/${id}/toggle`, {
+      const res = await adminFetch(`/api/admin/plans/${id}/toggle`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -570,7 +607,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleDeletePlan = async (id) => {
     if (!confirm('Bạn có chắc chắn muốn xóa gói cước này?')) return;
     try {
-      const res = await fetch(`/api/admin/plans/${id}`, {
+      const res = await adminFetch(`/api/admin/plans/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -588,7 +625,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleSaveUser = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/admin/users/${userForm.id}/update`, {
+      const res = await adminFetch(`/api/admin/users/${userForm.id}/update`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -615,7 +652,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleViewUserDetail = async (userId) => {
     setLoadingUserDetail(true);
     try {
-      const res = await fetch(`/api/admin/users/${userId}`, {
+      const res = await adminFetch(`/api/admin/users/${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -635,7 +672,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleDeleteUser = async (userId) => {
     if (!confirm('Hành động này sẽ xóa vĩnh viễn người dùng và toàn bộ thiệp cưới của họ! Tiếp tục?')) return;
     try {
-      const res = await fetch(`/api/admin/users/${userId}`, {
+      const res = await adminFetch(`/api/admin/users/${userId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -655,7 +692,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleApproveOrder = async (orderId, orderCode) => {
     if (!confirm(`Phê duyệt đơn hàng #${orderCode}?`)) return;
     try {
-      const res = await fetch(`/api/admin/orders/${orderId}/approve`, {
+      const res = await adminFetch(`/api/admin/orders/${orderId}/approve`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -672,7 +709,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleCancelOrder = async (orderId, orderCode) => {
     if (!confirm(`Bạn có chắc muốn hủy đơn hàng #${orderCode}?`)) return;
     try {
-      const res = await fetch(`/api/admin/orders/${orderId}/cancel`, {
+      const res = await adminFetch(`/api/admin/orders/${orderId}/cancel`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -690,7 +727,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleDeleteCard = async (cardId) => {
     if (!confirm('Bạn có chắc muốn xóa thiệp cưới này?')) return;
     try {
-      const res = await fetch(`/api/admin/cards/${cardId}`, {
+      const res = await adminFetch(`/api/admin/cards/${cardId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -708,7 +745,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleSaveSettings = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/admin/settings', {
+      const res = await adminFetch('/api/admin/settings', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -718,7 +755,11 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       });
       const data = await res.json();
       if (res.ok && data.success) {
+        setBrandLogo(settings.site_logo || defaultLogo);
+        setSettings(previous => ({ ...previous, mail_password: '', mail_password_configured: !!previous.mail_password || previous.mail_password_configured }));
         showNotification(data.message);
+      } else {
+        showNotification(Object.values(data.errors || {}).flat()[0] || data.message || 'Không lưu được cấu hình.', true);
       }
     } catch (err) {
       showNotification(err.message, true);
@@ -729,7 +770,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleSaveMusicTrack = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/admin/music', {
+      const res = await adminFetch('/api/admin/music', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -752,7 +793,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
 
   const handleToggleMusicTrack = async (id) => {
     try {
-      const res = await fetch(`/api/admin/music/${id}/toggle`, {
+      const res = await adminFetch(`/api/admin/music/${id}/toggle`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -769,7 +810,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
   const handleDeleteMusicTrack = async (id) => {
     if (!confirm('Bạn có chắc muốn xóa bài hát này khỏi kho nhạc nền?')) return;
     try {
-      const res = await fetch(`/api/admin/music/${id}`, {
+      const res = await adminFetch(`/api/admin/music/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -797,7 +838,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/admin/music/upload', {
+      const res = await adminFetch('/api/admin/music/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -856,13 +897,13 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
               width: '56px',
               height: '56px',
               borderRadius: '16px',
-              background: 'linear-gradient(135deg, #f43f5e 0%, #a855f7 100%)',
+              background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 10px 25px rgba(244, 63, 94, 0.4)'
+              overflow: 'hidden'
             }}>
-              <Lock size={28} color="#fff" />
+              <img src={brandLogo} alt="Logo website" style={{ width: '100%', height: '100%', objectFit: 'contain' }} onError={() => setBrandLogo(defaultLogo)} />
             </div>
             <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', margin: 0 }}>Đăng Nhập Quản Trị Admin</h2>
             <p style={{ fontSize: '13px', color: '#94a3b8', margin: 0 }}>Vui lòng nhập Email & Mật khẩu Admin để tiếp tục</p>
@@ -1109,10 +1150,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                 <button
                   key={item.id}
                   onClick={() => { 
-                    setActiveModule(item.id); 
-                    setViewingUserDetail(null); 
-                    setSearchQuery('');
-                    setIsMobileSidebarOpen(false);
+                    navigateModule(item.id);
                   }}
                   style={{
                     display: 'flex',
@@ -1385,7 +1423,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                     <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', margin: 0 }}>Kho Mẫu Thiệp Cưới ({templates.length})</h3>
                     <button
                       onClick={() => {
-                        setTemplateForm({ id: null, code: `template_${Date.now().toString().slice(-2)}`, name: '', category: 'Sang Trọng', tag: 'HOT', thumbnail: '', file_url: '/template.html', price: 99000, is_active: true, sort_order: templates.length + 1 });
+                        setTemplateForm({ id: null, code: '', name: '', category: 'Sang Trọng', tag: 'HOT', thumbnail: '', file_url: '/template.html', price: 99000, is_active: true, sort_order: templates.length + 1 });
                         setEditingTemplate(true);
                       }}
                       style={{ padding: '10px 18px', borderRadius: '12px', background: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)', color: '#fff', fontSize: '13px', fontWeight: '700', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
@@ -1405,9 +1443,8 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                         </div>
                         <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                           <div>
-                            <span style={{ fontSize: '11px', color: '#a855f7', fontWeight: '700' }}>{t.code} • {t.category}</span>
+                            <span style={{ fontSize: '11px', color: '#a855f7', fontWeight: '700' }}>{t.category}</span>
                             <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#fff', margin: '4px 0' }}>{t.name}</h4>
-                            <div style={{ fontSize: '13px', fontWeight: '800', color: '#10b981' }}>{t.price ? `${t.price.toLocaleString('vi-VN')}đ` : 'Miễn phí'}</div>
                           </div>
                           <div style={{ display: 'flex', gap: '8px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
                             <button onClick={() => handleToggleTemplate(t.id)} style={{ flex: 1, padding: '8px', borderRadius: '10px', backgroundColor: '#1e293b', border: 'none', color: '#fff', fontSize: '12px', cursor: 'pointer' }}>{t.is_active ? 'Ẩn mẫu' : 'Bật mẫu'}</button>
@@ -1453,6 +1490,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                         >
                           <Edit3 size={14} /> Sửa Thông Tin
                         </button>
+                        {viewingUserDetail.id !== user.id && <button type="button" onClick={() => handleToggleUserRole(viewingUserDetail)} style={{ padding: '10px 16px', borderRadius: 8, border: '1px solid #334155', background: '#0f172a', color: '#cbd5e1', cursor: 'pointer' }}>{viewingUserDetail.role === 'admin' ? 'Chuyển thành người dùng' : 'Cấp quyền admin'}</button>}
                       </div>
                     </div>
 
@@ -1691,7 +1729,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                     <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', margin: 0 }}>Gói Dịch Vụ & Bảng Giá ({plans.length})</h3>
                     <button
                       onClick={() => {
-                        setPlanForm({ id: null, code: `plan_${Date.now().toString().slice(-2)}`, name: '', price: 99000, period: '1 thiệp', description: '', featuresInput: '', is_popular: false, is_active: true });
+                        setPlanForm({ id: null, code: `plan_${Date.now().toString(36)}`, name: '', price: 99000, period: '1 thiệp', description: '', featuresInput: '', is_popular: false, is_active: true });
                         setEditingPlan(true);
                       }}
                       style={{ padding: '10px 18px', borderRadius: '12px', background: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)', color: '#fff', fontSize: '13px', fontWeight: '700', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
@@ -1708,24 +1746,35 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                         )}
                         <div>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <h4 style={{ fontSize: '18px', fontWeight: '700', color: '#fff', margin: 0 }}>{p.name}</h4>
+                            <div>
+                              <h4 style={{ fontSize: '18px', fontWeight: '700', color: '#fff', margin: 0 }}>{p.name}</h4>
+                              {p.subtitle && <span style={{ fontSize: '12px', color: '#a855f7', fontWeight: '600' }}>{p.subtitle}</span>}
+                            </div>
                             <span style={{ fontSize: '11px', color: p.is_active ? '#34d399' : '#f87171' }}>{p.is_active ? 'ACTIVE' : 'OFFLINE'}</span>
                           </div>
-                          <div style={{ fontSize: '32px', fontWeight: '800', color: '#10b981', margin: '12px 0' }}>{p.price ? `${p.price.toLocaleString('vi-VN')}đ` : '0đ'}</div>
-                          <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '20px' }}>{p.description}</p>
+                          <div style={{ fontSize: '32px', fontWeight: '800', color: '#10b981', margin: '12px 0' }}>
+                            {p.price ? `${Number(p.price).toLocaleString('vi-VN')}đ` : '0đ'}
+                            <span style={{ fontSize: '13px', color: '#94a3b8', fontWeight: '500', marginLeft: '4px' }}>{p.period || (p.price > 0 ? '/thiệp' : '')}</span>
+                          </div>
+                          <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '16px' }}>{p.description}</p>
                           
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#cbd5e1' }}>
-                            {(p.features || []).map((f, idx) => (
-                              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <Check size={14} color="#10b981" /> <span>{f}</span>
-                              </div>
-                            ))}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                            {(p.features || []).map((f, idx) => {
+                              const isExcluded = typeof f === 'string' && (f.startsWith('- ') || f.startsWith('x ') || f.startsWith('X '));
+                              const label = typeof f === 'string' && isExcluded ? f.slice(2).trim() : (typeof f === 'string' && f.startsWith('+ ') ? f.slice(2).trim() : f);
+                              return (
+                                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: isExcluded ? '#64748b' : '#cbd5e1' }}>
+                                  {isExcluded ? <X size={14} color="#f87171" /> : <Check size={14} color="#10b981" />}
+                                  <span style={{ textDecoration: isExcluded ? 'line-through' : 'none' }}><FeatureText text={label} /></span>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
 
                         <div style={{ display: 'flex', gap: '8px', marginTop: '28px' }}>
                           <button onClick={() => handleTogglePlan(p.id)} style={{ flex: 1, padding: '10px', borderRadius: '12px', backgroundColor: '#1e293b', border: 'none', color: '#fff', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>{p.is_active ? 'Tắt' : 'Bật'}</button>
-                          <button onClick={() => { setPlanForm({ ...p, featuresInput: (p.features || []).join('\n') }); setEditingPlan(true); }} style={{ padding: '10px 14px', borderRadius: '12px', backgroundColor: 'rgba(168,85,247,0.2)', border: 'none', color: '#c084fc', cursor: 'pointer' }}><Edit3 size={16} /></button>
+                          <button onClick={() => { setPlanForm({ ...p, subtitle: p.subtitle || '', period: p.period || '/thiệp', action: p.action || 'Chọn Gói Ngay', featuresInput: (p.features || []).join('\n') }); setEditingPlan(true); }} style={{ padding: '10px 14px', borderRadius: '12px', backgroundColor: 'rgba(168,85,247,0.2)', border: 'none', color: '#c084fc', cursor: 'pointer' }}><Edit3 size={16} /></button>
                           <button onClick={() => handleDeletePlan(p.id)} style={{ padding: '10px 14px', borderRadius: '12px', backgroundColor: 'rgba(239,68,68,0.2)', border: 'none', color: '#f87171', cursor: 'pointer' }}><Trash2 size={16} /></button>
                         </div>
                       </div>
@@ -2175,6 +2224,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                       </div>
                     </div>
 
+                    <AdminMailSettings settings={settings} setSettings={setSettings} token={token} />
                     {/* SECTION 5: GOOGLE OAUTH CONFIG */}
                     <div style={{ backgroundColor: '#0f172a', padding: '28px', borderRadius: '8px', border: '1px solid #1e293b', display: 'flex', flexDirection: 'column', gap: '18px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #1e293b', paddingBottom: '14px' }}>
@@ -2239,13 +2289,15 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       {/* --- MODAL EDIT TEMPLATE --- */}
       {editingTemplate && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 100, backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '520px', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
+          <div style={{ width: '100%', maxWidth: '520px', maxHeight: 'calc(100dvh - 40px)', overflowY: 'auto', boxSizing: 'border-box', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0' }}>{templateForm.id ? 'Sửa Mẫu Thiệp' : 'Thêm Mẫu Thiệp Mới'}</h3>
             <form onSubmit={handleSaveTemplate} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#94a3b8' }}>Mã Mẫu (Code)</label>
-                  <input type="text" value={templateForm.code} onChange={(e) => setTemplateForm({ ...templateForm, code: e.target.value })} required style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
+                  <label style={{ fontSize: '12px', color: '#94a3b8' }}>Thiết kế thiệp</label>
+                  <select required value={templateForm.file_url || '/template.html'} onChange={e => setTemplateForm({ ...templateForm, file_url: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }}>
+                    {templateDesigns.map(design => <option key={design.url} value={design.url}>{design.name}</option>)}
+                  </select>
                 </div>
                 <div>
                   <label style={{ fontSize: '12px', color: '#94a3b8' }}>Tag (HOT/NEW/VIP)</label>
@@ -2258,8 +2310,10 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                 <input type="text" value={templateForm.name} onChange={(e) => setTemplateForm({ ...templateForm, name: e.target.value })} required style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
               </div>
 
+              <a href={templateForm.file_url || '/template.html'} target="_blank" rel="noopener noreferrer" style={{ color: '#c084fc', fontSize: '13px' }}>Xem trước thiết kế thiệp ↗</a>
+              <p style={{ color: '#94a3b8', fontSize: '12px', margin: 0 }}>Ảnh xem trước dùng để giới thiệu mẫu. Bố cục thiệp được lấy từ thiết kế bạn chọn.</p>
               <ImageUploadField
-                label="Ảnh Thumbnail Mẫu Thiệp (thumbnail)"
+                label="Ảnh xem trước mẫu thiệp"
                 placeholder="Dán link ảnh hoặc Upload ảnh thumbnail mẫu thiệp"
                 value={templateForm.thumbnail || ''}
                 onChange={(val) => setTemplateForm(prev => ({ ...prev, thumbnail: val }))}
@@ -2268,10 +2322,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
               />
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '12px', color: '#94a3b8' }}>Giá (VNĐ)</label>
-                  <input type="number" value={templateForm.price} onChange={(e) => setTemplateForm({ ...templateForm, price: parseFloat(e.target.value) || 0 })} style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
-                </div>
+                <div style={{ color: '#94a3b8', fontSize: '13px' }}>Giá được quản lý theo gói cước. Mã mẫu được tạo tự động.</div>
                 <div>
                   <label style={{ fontSize: '12px', color: '#94a3b8' }}>Danh Mục</label>
                   <input type="text" value={templateForm.category} onChange={(e) => setTemplateForm({ ...templateForm, category: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
@@ -2290,7 +2341,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       {/* --- MODAL EDIT PLAN --- */}
       {editingPlan && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 100, backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '520px', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
+          <div style={{ width: '100%', maxWidth: '520px', maxHeight: 'calc(100dvh - 40px)', overflowY: 'auto', boxSizing: 'border-box', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0' }}>{planForm.id ? 'Sửa Gói Cước' : 'Thêm Gói Cước Mới'}</h3>
             <form onSubmit={handleSavePlan} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -2309,9 +2360,13 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                 <input type="text" value={planForm.name} onChange={(e) => setPlanForm({ ...planForm, name: e.target.value })} required style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
               </div>
 
+              <div style={{ display: 'grid', gap: 10 }}>
+                {[['subtitle', 'Dòng giới thiệu'], ['period', 'Đơn vị / chu kỳ'], ['description', 'Mô tả'], ['action', 'Nhãn nút chọn gói']].map(([field, label]) => <label key={field} style={{ fontSize: 12, color: '#94a3b8' }}>{label}<input value={planForm[field] || ''} onChange={event => setPlanForm(previous => ({ ...previous, [field]: event.target.value }))} style={{ width: '100%', padding: 10, borderRadius: 10, background: '#090d16', color: '#fff', border: '1px solid #1e293b', boxSizing: 'border-box' }} /></label>)}
+              </div>
+
               <div>
                 <label style={{ fontSize: '12px', color: '#94a3b8' }}>Danh sách tính năng (Mỗi dòng 1 tính năng)</label>
-                <textarea rows={4} value={planForm.featuresInput} onChange={(e) => setPlanForm({ ...planForm, featuresInput: e.target.value })} placeholder="Link tĩnh riêng biệt 12 tháng&#10;Tự động mừng cưới VietQR" style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
+                <PlanFeaturesEditor value={planForm.featuresInput} onChange={value => setPlanForm(previous => ({ ...previous, featuresInput: value }))} />
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -2331,7 +2386,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       {/* --- MODAL EDIT USER --- */}
       {editingUser && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 120, backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '480px', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
+          <div style={{ width: '100%', maxWidth: '480px', maxHeight: 'calc(100dvh - 40px)', overflowY: 'auto', boxSizing: 'border-box', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0' }}>Chỉnh Sửa Thông Tin Khách Hàng</h3>
             <form onSubmit={handleSaveUser} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -2350,6 +2405,8 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                 <input type="email" value={userForm.email || ''} onChange={(e) => setUserForm({ ...userForm, email: e.target.value })} required style={{ width: '100%', padding: '10px', borderRadius: '8px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff', fontSize: '13px', boxSizing: 'border-box' }} />
               </div>
 
+              <label style={{ fontSize: 12, color: '#94a3b8' }}>Số lượt tạo thiệp đã mua<input type="number" min={0} step={1} required value={userForm.paid_credits ?? 0} onChange={event => setUserForm(previous => ({ ...previous, paid_credits: Number(event.target.value) }))} style={{ width: '100%', padding: 10, borderRadius: 8, background: '#090d16', border: '1px solid #1e293b', color: '#fff', boxSizing: 'border-box' }} /></label>
+
               <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
                 <button type="button" onClick={() => setEditingUser(null)} style={{ flex: 1, padding: '12px', borderRadius: '8px', backgroundColor: '#1e293b', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: '600' }}>Hủy</button>
                 <button type="submit" style={{ flex: 1, padding: '12px', borderRadius: '8px', backgroundColor: '#a855f7', color: '#fff', border: 'none', fontWeight: '800', cursor: 'pointer' }}>Lưu Thay Đổi</button>
@@ -2362,7 +2419,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       {/* --- MODAL EDIT / UPLOAD MUSIC --- */}
       {editingMusic && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 100, backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '520px', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
+          <div style={{ width: '100%', maxWidth: '520px', maxHeight: 'calc(100dvh - 40px)', overflowY: 'auto', boxSizing: 'border-box', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0' }}>
               {musicForm.id ? 'Chỉnh Sửa Bài Hát' : 'Thêm Bài Hát Mới / Upload MP3'}
             </h3>

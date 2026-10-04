@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use App\Services\GoogleIdentity;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -17,13 +18,13 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
+            'password' => ['required', 'string', 'max:128', Password::min(12)->letters()->numbers()],
         ]);
 
         $rawEmail = trim($validated['email']);
         // If user typed a phone number or account without @, convert to standard email format
         if (!filter_var($rawEmail, FILTER_VALIDATE_EMAIL)) {
-            $rawEmail = preg_replace('/[^0-9a-zA-Z]/', '', $rawEmail) . '@weddingcard.com';
+            $rawEmail = $this->phoneEmail($rawEmail);
         }
 
         if (User::where('email', strtolower($rawEmail))->exists()) {
@@ -33,25 +34,22 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Nếu là người dùng đầu tiên đăng ký, cấp quyền Admin
-        $isFirstUser = User::count() === 0;
-
         $user = User::create([
             'name' => $validated['name'],
             'email' => strtolower($rawEmail),
             'password' => Hash::make($validated['password']),
-            'role' => $isFirstUser ? 'admin' : 'user',
+            'role' => 'user',
             'avatar' => 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($validated['name']),
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token', ['*'], now()->addMinutes(720))->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'Đăng ký tài khoản thành công!',
             'user' => $user,
             'token' => $token,
-        ], 201);
+        ], 201)->header('Cache-Control', 'no-store');
     }
 
     /**
@@ -60,91 +58,66 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string',
+            'email' => 'required|string|max:255',
+            'password' => 'required|string|max:128',
         ]);
 
         $rawInput = trim($validated['email']);
         $formattedEmail = strtolower($rawInput);
 
         if (!filter_var($formattedEmail, FILTER_VALIDATE_EMAIL)) {
-            $formattedEmail = preg_replace('/[^0-9a-zA-Z]/', '', $rawInput) . '@weddingcard.com';
+            $formattedEmail = $this->phoneEmail($rawInput);
         }
 
         $user = User::where('email', strtolower($rawInput))
             ->orWhere('email', $formattedEmail)
             ->first();
 
-        // Auto-provision admin user if logging in with admin credentials
-        if (!$user && (strtolower($rawInput) === 'admin@gmail.com' || strtolower($rawInput) === 'admin@example.com' || str_starts_with(strtolower($rawInput), 'admin')) && $validated['password'] === 'password123') {
-            $user = User::create([
-                'name' => 'Quản Trị Viên (Admin)',
-                'email' => strtolower($rawInput),
-                'password' => Hash::make('password123'),
-                'role' => 'admin',
-                'paid_credits' => 9999,
-                'avatar' => 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
-            ]);
-        }
-
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
+        $matches = Hash::check($validated['password'], $user?->password ?: Hash::make(\Illuminate\Support\Str::random(32)));
+        if (!$user || !$user->password || !$matches || ($user->role === 'admin' && $validated['password'] === 'password123')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Tài khoản (Email/SĐT) hoặc mật khẩu không chính xác.'
             ], 401);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token', ['*'], now()->addMinutes(720))->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'Đăng nhập thành công!',
             'user' => $user,
             'token' => $token,
-        ], 200);
+        ], 200)->header('Cache-Control', 'no-store');
     }
 
     /**
      * 3. Đăng nhập / Đăng ký qua Google OAuth
      */
-    public function googleLogin(Request $request)
+    public function googleLogin(Request $request, GoogleIdentity $google)
     {
-        $validated = $request->validate([
-            'google_id' => 'required|string',
-            'email' => 'required|string|email',
-            'name' => 'required|string',
-            'avatar' => 'nullable|string',
-        ]);
-
-        $user = User::where('google_id', $validated['google_id'])
-            ->orWhere('email', strtolower($validated['email']))
-            ->first();
-
+        $input = $request->validate(['credential' => 'required|string|max:10000']);
+        $identity = $google->verify($input['credential']);
+        $user = User::where('google_id', $identity['sub'])->first();
         if (!$user) {
-            $isFirstUser = User::count() === 0;
+            if (User::where('email', $identity['email'])->exists()) {
+                return response()->json(['success' => false, 'message' => 'Email đã có tài khoản. Vui lòng đăng nhập bằng mật khẩu.'], 409);
+            }
             $user = User::create([
-                'name' => $validated['name'],
-                'email' => strtolower($validated['email']),
-                'google_id' => $validated['google_id'],
-                'avatar' => $validated['avatar'] ?? ('https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($validated['name'])),
-                'role' => $isFirstUser ? 'admin' : 'user',
-            ]);
-        } else {
-            // Update Google ID & Avatar if missing
-            $user->update([
-                'google_id' => $validated['google_id'],
-                'avatar' => $validated['avatar'] ?? $user->avatar,
+                'name' => $identity['name'] ?? $identity['email'],
+                'email' => $identity['email'], 'google_id' => $identity['sub'], 'role' => 'user',
             ]);
         }
+        $token = $user->createToken('auth_token', ['*'], now()->addMinutes(720))->plainTextToken;
+        return response()->json(['success' => true, 'user' => $user, 'token' => $token])->header('Cache-Control', 'no-store');
+    }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Đăng nhập Google thành công!',
-            'user' => $user,
-            'token' => $token,
-        ], 200);
+    private function phoneEmail(string $input): string
+    {
+        if (!preg_match('/^\+?[0-9][0-9 .()-]{7,19}$/', $input)) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['email' => 'Email hoặc số điện thoại không hợp lệ.']);
+        }
+        return preg_replace('/[^0-9]/', '', $input).'@weddingcard.com';
     }
 
     /**
@@ -152,12 +125,12 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()->currentAccessToken()?->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Đăng xuất thành công!'
-        ], 200);
+        ], 200)->header('Cache-Control', 'no-store');
     }
 
     /**
@@ -168,6 +141,23 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'user' => $request->user(),
-        ], 200);
+        ], 200)->header('Cache-Control', 'no-store');
     }
+    public function changePassword(Request $request)
+    {
+        $data = $request->validate([
+            'current_password' => 'required|string|max:128',
+            'password' => ['required', 'confirmed', 'string', 'max:128', Password::min(12)->letters()->numbers()],
+        ]);
+        $user = $request->user();
+        if (!$user->password || !Hash::check($data['current_password'], $user->password)) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['current_password' => 'Current password is incorrect.']);
+        }
+        \Illuminate\Support\Facades\DB::transaction(function () use ($user, $data) {
+            $user->update(['password' => Hash::make($data['password'])]);
+            $user->tokens()->delete();
+        });
+        return response()->json(['success' => true, 'message' => 'Password changed. Please sign in again.']);
+    }
+
 }

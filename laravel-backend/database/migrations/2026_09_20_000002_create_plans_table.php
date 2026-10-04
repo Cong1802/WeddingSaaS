@@ -13,9 +13,11 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
+            $table->string('subtitle')->nullable();
             $table->decimal('price', 10, 2)->default(0);
-            $table->string('period')->default('12 tháng');
+            $table->string('period')->default('/thiệp');
             $table->text('description')->nullable();
+            $table->string('action')->nullable();
             $table->json('features')->nullable();
             $table->boolean('is_popular')->default(false);
             $table->boolean('is_active')->default(true);
@@ -25,15 +27,43 @@ return new class extends Migration
         // Seed initial plans
         DB::table('plans')->insert([
             [
-                'code' => 'free',
+                'code' => 'trial',
                 'name' => 'Gói Thử Nghiệm',
+                'subtitle' => 'Trải nghiệm miễn phí',
                 'price' => 0,
-                'period' => 'Dùng thử',
-                'description' => 'Trải nghiệm tự do tất cả tính năng trình chỉnh sửa thiệp',
+                'period' => '',
+                'description' => 'Dành cho bạn mới bắt đầu',
+                'action' => 'Tạo Thiệp Miễn Phí',
                 'features' => json_encode([
-                    'Tự do xem thử & chỉnh sửa',
-                    'Xuất file HTML tải về',
-                    'Không có đường dẫn tĩnh riêng'
+                    'Xem & trải nghiệm mẫu thiệp',
+                    'Tự do tạo thiệp với mẫu cơ bản',
+                    'Xuất file HTML để chia sẻ',
+                    'Có logo WeddingSaaS',
+                    '- Tùy chỉnh tên miền riêng',
+                    '- Không hỗ trợ quản lý khách mời'
+                ]),
+                'is_popular' => false,
+                'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'basic',
+                'name' => 'Gói Cơ Bản',
+                'subtitle' => 'Phù hợp cho cá nhân',
+                'price' => 49000,
+                'period' => '/thiệp',
+                'description' => 'Giải pháp tiết kiệm, đầy đủ tính năng cơ bản',
+                'action' => 'Chọn Gói Cơ Bản',
+                'features' => json_encode([
+                    'Sử dụng toàn bộ mẫu thiệp đẹp',
+                    'Tùy chỉnh nội dung, hình ảnh, màu sắc',
+                    'Xuất link chia sẻ không logo',
+                    'Tùy chỉnh tên miền phụ (vd: tenban.weddingsaas.vn)',
+                    'Nhạc nền lãng mạn',
+                    'Thông báo khi có khách mời RSVP',
+                    '- Quản lý khách mời nâng cao',
+                    '- Không hỗ trợ mã QR tùy chỉnh'
                 ]),
                 'is_popular' => false,
                 'is_active' => true,
@@ -43,14 +73,21 @@ return new class extends Migration
             [
                 'code' => 'pro',
                 'name' => 'Gói Pro Nổi Bật',
+                'subtitle' => 'Lựa chọn hoàn hảo cho đám cưới',
                 'price' => 99000,
-                'period' => '1 thiệp',
-                'description' => 'Đầy đủ tính năng cao cấp & đường dẫn riêng chuẩn SaaS',
+                'period' => '/thiệp',
+                'description' => 'Đầy đủ tính năng cao cấp, dễ dàng quản lý',
+                'action' => 'Chọn Gói Pro Ngay',
                 'features' => json_encode([
-                    'Link tĩnh riêng biệt 12 tháng',
-                    'Tự động mừng cưới VietQR',
-                    'Thông báo RSVP về Telegram',
-                    'Nhạc nền lãng mạn tự chọn'
+                    'Sử dụng toàn bộ mẫu thiệp cao cấp',
+                    'Tùy chỉnh giao diện chuyên nghiệp',
+                    'Tên miền riêng (vd: tenban.com)',
+                    'Nhạc nền theo sở thích',
+                    'Quản lý khách mời thông minh',
+                    'Gửi thông báo tự động (Email/SMS/Telegram)',
+                    'Mã QR mừng cưới & chỉ đường',
+                    'Thống kê lượt xem, xác nhận tham dự',
+                    'Hỗ trợ 24/7 qua chat'
                 ]),
                 'is_popular' => true,
                 'is_active' => true,
@@ -60,13 +97,21 @@ return new class extends Migration
             [
                 'code' => 'vip',
                 'name' => 'Gói VIP Đặc Biệt',
+                'subtitle' => 'Dành cho tiệc cưới lớn & cao cấp',
                 'price' => 199000,
-                'period' => '1 thiệp',
-                'description' => 'Dành cho cặp đôi muốn hỗ trợ thiết kế riêng trọn gói',
+                'period' => '/thiệp',
+                'description' => 'Trải nghiệm trọn vẹn, chuyên nghiệp và khác biệt',
+                'action' => 'Đăng Ký Gói VIP',
                 'features' => json_encode([
-                    'Bao gồm toàn bộ tính năng Gói Pro',
-                    'Hỗ trợ nhập liệu thông tin 24/7',
-                    'Tặng kèm Mã QR in lên thiệp giấy'
+                    'Tất cả tính năng của Gói Pro',
+                    'Thiết kế giao diện theo yêu cầu',
+                    'Tên miền riêng .com/.vn',
+                    'Mời khách qua Email/SMS/Telegram',
+                    'Tích hợp bản đồ, chỉ đường, lịch trình',
+                    'Mã QR mừng cưới tùy chỉnh',
+                    'Thống kê chi tiết & xuất danh sách khách mời',
+                    'Hỗ trợ kỹ thuật 1:1 trong suốt thời gian sử dụng',
+                    'Tư vấn thiết kế miễn phí'
                 ]),
                 'is_popular' => false,
                 'is_active' => true,

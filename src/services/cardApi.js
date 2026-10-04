@@ -30,43 +30,14 @@ export const saveCardToApi = async (rawSlug, templateId, cardData, token = null)
     console.warn('LocalStorage save error:', err);
   }
 
-  // 2. Attempt to save to Laravel REST API backend
-  try {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const response = await fetch('/api/cards/save', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        success: true,
-        slug: cleanSlug,
-        card_url: data.card_url || `${window.location.origin}/v/${cleanSlug}`,
-        isBackendSaved: true
-      };
-    }
-  } catch (err) {
-    console.log('Laravel Backend API not connected yet, using local URL:', err);
+  const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const response = await fetch('/api/cards/save', { method: 'POST', headers, body: JSON.stringify(payload) });
+  const data = await response.json();
+  if (!response.ok || !data.success) {
+    throw new Error(Object.values(data.errors || {}).flat()[0] || data.message || 'Could not save the card. Please sign in and try again.');
   }
-
-  const baseUrl = window.location.origin;
-  return {
-    success: true,
-    slug: cleanSlug,
-    card_url: `${baseUrl}/v/${cleanSlug}`,
-    isBackendSaved: false
-  };
+  return { success: true, slug: data.slug || cleanSlug, card_url: data.card_url, isBackendSaved: true };
 };
 
 export const getCardBySlug = async (slug) => {
@@ -75,32 +46,24 @@ export const getCardBySlug = async (slug) => {
   // 1. Try fetching from Laravel REST API backend
   try {
     const response = await fetch(`/api/cards/view/${slug}`);
+    if (response.status === 410) {
+      const data = await response.json();
+      return { locked: true, message: data.message };
+    }
+    if (response.status === 404) return null;
     if (response.ok) {
       const data = await response.json();
       if (data.success && data.card_data) {
         return {
           template_id: data.template_id,
+          template: data.template,
           card_data: data.card_data,
           slug: slug
         };
       }
     }
   } catch (err) {
-    console.log('Backend API fetch fallback to LocalStorage:', err);
-  }
-
-  // 2. Fallback to LocalStorage DB
-  try {
-    const existingDb = JSON.parse(localStorage.getItem('wedding_cards_db') || '{}');
-    if (existingDb[slug]) {
-      return {
-        template_id: existingDb[slug].template_id,
-        card_data: existingDb[slug].card_data,
-        slug: slug
-      };
-    }
-  } catch (err) {
-    console.warn('LocalStorage fetch error:', err);
+    console.warn('Unable to verify public card access:', err);
   }
 
   return null;

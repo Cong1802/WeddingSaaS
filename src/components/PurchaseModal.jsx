@@ -1,12 +1,56 @@
-import React, { useState } from 'react';
-import { Sparkles, Check, CreditCard, Copy, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 
-export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSuccess }) {
+export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSuccess, onSuccess, templateCode, templateName, initialPackage = 'pro' }) {
   const [selectedPackage, setSelectedPackage] = useState('pro'); // 'pro' | 'vip'
   const [loading, setLoading] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [copiedContent, setCopiedContent] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [catalogError, setCatalogError] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('pending');
+  useEffect(() => {
+    if (!isOpen) return;
+    let active = true;
+    setOrderData(null); setConfirmed(false); setCatalogError(''); setPaymentStatus('pending');
+    fetch('/api/public/plans', { headers: { Accept: 'application/json' } })
+      .then(response => { if (!response.ok) throw new Error('Không tải được gói cước.'); return response.json(); })
+      .then(data => {
+        if (!active) return;
+        const available = (data.plans || []).filter(plan => Number(plan.price) >= 10000);
+        setPlans(available);
+        setSelectedPackage(available.find(plan => plan.code === initialPackage)?.code || available[0]?.code || '');
+      })
+      .catch(error => { if (active) { setPlans([]); setCatalogError(error.message); } });
+    return () => { active = false; };
+  }, [isOpen, initialPackage, templateCode]);
+
+  useEffect(() => {
+    if (!isOpen || !orderData?.order?.id || paymentStatus !== 'pending') return;
+    let active = true;
+    let pending = false;
+    const check = async () => {
+      if (pending) return;
+      pending = true;
+      try {
+        const response = await fetch('/api/orders/my-orders', { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } });
+        if (!response.ok) return;
+        const data = await response.json();
+        const order = data.orders?.find(item => item.id === orderData.order.id);
+        if (!active || !order) return;
+        if (order.status === 'cancelled') setPaymentStatus('cancelled');
+        if (order.status === 'completed') {
+          setPaymentStatus('completed');
+          (onPurchaseSuccess || onSuccess)?.();
+        }
+      } catch { /* A connection failure never grants access. */ }
+      finally { pending = false; }
+    };
+    check();
+    const interval = setInterval(check, 4000);
+    return () => { active = false; clearInterval(interval); };
+  }, [isOpen, orderData?.order?.id, token, paymentStatus, onPurchaseSuccess, onSuccess]);
 
   if (!isOpen) return null;
 
@@ -16,9 +60,6 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
     setOrderData(null);
     setConfirmed(false);
 
-    const amount = pkgType === 'vip' ? 199000 : 99000;
-    const packageName = pkgType === 'vip' ? 'Gói VIP 199K' : 'Gói Pro 99K';
-
     try {
       const res = await fetch('/api/orders/create', {
         method: 'POST',
@@ -27,7 +68,7 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
         },
-        body: JSON.stringify({ package_name: packageName, amount: amount })
+        body: JSON.stringify({ plan_code: pkgType, template_code: templateCode })
       });
       const data = await res.json();
       if (res.ok && data.success) {
@@ -137,13 +178,14 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
             Thanh Toán Mua Thiệp Cưới
           </h2>
           <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)', margin: '4px 0 0 0' }}>
-            Nâng cấp gói dịch vụ để mở khóa Trình Chỉnh Sửa & nhận link chia sẻ riêng
+            {templateName || 'Chọn mẫu trước khi thanh toán'} · Quyền sử dụng mẫu trong 6 tháng
           </p>
         </div>
 
         {/* Content Body */}
         <div style={{ padding: '24px' }}>
           
+          {paymentStatus === 'cancelled' && <p role="alert" style={{ color: '#dc2626' }}>Đơn đã bị hủy. Đóng cửa sổ và tạo đơn mới nếu muốn mua mẫu.</p>}
           {!orderData ? (
             /* Step 1: Package Selection */
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -152,47 +194,17 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
               </h3>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {/* Pro Package */}
-                <div
-                  onClick={() => setSelectedPackage('pro')}
-                  style={{
-                    padding: '16px',
-                    borderRadius: '16px',
-                    border: selectedPackage === 'pro' ? '2px solid #f43f5e' : '1px solid #cbd5e1',
-                    backgroundColor: selectedPackage === 'pro' ? '#fff1f2' : '#f8fafc',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                    position: 'relative'
-                  }}
-                >
-                  <span style={{ fontSize: '10px', fontWeight: '800', color: '#f43f5e', textTransform: 'uppercase' }}>Khuyên Dùng</span>
-                  <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#0f172a', margin: '4px 0' }}>Gói Pro</h4>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#f43f5e' }}>99.000đ</div>
-                  <p style={{ fontSize: '11px', color: '#64748b', margin: '4px 0 0 0' }}>Link tĩnh riêng 12 tháng + VietQR + RSVP Telegram</p>
-                </div>
-
-                {/* VIP Package */}
-                <div
-                  onClick={() => setSelectedPackage('vip')}
-                  style={{
-                    padding: '16px',
-                    borderRadius: '16px',
-                    border: selectedPackage === 'vip' ? '2px solid #8b5cf6' : '1px solid #cbd5e1',
-                    backgroundColor: selectedPackage === 'vip' ? '#f5f3ff' : '#f8fafc',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  <span style={{ fontSize: '10px', fontWeight: '800', color: '#8b5cf6', textTransform: 'uppercase' }}>VIP Đặc Biệt</span>
-                  <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#0f172a', margin: '4px 0' }}>Gói VIP</h4>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#8b5cf6' }}>199.000đ</div>
-                  <p style={{ fontSize: '11px', color: '#64748b', margin: '4px 0 0 0' }}>Toàn bộ Gói Pro + Nhập liệu thông tin 24/7</p>
-                </div>
+                {plans.map(plan => <button key={plan.code} type="button" onClick={() => setSelectedPackage(plan.code)} style={{ padding: 16, borderRadius: 16, textAlign: 'left', border: selectedPackage === plan.code ? '2px solid #f43f5e' : '1px solid #cbd5e1', background: selectedPackage === plan.code ? '#fff1f2' : '#f8fafc', cursor: 'pointer' }}>
+                  <h4 style={{ fontSize: 16, color: '#0f172a', margin: '4px 0' }}>{plan.name}</h4>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: '#f43f5e' }}>{Number(plan.price).toLocaleString('vi-VN')} VND</div>
+                  <p style={{ fontSize: 11, color: '#64748b' }}>{plan.description}</p>
+                </button>)}
               </div>
+              {catalogError && <p role="alert">{catalogError}</p>}
 
               <button
                 onClick={() => handleCreateOrder(selectedPackage)}
-                disabled={loading}
+                disabled={loading || !templateCode || !plans.some(plan => plan.code === selectedPackage)}
                 style={{
                   width: '100%',
                   padding: '14px',
@@ -288,7 +300,7 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
               {/* Action Confirmation */}
               {confirmed ? (
                 <div style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', padding: '12px', borderRadius: '12px', color: '#16a34a', fontSize: '12px', fontWeight: '700', width: '100%' }}>
-                  🎉 Cảm ơn bạn! Đã ghi nhận thông báo chuyển khoản. Hệ thống/Admin sẽ xác nhận và kích hoạt ngay cho bạn!
+                  Đang chờ admin xác nhận thanh toán. Mẫu chỉ được kích hoạt sau khi đơn được duyệt; cửa sổ này sẽ tự cập nhật.
                 </div>
               ) : (
                 <button

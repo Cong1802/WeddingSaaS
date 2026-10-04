@@ -12,6 +12,7 @@
 .template-gallery__carousel { position: relative; }
 .template-gallery__track { padding: 3px 0 16px; }
 .template-gallery__slider { padding: 3px 0 18px; }
+.template-gallery__slider .swiper-wrapper { transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1) !important; will-change: transform; }
 .template-gallery__slider .swiper-slide { height: auto; }
 .template-gallery__arrow:disabled { opacity: .35; cursor: default; }
 .template-gallery__track::-webkit-scrollbar { display: none; }

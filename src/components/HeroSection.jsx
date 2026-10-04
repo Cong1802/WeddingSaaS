@@ -15,8 +15,10 @@ export default function HeroSection({ onCreate, onViewTemplates }) {
     <section id="home" className="landing-hero" aria-labelledby="hero-title" style={{ '--section-artwork': `url(${background})`, '--section-artwork-opacity': 1 }}>
       <div className="landing-hero__inner">
         <div className="landing-hero__copy">
+          <div className="landing-hero__heading">
           <span className="landing-hero__badge"><Sparkles size={16} />Nền tảng Tạo Thiệp Cưới Online Hàng Đầu</span>
           <h1 id="hero-title">Tạo Thiệp Cưới Online<em>Đẹp - Sang Trọng - Dễ Dàng</em></h1>
+          </div>
           <p className="landing-hero__description">Thể hiện câu chuyện tình yêu riêng biệt với bộ sưu tập mẫu thiệp cưới điện tử sang trọng. Gửi lời mời tinh tế, nhận phản hồi RSVP và mừng cưới trực tuyến chỉ trong 5 phút.</p>
           <div className="landing-hero__benefits">
             {benefits.map(({ icon: Icon, title, detail }) => <div className="landing-hero__benefit" key={title}><span className="landing-hero__icon"><Icon size={28} strokeWidth={1.8} /></span><h2>{title}</h2><p>{detail}</p></div>)}

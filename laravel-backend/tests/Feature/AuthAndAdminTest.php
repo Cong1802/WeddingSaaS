@@ -10,12 +10,12 @@ class AuthAndAdminTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_registration_and_first_user_becomes_admin()
+    public function test_user_registration_never_grants_admin()
     {
         $response = $this->postJson('/api/auth/register', [
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => 'password123',
+            'password' => 'password12345',
         ]);
 
         $response->assertStatus(201)
@@ -23,13 +23,13 @@ class AuthAndAdminTest extends TestCase
                 'success' => true,
                 'user' => [
                     'email' => 'admin@example.com',
-                    'role' => 'admin',
+                    'role' => 'user',
                 ]
             ]);
 
         $this->assertDatabaseHas('users', [
             'email' => 'admin@example.com',
-            'role' => 'admin',
+            'role' => 'user',
         ]);
     }
 
@@ -57,23 +57,12 @@ class AuthAndAdminTest extends TestCase
         $this->assertNotNull($response->json('token'));
     }
 
-    public function test_google_login()
+    public function test_unverified_google_profile_is_rejected()
     {
-        $response = $this->postJson('/api/auth/google', [
-            'google_id' => '123456789',
-            'email' => 'googleuser@gmail.com',
-            'name' => 'Google User',
-            'avatar' => 'https://lh3.googleusercontent.com/a/mockavatar',
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJson([
-                'success' => true,
-                'user' => [
-                    'email' => 'googleuser@gmail.com',
-                    'google_id' => '123456789',
-                ]
-            ]);
+        $this->postJson('/api/auth/google', [
+            'google_id' => 'fake', 'email' => 'victim@example.com', 'name' => 'Attacker',
+        ])->assertUnprocessable();
+        $this->assertDatabaseCount('users', 0);
     }
 
     public function test_create_and_approve_order()
@@ -85,6 +74,7 @@ class AuthAndAdminTest extends TestCase
         \Laravel\Sanctum\Sanctum::actingAs($user);
         $createRes = $this->postJson('/api/orders/create', [
             'package_name' => 'Gói Pro 99K',
+            'template_code' => 'template_01',
             'amount' => 99000
         ]);
 
@@ -122,7 +112,7 @@ class AuthAndAdminTest extends TestCase
         ]);
 
         $templateRes->assertStatus(200)->assertJson(['success' => true]);
-        $this->assertDatabaseHas('templates', ['code' => 'template_test']);
+        $this->assertDatabaseHas('templates', ['code' => $templateRes->json('template.code'), 'name' => 'Mẫu Test CMS']);
 
         // 2. Create new Plan
         $planRes = $this->postJson('/api/admin/plans', [

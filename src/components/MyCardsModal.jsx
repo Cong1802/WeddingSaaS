@@ -48,7 +48,7 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
   };
 
   const copyShareLink = (slug) => {
-    const fullUrl = `${window.location.origin}/?v=${slug}`;
+    const fullUrl = `${window.location.origin}/v/${slug}`;
     navigator.clipboard.writeText(fullUrl);
     setCopiedSlug(slug);
     setTimeout(() => setCopiedSlug(null), 2000);
@@ -66,7 +66,7 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
         position: 'fixed',
         inset: 0,
         zIndex: 100,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
@@ -80,10 +80,10 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
           position: 'relative',
           width: '100%',
           maxWidth: '680px',
-          backgroundColor: '#0f172a',
+          backgroundColor: '#FFFFFF',
           borderRadius: '24px',
-          border: '1px solid #1e293b',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          border: '1px solid #FFE4E6',
+          boxShadow: '0 25px 50px -12px rgba(244, 63, 94, 0.15)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -91,12 +91,12 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
         }}
       >
         {/* Mobile Drag Handle */}
-        <div className="mobile-only" style={{ width: '36px', height: '4px', borderRadius: '2px', backgroundColor: 'rgba(255, 255, 255, 0.3)', margin: '10px auto 4px auto', flexShrink: 0 }} />
+        <div className="mobile-only" style={{ width: '36px', height: '4px', borderRadius: '2px', backgroundColor: '#FECDD3', margin: '10px auto 4px auto', flexShrink: 0 }} />
 
         {/* Header */}
         <div style={{
           padding: '20px 24px',
-          background: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #a855f7 100%)',
+          background: 'linear-gradient(135deg, #F04468 0%, #DC3659 100%)',
           color: '#ffffff',
           display: 'flex',
           alignItems: 'center',
@@ -117,7 +117,7 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
             </div>
             <div>
               <h2 style={{ fontSize: '18px', fontWeight: '800', margin: 0 }}>Thiệp Cưới Của Tôi</h2>
-              <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)', margin: 0 }}>Danh sách các thiệp bạn đã khởi tạo & lưu giữ</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.9)', margin: 0 }}>Danh sách các thiệp bạn đã khởi tạo & lưu giữ</p>
             </div>
           </div>
           <button
@@ -140,10 +140,10 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
         </div>
 
         {/* Content Body */}
-        <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+        <div style={{ padding: '24px', overflowY: 'auto', flex: 1, backgroundColor: '#FFF8F8' }}>
           {loading ? (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '180px', color: '#94a3b8', gap: '10px' }}>
-              <RefreshCw size={24} className="animate-spin" color="#ec4899" />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '180px', color: '#64748B', gap: '10px' }}>
+              <RefreshCw size={24} className="animate-spin" color="#F04468" />
               <span style={{ fontSize: '14px', fontWeight: '600' }}>Đang tải danh sách thiệp...</span>
             </div>
           ) : cards.length === 0 ? (
@@ -152,16 +152,16 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
                 width: '64px',
                 height: '64px',
                 borderRadius: '20px',
-                backgroundColor: 'rgba(244, 63, 94, 0.1)',
-                border: '1px solid rgba(244, 63, 94, 0.2)',
+                backgroundColor: '#FFF1F2',
+                border: '1px solid #FECDD3',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <FolderHeart size={32} color="#f43f5e" />
+                <FolderHeart size={32} color="#E11D48" />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff', margin: 0 }}>Chưa có thiệp cưới nào</h3>
-              <p style={{ fontSize: '13px', color: '#94a3b8', maxWidth: '360px', margin: 0, lineHeight: 1.5 }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1E293B', margin: 0 }}>Chưa có thiệp cưới nào</h3>
+              <p style={{ fontSize: '13px', color: '#64748B', maxWidth: '360px', margin: 0, lineHeight: 1.5 }}>
                 Hãy chọn một mẫu thiệp và bấm nút "Tạo Thiệp Ngay" để khởi tạo thiệp cưới cá nhân của bạn!
               </p>
             </div>
@@ -176,8 +176,9 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
                     style={{
                       padding: '18px',
                       borderRadius: '16px',
-                      backgroundColor: '#090d16',
-                      border: '1px solid #1e293b',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #FFE4E6',
+                      boxShadow: '0 4px 16px rgba(244, 63, 94, 0.05)',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
@@ -186,22 +187,22 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
                   >
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                        <span style={{ padding: '3px 10px', borderRadius: '12px', backgroundColor: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', color: '#c084fc', fontSize: '11px', fontWeight: '700' }}>
-                          Template: {card.template_id}
+                        <span style={{ padding: '3px 10px', borderRadius: '12px', backgroundColor: '#FFF1F2', border: '1px solid #FECDD3', color: '#E11D48', fontSize: '11px', fontWeight: '700' }}>
+                          Mẫu: {card.template_id}
                         </span>
-                        <span style={{ fontSize: '12px', color: '#10b981', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span style={{ fontSize: '12px', color: '#16A34A', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <Eye size={13} /> {card.views_count || 0} lượt xem
                         </span>
                       </div>
-                      <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#ffffff', margin: '4px 0' }}>
+                      <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#1E293B', margin: '4px 0' }}>
                         {groom} & {bride}
                       </h4>
-                      <div style={{ fontSize: '11px', color: '#64748b', fontFamily: 'monospace' }}>
-                        Link: /{card.slug}
+                      <div style={{ fontSize: '11px', color: '#E11D48', fontFamily: 'monospace' }}>
+                        /v/{card.slug}
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '12px', borderTop: '1px solid #FFE4E6' }}>
                       <button
                         onClick={() => {
                           if (onSelectCardToEdit) onSelectCardToEdit(card);
@@ -211,7 +212,7 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
                           flex: 1,
                           padding: '8px 12px',
                           borderRadius: '10px',
-                          background: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
+                          background: 'linear-gradient(135deg, #F04468 0%, #DC3659 100%)',
                           color: '#ffffff',
                           fontSize: '12px',
                           fontWeight: '700',
@@ -231,9 +232,9 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
                         style={{
                           padding: '8px 10px',
                           borderRadius: '10px',
-                          backgroundColor: '#1e293b',
-                          border: 'none',
-                          color: copiedSlug === card.slug ? '#10b981' : '#cbd5e1',
+                          backgroundColor: '#FFF1F2',
+                          border: '1px solid #FECDD3',
+                          color: copiedSlug === card.slug ? '#16A34A' : '#E11D48',
                           fontSize: '12px',
                           fontWeight: '600',
                           cursor: 'pointer',
@@ -251,9 +252,9 @@ export default function MyCardsModal({ isOpen, onClose, token, onSelectCardToEdi
                         style={{
                           padding: '8px 10px',
                           borderRadius: '10px',
-                          backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                          border: '1px solid rgba(239, 68, 68, 0.3)',
-                          color: '#f87171',
+                          backgroundColor: '#FEF2F2',
+                          border: '1px solid #FCA5A5',
+                          color: '#EF4444',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',

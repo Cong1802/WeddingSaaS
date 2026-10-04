@@ -12,9 +12,11 @@ class Plan extends Model
     protected $fillable = [
         'code',
         'name',
+        'subtitle',
         'price',
         'period',
         'description',
+        'action',
         'features',
         'is_popular',
         'is_active',

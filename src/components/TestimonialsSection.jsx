@@ -37,7 +37,24 @@ export default function TestimonialsSection({ onCreate }) {
         </header>
         <div className="wedding-reviews__carousel" aria-roledescription="carousel" aria-label="Cảm nhận khách hàng">
           <button type="button" className="wedding-reviews__arrow wedding-reviews__arrow--left" aria-label="Cảm nhận trước" onClick={() => move(-1)}><ChevronLeft size={24} /></button>
-          <Swiper className="wedding-reviews__slider" modules={[A11y, Keyboard]} loop centeredSlides initialSlide={1} slidesPerView={1} spaceBetween={18} speed={window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450} keyboard={{ enabled: true, onlyInViewport: true }} onSwiper={swiper => { slider.current = swiper; }} onSlideChange={swiper => setActive(swiper.realIndex % reviews.length)} breakpoints={{ 1001: { slidesPerView: 3 } }} a11y={{ containerMessage: 'Cảm nhận khách hàng', itemRoleDescriptionMessage: 'Cảm nhận' }}>
+          <Swiper 
+            className="wedding-reviews__slider" 
+            modules={[A11y, Keyboard]} 
+            loop 
+            centeredSlides 
+            initialSlide={1} 
+            slidesPerView={1} 
+            spaceBetween={18} 
+            speed={500} 
+            grabCursor={true}
+            preventClicks={true}
+            preventClicksPropagation={true}
+            touchStartPreventDefault={false}
+            keyboard={{ enabled: true, onlyInViewport: true }} 
+            onSwiper={swiper => { slider.current = swiper; }} 
+            onSlideChange={swiper => setActive(swiper.realIndex % reviews.length)} 
+            breakpoints={{ 1001: { slidesPerView: 3 } }} 
+            a11y={{ containerMessage: 'Cảm nhận khách hàng', itemRoleDescriptionMessage: 'Cảm nhận' }}>
             {slides.map((review, index) => <SwiperSlide key={`${review.id}-${index}`}><article className="wedding-reviews__card">
               <div className="wedding-reviews__card-top"><img src={review.avatar} alt="Ảnh cặp đôi minh họa" width="82" height="82" loading="lazy" /><Stars /><Quote className="wedding-reviews__quote" size={38} fill="currentColor" strokeWidth={0} aria-hidden="true" /></div>
               <blockquote>“{review.comment}”</blockquote>

@@ -14,9 +14,7 @@ export default function GuestCardViewer({ slug }) {
     const fetchCard = async () => {
       setLoading(true);
       const data = await getCardBySlug(slug);
-      if (data) {
-        setCardPayload(data);
-      }
+      setCardPayload(data);
       setLoading(false);
     };
     fetchCard();
@@ -49,6 +47,10 @@ export default function GuestCardViewer({ slug }) {
     );
   }
 
+  if (cardPayload?.locked) {
+    return <div style={{ minHeight: '100dvh', display: 'grid', placeItems: 'center', background: '#fff7f8', textAlign: 'center', padding: 24 }}><div><h1>Thiệp hiện đang khóa</h1><p>{cardPayload.message || 'Chủ thiệp cần gia hạn mẫu để tiếp tục sử dụng.'}</p></div></div>;
+  }
+
   if (!cardPayload) {
     return (
       <div style={{
@@ -73,7 +75,7 @@ export default function GuestCardViewer({ slug }) {
   }
 
   const { template_id, card_data } = cardPayload;
-  const targetTemplate = TEMPLATES.find(t => t.id === template_id) || TEMPLATES[0];
+  const targetTemplate = cardPayload.template ? { id: cardPayload.template.code, fileUrl: cardPayload.template.file_url || '/template.html' } : TEMPLATES.find(t => t.id === template_id) || TEMPLATES[0];
 
   const handleIframeLoad = () => {
     if (!iframeRef.current) return;

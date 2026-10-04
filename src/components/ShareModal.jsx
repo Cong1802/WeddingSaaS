@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { X, Link as LinkIcon, Copy, Check, QrCode, ExternalLink, Sparkles, CheckCircle2, Download } from 'lucide-react';
+import { X, Link as LinkIcon, Copy, Check, ExternalLink, Sparkles, CheckCircle2 } from 'lucide-react';
 import { saveCardToApi } from '../services/cardApi';
+import PurchaseModal from './PurchaseModal';
 
-export default function ShareModal({ isOpen, onClose, cardData, selectedTemplateId, token, onExportHTML }) {
+export default function ShareModal({ isOpen, onClose, cardData, selectedTemplateId, token }) {
   const [slug, setSlug] = useState('');
   const [isSaved, setIsSaved] = useState(false);
   const [savedUrl, setSavedUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [fixedSlug, setFixedSlug] = useState(false);
+  const [accessChecking, setAccessChecking] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [purchaseOpen, setPurchaseOpen] = useState(false);
+  const [accessRevision, setAccessRevision] = useState(0);
 
   useEffect(() => {
     if (isOpen && cardData) {
@@ -23,14 +30,31 @@ export default function ShareModal({ isOpen, onClose, cardData, selectedTemplate
       setIsSaved(false);
       setSavedUrl('');
       setCopied(false);
+      setSaveError('');
     }
   }, [isOpen, cardData]);
+
+  useEffect(() => {
+    if (!isOpen || !token) return;
+    let active = true;
+    setAccessChecking(true); setHasAccess(false); setFixedSlug(false);
+    fetch('/api/user/cards', { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } })
+      .then(response => { if (!response.ok) throw Error('Không kiểm tra được quyền sử dụng mẫu.'); return response.json(); })
+      .then(data => {
+        if (!active) return;
+        if (data.card_slug) { setSlug(data.card_slug); setFixedSlug(true); }
+        setHasAccess(!data.primary_selection_pending && data.licenses.some(license => license.template_code === selectedTemplateId && new Date(license.expires_at) > new Date()));
+      }).catch(error => { if (active) setSaveError(error.message); })
+      .finally(() => { if (active) setAccessChecking(false); });
+    return () => { active = false; };
+  }, [isOpen, token, selectedTemplateId, cardData, accessRevision]);
 
   if (!isOpen) return null;
 
   const handleSave = async () => {
     if (!slug.trim()) return;
     setIsSubmitting(true);
+    setSaveError('');
     try {
       const result = await saveCardToApi(slug, selectedTemplateId, cardData, token);
       if (result.success) {
@@ -38,7 +62,7 @@ export default function ShareModal({ isOpen, onClose, cardData, selectedTemplate
         setSavedUrl(result.card_url);
       }
     } catch (err) {
-      console.error('Save card error:', err);
+      setSaveError(err.message || 'Không lưu được thiệp. Vui lòng thử lại.');
     } finally {
       setIsSubmitting(false);
     }
@@ -125,6 +149,9 @@ export default function ShareModal({ isOpen, onClose, cardData, selectedTemplate
           Tạo đường dẫn URL tùy chỉnh để gửi khách mời truy cập xem trực tiếp thiệp cưới online của bạn!
         </p>
 
+        {saveError && <p role="alert" style={{ color: '#dc2626', fontSize: 13 }}>{saveError}</p>}
+        {accessChecking && <p role="status">Đang kiểm tra quyền sử dụng mẫu…</p>}
+        {!accessChecking && !hasAccess && <div style={{ marginBottom: 16 }}><p>Mẫu chưa được mua hoặc đã hết hạn. Mua / gia hạn để lưu và công khai thiệp trong 6 tháng. Nếu có nhiều thiệp cũ, hãy chọn thiệp chính tại Thiệp của tôi trước.</p><button type="button" onClick={() => setPurchaseOpen(true)}>Mua / gia hạn mẫu · 6 tháng</button></div>}
         {!isSaved ? (
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
@@ -140,11 +167,12 @@ export default function ShareModal({ isOpen, onClose, cardData, selectedTemplate
               marginBottom: '16px'
             }}>
               <span style={{ fontSize: '12px', color: '#64748b', marginRight: '4px', fontWeight: '500' }}>
-                lovecard.click/v/
+                {window.location.host}/v/
               </span>
               <input
                 type="text"
                 value={slug}
+                readOnly={fixedSlug || accessChecking}
                 onChange={e => setSlug(e.target.value)}
                 placeholder="ten-chu-re-ten-co-dau"
                 style={{
@@ -162,7 +190,7 @@ export default function ShareModal({ isOpen, onClose, cardData, selectedTemplate
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button
                 onClick={handleSave}
-                disabled={isSubmitting}
+                disabled={isSubmitting || accessChecking || !hasAccess}
                 style={{
                   width: '100%',
                   padding: '12px',
@@ -312,6 +340,7 @@ export default function ShareModal({ isOpen, onClose, cardData, selectedTemplate
           </div>
         )}
       </div>
+      <PurchaseModal isOpen={purchaseOpen} token={token} templateCode={selectedTemplateId} onClose={() => setPurchaseOpen(false)} onPurchaseSuccess={() => { setPurchaseOpen(false); setAccessRevision(value => value + 1); }} />
     </div>
   );
 }
