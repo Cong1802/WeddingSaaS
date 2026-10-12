@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Check, ArrowLeft } from 'lucide-react';
 import useTemplates from '../templates/useTemplates';
+import './TemplateSelectorModal.css';
 
 export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplateId, onSelectTemplate }) {
   const templates = useTemplates();
@@ -15,7 +16,12 @@ export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplat
     : templates.filter(t => t.category === filterCategory);
 
   return (
+    <div className="template-selector-backdrop" onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
     <div 
+      className="template-selector-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Chọn mẫu thiệp"
       style={{
         position: 'fixed',
         top: 0,
@@ -47,6 +53,8 @@ export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplat
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
+            className="template-selector-back"
+            aria-label="Quay lại"
             onClick={onClose}
             style={{
               border: 'none',
@@ -68,6 +76,7 @@ export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplat
         </div>
 
         <button
+          aria-label="Đóng chọn mẫu"
           onClick={onClose}
           style={{
             border: 'none',
@@ -127,11 +136,14 @@ export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplat
         gap: '12px',
         padding: '12px',
         alignContent: 'start'
-      }}>
+      }} className="template-selector-grid">
         {filteredTemplates.map(tpl => {
           const isSelected = selectedTemplateId === tpl.id;
           return (
-            <div
+            <button
+              type="button"
+              className="template-selector-card"
+              aria-pressed={isSelected}
               key={tpl.id}
               onClick={() => {
                 onSelectTemplate(tpl);
@@ -148,7 +160,7 @@ export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplat
                 flexDirection: 'column'
               }}
             >
-              <div style={{ position: 'relative', width: '100%', height: '140px', backgroundColor: '#030712' }}>
+              <div className="template-selector-image" style={{ position: 'relative', width: '100%', height: '140px', backgroundColor: '#030712' }}>
                 <img
                   src={tpl.thumbnail || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop&q=80'}
                   alt={tpl.name}
@@ -179,10 +191,11 @@ export default function TemplateSelectorModal({ isOpen, onClose, selectedTemplat
                   {tpl.category}
                 </div>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
+    </div>
     </div>
   );
 }

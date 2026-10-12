@@ -1,0 +1,167 @@
+.my-card-mobile-greeting,.my-card-bottom-nav,.my-card-menu-backdrop{display:none}
+.my-card-catalog.mobile-recommendations{display:none}
+.my-card-template-overlay{position:fixed;inset:0;z-index:99999;background:#17203366;display:flex;align-items:center;justify-content:center;padding:32px;backdrop-filter:blur(4px)}
+.my-card-template-dialog{width:min(1100px,100%);max-height:calc(100dvh - 64px);display:flex;flex-direction:column;background:#fffafa;border-radius:20px;overflow:hidden;box-shadow:0 24px 80px #17203333}
+.my-card-template-header{display:flex;align-items:center;gap:12px;flex-shrink:0;padding:14px 20px;border-bottom:1px solid #f3dfe6;background:white}
+.my-card-template-header h2{flex:1;font-size:18px;font-weight:700;margin:0}
+.my-card-template-header button{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:50%;background:#fff0f4;color:#e73e6a;flex-shrink:0}
+.my-card-template-dialog .my-card-catalog{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:20px}
+.my-card-template-dialog .my-card-catalog-title{display:none}
+.my-card-template-dialog .my-card-categories{position:sticky;top:-20px;z-index:1;background:#fffafa;padding-block:12px}
+@media(max-width:800px){
+ .my-card-template-overlay{padding:0;background:#fffafa;backdrop-filter:none}
+ .my-card-template-dialog{width:100%;height:100dvh;max-height:100dvh;border-radius:0;box-shadow:none;padding-top:env(safe-area-inset-top,0px)}
+ .my-card-template-header{padding:10px 12px}
+ .my-card-template-dialog .my-card-catalog{flex:1;padding:16px 12px calc(24px + env(safe-area-inset-bottom,0px))}
+ .my-card-template-dialog .my-card-categories{top:-16px}
+}
+.my-card-catalog .my-card-catalog-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.my-card-catalog-title button{border:0;background:none;color:#f43f6b;min-height:44px;white-space:nowrap}
+.my-card-categories{display:flex;gap:10px;overflow:auto;padding:8px 0 18px}
+.my-card-categories button{border:1px solid #eadfe4;border-radius:30px;background:white;color:#697992;padding:10px 20px;min-height:44px;white-space:nowrap;font:inherit}
+.my-card-categories button[aria-pressed=true]{background:#fa386b;color:white;border-color:#fa386b}
+.my-card-template-image{position:relative}
+.my-card-template-image a{position:absolute;top:8px;right:8px;width:44px;height:44px;display:grid;place-items:center;background:white;border-radius:50%;color:#15243f;box-shadow:0 2px 8px #18264215}
+.my-card-menu-title{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.my-card-menu p{font-size:12px;color:#697992;overflow-wrap:anywhere}
+.my-card-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#ffe8ef;color:#e83368;border:2px solid #ffc9d9;font-weight:700;flex-shrink:0}
+.my-card-template-license{display:flex;flex-wrap:wrap;align-items:center;gap:6px;justify-content:space-between}
+.my-card-template-license>span{display:flex;align-items:center;gap:5px;background:#f2f3f7;border-radius:9px;padding:5px 7px}
+.my-card-template-license.owned>span{color:#16804e;background:#e9f8ef}
+.my-card-template-license small{font-size:inherit}
+@media(max-width:800px){
+ .my-card-page{min-height:100dvh;padding-bottom:calc(88px + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
+ .my-card-page .my-card-header{min-height:72px;padding:12px 18px;padding-top:calc(12px + env(safe-area-inset-top));border:0;background:#fff8fa}
+ .my-card-page .my-card-brand img{width:180px;height:48px;object-fit:contain}
+ .my-card-account>button{min-width:44px;min-height:44px}
+ .my-card-account>button>span,.my-card-account>button>svg{display:none}
+ .my-card-account>button:not(:has(img))>span{display:block;max-width:90px;overflow:hidden;text-overflow:ellipsis}
+ .my-card-page .my-card-main{padding:14px 16px 20px}
+ .my-card-mobile-greeting{display:block;margin:4px 0 20px}
+ .my-card-mobile-greeting p{font-size:14px;color:#73819a;margin:0 0 8px}
+ .my-card-mobile-greeting h1{font-size:27px;line-height:1.35;letter-spacing:-1px;margin:0}
+ .my-card-heading,.my-card-breadcrumb,.my-card-corner{display:none}
+ .my-card-page .my-card-welcome{position:relative;display:block;min-height:0;padding:21px 18px;background:linear-gradient(110deg,#fff0f3,#fff8f8);overflow:hidden;border-color:#ffc8d7;border-radius:18px}
+ .my-card-page .my-card-envelope-art{position:absolute;right:-32px;top:28px;width:190px;height:230px;opacity:.65;pointer-events:none}
+ .my-card-page .my-card-invitation>span{font-size:28px}
+ .my-card-page .my-card-invitation{padding:24px 5px}
+ .my-card-page .my-card-envelope-seal{width:32px;height:32px;font-size:24px}
+ .my-card-page .my-card-welcome-copy{position:relative;text-align:left;padding:0}
+ .my-card-welcome-eyebrow{display:none}
+ .my-card-page .my-card-welcome-copy h1{font-size:27px;line-height:1.4;max-width:78%;letter-spacing:-.8px;margin-bottom:12px}
+ .my-card-page .my-card-welcome-copy h1 br{display:block}
+ .my-card-page .my-card-welcome-copy>p{font-size:14px;line-height:1.6;max-width:70%;margin:0 0 18px}
+ .my-card-page .my-card-welcome-actions{justify-content:flex-start}
+ .my-card-page .my-card-welcome-actions .primary{font-size:15px;min-height:50px;padding:12px 18px;min-width:190px}
+ .my-card-welcome-actions>a{display:none}
+ .my-card-page .my-card-welcome-duration{justify-content:flex-start;font-size:10px;gap:7px;margin-top:14px;max-width:95%}
+ .my-card-page .my-card-welcome-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 8px}
+ .my-card-welcome-steps li{flex-direction:column;align-items:center;gap:7px;text-align:center}
+ .my-card-welcome-steps li>span{width:35px;height:35px;font-size:13px}
+ .my-card-page .my-card-welcome-steps h2{font-size:11px;line-height:1.5;margin:0;color:#71809a}
+ .my-card-welcome-steps li:first-child h2{color:#f43f6b}
+ .my-card-welcome-steps p,.my-card-welcome-link{display:none}
+ .my-card-page .my-card-catalog.mobile-recommendations{display:block}
+ .my-card-catalog{scroll-margin-top:16px}
+ .my-card-catalog h2{font-size:20px;margin:0;line-height:1.4}
+ .my-card-catalog-title button{font-size:11px;padding:0}
+ .my-card-catalog>p{line-height:1.6;font-size:12px}
+ .my-card-page .my-card-catalog>div:not(.my-card-catalog-title){grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .my-card-catalog article{padding:8px;min-width:0;border-radius:16px}
+ .my-card-catalog img{height:180px}
+ .my-card-catalog h3{font-size:13px;margin:10px 0 7px;overflow-wrap:anywhere}
+ .my-card-catalog article p{font-size:11px;line-height:1.5;min-height:32px}
+ .my-card-catalog article button{min-height:46px;font-size:12px!important;padding:8px!important}
+ .my-card-categories button{font-size:12px;padding:10px 17px}
+ .my-card-bottom-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;bottom:0;left:0;right:0;z-index:1000;background:#fffffff5;backdrop-filter:blur(16px);border-top:1px solid #f3e8ed;border-radius:16px 16px 0 0;padding:9px 8px calc(9px + env(safe-area-inset-bottom));box-shadow:0 -4px 22px #543c4510}
+ .my-card-bottom-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:0;background:none;color:#768199;font:inherit;font-size:10px;min-height:54px}
+ .my-card-bottom-nav svg{width:24px;height:24px}
+ .my-card-bottom-nav button[aria-current=page]{color:#fa386b}
+ .my-card-bottom-nav button[aria-current=page] svg{fill:#ffedf2}
+ .my-card-menu-backdrop{display:block;position:fixed;inset:0;background:#17213c55;z-index:2000;border:0}
+ .my-card-page .my-card-menu{position:fixed;top:auto;bottom:0;left:0;right:0;z-index:2001;border-radius:24px 24px 0 0;padding:22px 22px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -5px 30px #17213c20}
+ .my-card-menu button{min-height:48px}
+ .my-card-menu-title button{width:44px;display:grid;place-items:center}
+ .my-card-page .my-card-cover{padding:10px;min-height:0}
+ .my-card-page .my-card-cover img{height:240px;max-height:240px;object-fit:cover}
+ .my-card-page .my-card-feature{gap:16px;padding:12px}
+ .my-card-page .my-card-details h2{font-size:25px}
+ .my-card-stats{flex-wrap:wrap;font-size:12px}
+ .my-card-page .primary,.my-card-page .outline{min-height:48px}
+ .my-card-link input,.my-card-selection select{font-size:16px;min-width:0}
+ .my-card-link button{font-size:11px;min-height:48px}
+ .my-card-management button,.my-card-refresh{min-height:44px}
+ .my-card-footer{font-size:10px;margin-top:20px}
+ .my-card-page .app-modal-overlay{align-items:flex-end!important;padding:0!important}
+ .my-card-page .app-modal-container{border-radius:0!important;max-width:100%!important;height:100dvh!important;max-height:100dvh!important;padding-bottom:calc(24px + env(safe-area-inset-bottom))!important;overscroll-behavior:contain}
+ .my-card-page .app-modal-container button{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){.my-card-page *{scroll-behavior:auto!important;animation:none!important}}
+@media(max-width:800px){
+ .my-card-page,.my-card-page.is-empty{background:linear-gradient(160deg,#fff8fa 0%,#fdfbfc 45%,#fff6f9 100%);color:#18243d}
+ .my-card-page .my-card-header{position:relative;z-index:30;background:#fff8faf2;backdrop-filter:blur(14px);padding-inline:20px;min-height:78px}
+ .my-card-page .my-card-brand img{display:block;width:183px;height:48px;object-fit:contain}
+ .my-card-account>button>.my-card-avatar{display:grid!important;max-width:none!important}
+ .my-card-account>button:not(:has(img))>span:not(.my-card-avatar){display:none}
+ .my-card-page .my-card-main{padding:16px 18px 24px}
+ .my-card-mobile-greeting{margin:0 0 22px}
+ .my-card-mobile-greeting p{font-size:13px;margin-bottom:7px}
+ .my-card-mobile-greeting h1{font-size:26px;letter-spacing:-.9px;font-weight:750}
+ .my-card-page .my-card-welcome{padding:23px 20px;border-radius:23px;box-shadow:0 8px 28px #c9466b08;background:radial-gradient(ellipse at 100% 50%,#ffdfe8aa,transparent 70%),linear-gradient(130deg,#fff1f5,#fffafa)}
+ .my-card-page .my-card-welcome-copy h1{font-size:26px;max-width:76%;line-height:1.35;font-weight:700;margin-bottom:13px}
+ .my-card-page .my-card-welcome-copy>p{max-width:66%;font-size:13px;line-height:1.65;margin-bottom:22px}
+ .my-card-page .my-card-envelope-art{right:-20px;top:46px;width:165px;height:200px;opacity:.9;transform:rotate(6deg)}
+ .my-card-page .my-card-welcome-actions .primary{min-width:185px;border-radius:15px;font-size:14px;box-shadow:0 6px 15px #f5356824}
+ .my-card-page .my-card-welcome-duration{font-size:10px;line-height:1.6;margin-top:18px}
+ .my-card-page .my-card-welcome-steps{margin:23px 0 0;gap:10px}
+ .my-card-welcome-steps li>span{height:44px;width:44px;background:#f0eff3;border:0;color:#7b859b;position:relative}
+ .my-card-welcome-steps li:first-child>span{color:#fa386b;background:#ffeaf0}
+ .my-card-welcome-steps li:not(:last-child):after{content:'';position:absolute;top:21px;left:calc(50% + 30px);width:calc(100% - 50px);border-top:2px dotted #d9d9e3}
+ .my-card-page .my-card-welcome-steps h2{font-size:12px;font-weight:500}
+ .my-card-catalog{padding-top:30px;scroll-margin-top:94px}
+ .my-card-catalog h2{font-size:19px;font-weight:700;letter-spacing:-.5px}
+ .my-card-catalog-title button{font-size:11px;font-weight:600}
+ .my-card-categories{gap:8px;padding:6px 0 18px;scrollbar-width:none}
+ .my-card-categories::-webkit-scrollbar{display:none}
+ .my-card-categories button{min-height:40px;font-size:12px;background:transparent}
+ .my-card-categories button[aria-pressed=true]{box-shadow:0 5px 12px #f43f6b18;background:linear-gradient(120deg,#ff3568,#f54587)}
+ .my-card-page .my-card-catalog>div:not(.my-card-catalog-title){gap:12px}
+ .my-card-catalog article{border-color:#eee5ea;padding:7px 7px 10px;border-radius:19px;box-shadow:0 5px 20px #59384305;display:flex;flex-direction:column}
+ .my-card-catalog .my-card-template-image img{display:block;aspect-ratio:3/4;height:auto;width:100%;border-radius:13px;object-fit:cover;background:#fff0f4}
+ .my-card-template-image a{width:36px;height:36px;top:7px;right:7px}
+ .my-card-catalog h3{padding-inline:3px;font-size:12px;line-height:1.5;margin:10px 0 6px}
+ .my-card-catalog article .my-card-template-license{margin:0 0 10px;font-size:9px;min-height:30px;gap:5px}
+ .my-card-catalog article button{margin-top:auto;border-radius:12px;min-height:44px;font-size:12px!important}
+ .my-card-bottom-nav{border-radius:0;padding-top:10px;box-shadow:0 -8px 28px #5840520a}
+ .my-card-bottom-nav button{font-size:11px;gap:5px;position:relative;min-height:56px}
+ .my-card-bottom-nav button[aria-current=page]{font-weight:600}
+ .my-card-bottom-nav button[aria-current=page]:after{content:'';width:4px;height:4px;border-radius:50%;background:#fa386b;position:absolute;bottom:0}
+ .my-card-bottom-nav button[aria-current=page] svg{fill:#ffdae6;stroke-width:2.2}
+ .my-card-page .my-card-feature{border-radius:24px;border-color:#eee2e8;padding:10px;gap:18px;box-shadow:0 8px 28px #50374a08}
+ .my-card-page .my-card-cover{padding:0;background:#fff2f5;border-radius:18px;overflow:hidden}
+ .my-card-page .my-card-cover img{border-radius:18px 18px 0 0;height:250px;max-height:250px}
+ .my-card-cover a{min-height:44px;display:flex;align-items:center;justify-content:center;font-size:11px}
+ .my-card-page .my-card-details{padding:0 7px 9px}
+ .my-card-page .my-card-details h2{font-size:23px;line-height:1.4;font-weight:700;margin:14px 0 8px}
+ .my-card-event{font-size:13px;line-height:1.6}
+ .my-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+ .my-card-stats>span{font-size:11px;line-height:1.5;padding:12px 9px!important;background:#f7f6fa;border:0!important;border-radius:12px;min-width:0;overflow-wrap:anywhere;gap:7px}
+ .my-card-stats svg{width:18px;height:18px;flex-shrink:0}
+ .my-card-license{padding:13px;background:#fff2f6;border:1px solid #ffe2ec;border-radius:14px;line-height:1.6;margin-bottom:16px}
+ .my-card-license strong{font-size:12px}
+ .my-card-license span{font-size:11px}
+ .my-card-actions .primary,.my-card-actions .outline{border-radius:13px;font-size:12px}
+ .my-card-share h3{font-size:17px;font-weight:650}
+ .my-card-share p{font-size:12px;line-height:1.6}
+ .my-card-link{border-radius:13px;overflow:hidden}
+ .my-card-share-actions .outline{border-radius:13px;font-size:12px}
+ .my-card-management{gap:10px;display:flex}
+ .my-card-management button{flex:1;border:1px solid #e8e4eb;border-radius:12px;font-size:12px;background:#faf9fc;text-decoration:none;color:#6c7890}
+ .my-card-help>section,.my-card-help>a{padding:16px;border-radius:18px;border-color:#eee4e9;gap:12px}
+ .my-card-help h3{font-size:13px;font-weight:600}
+ .my-card-help p{font-size:11px;line-height:1.6}
+ .my-card-footer{display:none}
+ .browsing-templates .my-card-welcome,.browsing-templates .my-card-welcome-steps,.browsing-templates .my-card-feature,.browsing-templates .my-card-help,.browsing-templates .my-card-archive-note{display:none}
+ .browsing-templates .my-card-catalog{padding-top:0}
+ .browsing-templates .my-card-catalog-title{display:none}
+}

@@ -234,3 +234,8 @@
 .landing-mobile-menu__user { font-size: 13px; font-weight: 600; line-height: 1.6; overflow-wrap: anywhere; }
 .landing-mobile-menu button:focus-visible, .landing-mobile-menu a:focus-visible { outline: 3px solid #ae3456; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .landing-mobile-menu, .landing-mobile-menu__panel { transition: none; } }
+@media (max-width: 800px) {
+  .landing-page.has-bottom-nav {
+    padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  }
+}

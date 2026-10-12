@@ -1,10 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { LayoutGrid, ChevronDown, Link as LinkIcon } from 'lucide-react';
 
 export default function WeddingCardPreview({ 
   cardData, 
   setCardData, 
   viewMode, 
   selectedTemplate,
+  onOpenTemplateModal,
+  onOpenShareModal,
   onOpenEditSection,
   targetPreviewSelector,
   onOpenVietQR, 
@@ -679,7 +682,7 @@ export default function WeddingCardPreview({
   const targetFileUrl = selectedTemplate?.fileUrl || '/template.html';
 
   return (
-    <main style={{
+    <main className="editor-preview" style={{
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
@@ -703,7 +706,10 @@ export default function WeddingCardPreview({
       />
 
       {/* Frame Container */}
-      <div style={{
+      <button className="editor-preview-template" onClick={onOpenTemplateModal}>
+        <LayoutGrid size={17} /><span><small>Mẫu thiệp</small><strong>{selectedTemplate?.name || 'Chọn mẫu thiệp'}</strong></span><ChevronDown size={16} />
+      </button>
+      <div className="editor-phone-frame" style={{
         width: isMobile ? '100%' : '390px',
         maxWidth: '100%',
         height: isMobile ? '100%' : 'calc(100% - 20px)',
@@ -732,6 +738,7 @@ export default function WeddingCardPreview({
           }}
         />
       </div>
+      <button className="editor-preview-share" onClick={onOpenShareModal}><LinkIcon size={18} /> Lưu & xuất link thiệp</button>
     </main>
   );
 }

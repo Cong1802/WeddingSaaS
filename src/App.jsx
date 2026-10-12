@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { pageFromLocation, pathForPage } from './navigation';
+import { updateSeo } from './seo';
+import './components/DesktopEditor.css';
 import Header from './components/Header';
 import EditorSidebar from './components/EditorSidebar';
 import WeddingCardPreview from './components/WeddingCardPreview';
@@ -43,6 +45,7 @@ export default function App() {
   }, []);
   const templates = useTemplates();
   const [pendingTemplate, setPendingTemplate] = useState(null);
+  const [myCardsSection, setMyCardsSection] = useState('cards');
   const [isPendingEditorAccess, setIsPendingEditorAccess] = useState(false);
 
   const [viewMode, setViewMode] = useState('mobile'); // 'mobile' | 'desktop'
@@ -114,14 +117,14 @@ export default function App() {
 
   // Check if guest viewer mode is active via URL (/v/slug or ?v=slug or /slug)
   const getGuestSlugFromUrl = () => {
-    const pathname = window.location.pathname;
+    const pathname = window.location.pathname.replace(/\/$/, '') || '/';
     const urlParams = new URLSearchParams(window.location.search);
     if (pathname.startsWith('/v/')) {
       const s = pathname.replace('/v/', '').replace(/\/$/, '');
       if (s) return s;
     }
     if (urlParams.get('v')) return urlParams.get('v');
-    if (pathname !== '/' && pathname !== '/editor' && pathname !== '/my-cards' && !pathname.startsWith('/api') && !pathname.startsWith('/admin') && !pathname.startsWith('/dist') && !pathname.includes('.')) {
+    if (pathname !== '/' && pathname !== '/editor' && pathname !== '/my-cards' && pathname !== '/templates' && !pathname.startsWith('/api') && !pathname.startsWith('/admin') && !pathname.startsWith('/dist') && !pathname.includes('.')) {
       const cleanPath = pathname.replace(/^\//, '').replace(/\/$/, '');
       if (cleanPath) return cleanPath;
     }
@@ -133,23 +136,15 @@ export default function App() {
   const [publicSettings, setPublicSettings] = useState({});
 
   React.useEffect(() => {
+    updateSeo(currentPage, guestSlugParam, publicSettings);
+  }, [currentPage, guestSlugParam, publicSettings]);
+
+  React.useEffect(() => {
     fetch('/api/public/settings')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.settings) {
           setPublicSettings(data.settings);
-          if (data.settings.site_title) {
-            document.title = data.settings.site_title;
-          }
-          if (data.settings.site_description) {
-            let metaDesc = document.querySelector('meta[name="description"]');
-            if (!metaDesc) {
-              metaDesc = document.createElement('meta');
-              metaDesc.name = 'description';
-              document.head.appendChild(metaDesc);
-            }
-            metaDesc.content = data.settings.site_description;
-          }
           if (data.settings.site_favicon) {
             let favicon = document.querySelector('link[rel="icon"]');
             if (!favicon) {
@@ -354,10 +349,15 @@ export default function App() {
     );
   }
 
-  if (currentPage === 'my-cards') {
+  if (currentPage === 'my-cards' || currentPage === 'templates') {
     return (
       <>
         <MyCardsDashboard
+          key={currentPage}
+          catalogPage={currentPage === 'templates'}
+          onOpenTemplates={() => setCurrentPage('templates')}
+          onMyCards={() => { setMyCardsSection('cards'); setCurrentPage('my-cards'); }}
+          initialSection={myCardsSection}
           settings={publicSettings}
           user={user}
           token={token}
@@ -416,7 +416,7 @@ export default function App() {
           }}
           user={user}
           onLogout={handleLogout}
-          onOpenMyCards={() => { setCurrentPage('my-cards'); window.scrollTo(0, 0); }}
+          onOpenMyCards={(section = 'cards') => { setMyCardsSection('cards'); setCurrentPage(section === 'templates' ? 'templates' : 'my-cards'); window.scrollTo(0, 0); }}
           onOpenAdmin={handleOpenAdmin}
           onOpenPurchase={() => setIsPurchaseModalOpen(true)}
         />
@@ -484,6 +484,7 @@ export default function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', overflow: 'hidden', position: 'relative' }}>
+      <div className="editor-mobile-header">
       <Header
         viewMode={viewMode}
         setViewMode={setViewMode}
@@ -500,11 +501,17 @@ export default function App() {
         onLogout={handleLogout}
         onGoToLandingPage={() => setCurrentPage('landing')}
       />
+      </div>
 
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
+      <div className="editor-workspace" style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
         {/* Desktop Sidebar */}
-        <div className="desktop-only" style={{ height: '100%' }}>
+        <div className="desktop-only editor-panel-container" style={{ height: '100%' }}>
           <EditorSidebar
+            user={user}
+            onAccount={() => user ? setCurrentPage('my-cards') : setIsAuthModalOpen(true)}
+            onLogout={handleLogout}
+            onAdmin={handleOpenAdmin}
+            onHome={() => setCurrentPage('landing')}
             cardData={cardData}
             setCardData={setCardData}
             activeTab={activeSidebarTab}
@@ -519,6 +526,8 @@ export default function App() {
 
         {/* Card Preview */}
         <WeddingCardPreview
+          onOpenTemplateModal={() => setIsTemplateModalOpen(true)}
+          onOpenShareModal={() => setIsShareModalOpen(true)}
           cardData={cardData}
           setCardData={setCardData}
           viewMode={viewMode}

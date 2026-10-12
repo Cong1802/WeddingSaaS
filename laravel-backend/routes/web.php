@@ -1,12 +1,7 @@
 <?php
 
+use App\Http\Controllers\SeoPageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/{any?}', function () {
-    $indexPath = public_path('dist/index.html');
-    if (file_exists($indexPath)) {
-        return response()->file($indexPath, ['Cache-Control' => 'no-cache, must-revalidate']);
-    }
-    return response('Giao diện đang được cập nhật. Vui lòng tải lại sau ít giây.', 503)
-        ->header('Retry-After', '3');
-})->where('any', '^(?!api).*$');
+Route::get('/sitemap.xml', [SeoPageController::class, 'sitemap']);
+Route::get('/{any?}', [SeoPageController::class, 'page'])->where('any', '^(?!api).*$');

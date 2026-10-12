@@ -1,0 +1,44 @@
+.my-card-placeholder {
+  display: grid;
+  grid-template-columns: .93fr 1fr;
+  gap: 36px;
+  padding: 18px;
+  background: #fffafc;
+  border: 1px solid #f5e3ea;
+  border-radius: 18px;
+}
+.my-card-placeholder-cover {
+  min-height: 390px;
+  display: grid;
+  place-items: center;
+  color: #edc6d1;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff0f4, #f9ecef);
+}
+.my-card-placeholder-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 14px;
+}
+.placeholder-line, .placeholder-actions > span {
+  display: block;
+  height: 12px;
+  border-radius: 7px;
+  background: #f3e7ec;
+  animation: card-placeholder-pulse 1.8s ease-in-out infinite;
+}
+.placeholder-line.short {width: 58%;}
+.placeholder-line.title {width: 82%; height: 25px;}
+.placeholder-actions {display: flex; gap: 12px; margin: 8px 0 18px;}
+.placeholder-actions > span {flex: 1; height: 46px; border-radius: 12px;}
+@keyframes card-placeholder-pulse {50% {opacity: .45;}}
+@media (max-width: 800px) {
+  .my-card-placeholder {grid-template-columns: 1fr; gap: 0; padding: 12px; border-radius: 22px;}
+  .my-card-placeholder-cover {min-height: 200px;}
+  .my-card-placeholder-info {padding: 22px 10px 14px; gap: 14px;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .placeholder-line, .placeholder-actions > span {animation: none;}
+}

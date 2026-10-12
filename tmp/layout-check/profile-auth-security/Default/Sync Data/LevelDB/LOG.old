@@ -1,2 +1,3 @@
-2026/10/04-10:57:59.132 31b4 Creating DB C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\Sync Data\LevelDB since it was missing.
-2026/10/04-10:57:59.141 31b4 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\Sync Data\LevelDB/MANIFEST-000001
+2026/10/04-19:21:02.407 1bd4 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\Sync Data\LevelDB/MANIFEST-000001
+2026/10/04-19:21:02.407 1bd4 Recovering log #3
+2026/10/04-19:21:02.410 1bd4 Reusing old log C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\Sync Data\LevelDB/000003.log 

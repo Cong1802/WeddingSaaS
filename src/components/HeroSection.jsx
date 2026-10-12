@@ -1,6 +1,6 @@
 import { ArrowRight, Eye, Gift, Headphones, LayoutGrid, ShieldCheck, Sparkles, Users } from 'lucide-react';
-import background from '../../images/section-01-hero/hero-pastel-curtain-bg3.png';
-import product from '../../images/section-01-hero/hero-reference-product.png';
+import background from '../../images/section-01-hero/hero-pastel-curtain-bg3.webp';
+import product from '../../images/section-01-hero/hero-reference-product.webp';
 import './HeroSection.css';
 
 const benefits = [
@@ -16,7 +16,7 @@ export default function HeroSection({ onCreate, onViewTemplates }) {
       <div className="landing-hero__inner">
         <div className="landing-hero__copy">
           <div className="landing-hero__heading">
-          <span className="landing-hero__badge"><Sparkles size={16} />Nền tảng Tạo Thiệp Cưới Online Hàng Đầu</span>
+          <span className="landing-hero__badge"><Sparkles size={16} />Nền tảng tạo thiệp cưới online dễ sử dụng</span>
           <h1 id="hero-title">Tạo Thiệp Cưới Online<em>Đẹp - Sang Trọng - Dễ Dàng</em></h1>
           </div>
           <p className="landing-hero__description">Thể hiện câu chuyện tình yêu riêng biệt với bộ sưu tập mẫu thiệp cưới điện tử sang trọng. Gửi lời mời tinh tế, nhận phản hồi RSVP và mừng cưới trực tuyến chỉ trong 5 phút.</p>

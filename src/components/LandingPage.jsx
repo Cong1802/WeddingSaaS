@@ -1,36 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { 
-  Menu,
-  Sparkles, 
-  Check, 
-  ArrowRight, 
-  Smartphone, 
-  CreditCard, 
-  Heart, 
-  Star, 
-  LayoutGrid, 
-  Search, 
-  ChevronLeft, 
-  ChevronRight, 
-  Users, 
-  Gift, 
-  Headphones, 
-  ShieldCheck, 
-  Lock, 
-  Sliders, 
-  Share2, 
-  ChevronDown, 
-  FolderHeart, 
-  Shield, 
-  LogOut, 
-  Mail, 
-  Send,
-  Globe,
-  Award,
-  Eye,
-  FileText,
-  Palette
-} from 'lucide-react';
+import { Menu, ArrowRight, Heart, LayoutGrid, ChevronDown, FolderHeart, Shield, LogOut, Home, UserRound } from 'lucide-react';
 
 import TemplateGallery from './TemplateGallery';
 import WhyUsSection from './WhyUsSection';
@@ -41,32 +10,15 @@ import TestimonialsSection from './TestimonialsSection';
 import FaqSection from './FaqSection';
 import './LandingPage.css';
 import MobileLandingMenu, { landingLinks } from './MobileLandingMenu';
-import heroBannerImg from '../assets/hero-banner.png';
-import heroBanner2Img from '../assets/hero-banner-2.png';
-import heroBgImg from '../assets/hero-bg.png';
-import logoImg from '../assets/logo.png';
-import whyUsCoupleImg from '../assets/why-us-couple.png';
+import logoImg from '../assets/logo.webp';
 import FeaturesSection from './FeaturesSection';
 import PricingSection from './PricingSection';
 import useLandingReveal from './useLandingReveal';
 
 // Master Plan Image Assets
-import introBackground from '../../images/section-01-hero/hero-why-us-continuous.png';
-import s01HeroProduct from '../../images/section-01-hero/s01-hero-product.png';
-import faqBackground from '../../images/section-09-faq/background.png';
+import introBackground from '../../images/section-01-hero/hero-why-us-continuous.webp';
+import faqBackground from '../../images/section-09-faq/background.webp';
 
-import s02FloralLeftBottom from '../../images/section-01-hero/s02-floral-left-bottom.png';
-import sharedBranchLeft from '../../images/shared/florals/shared-floral-branch-left.png';
-import sharedBranchRight from '../../images/shared/florals/shared-floral-branch-right.png';
-import sharedClusterSmall from '../../images/shared/florals/shared-floral-cluster-small.png';
-import sharedSprig from '../../images/shared/florals/shared-floral-sprig.png';
-import sharedRibbon from '../../images/shared/accents/shared-ribbon-coral.png';
-import sharedWaxSeal from '../../images/shared/accents/shared-wax-seal.png';
-import sharedPetal01 from '../../images/shared/petals/shared-petal-01.png';
-import sharedPetal02 from '../../images/shared/petals/shared-petal-02.png';
-import sharedPetal03 from '../../images/shared/petals/shared-petal-03.png';
-import sharedPetal04 from '../../images/shared/petals/shared-petal-04.png';
-import sharedPetal05 from '../../images/shared/petals/shared-petal-05.png';
 
 export default function LandingPage({ 
   onGoToEditor, 
@@ -86,6 +38,10 @@ export default function LandingPage({
   const createCard = () => user?.role === 'admin' ? onOpenAdmin?.() : onGoToEditor();
 
   const handleNavClick = (id) => {
+    if (id === 'templates') {
+      onOpenMyCards('templates');
+      return;
+    }
     setActiveNav(id);
     const element = document.getElementById(id);
     if (element) {
@@ -94,7 +50,7 @@ export default function LandingPage({
   };
 
   return (
-    <div className="landing-page" style={{
+    <div className={`landing-page${user ? ' has-bottom-nav' : ''}`} style={{
       width: '100%',
       minHeight: '100vh',
       backgroundColor: 'var(--landing-background)',
@@ -309,7 +265,7 @@ export default function LandingPage({
             {landingLinks.map((item) => (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                href={item.id === 'templates' ? '/templates' : `#${item.id}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavClick(item.id);
@@ -508,6 +464,12 @@ export default function LandingPage({
         </div>
       </main>
       <SiteFooter settings={publicSettings} />
+      {user && <nav className="my-card-bottom-nav" aria-label="Điều hướng trên điện thoại">
+        <button aria-current="page" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><Home /><span>Trang chủ</span></button>
+        <button onClick={() => onOpenMyCards('templates')}><LayoutGrid /><span>Mẫu thiệp</span></button>
+        <button onClick={() => onOpenMyCards()}><Heart /><span>Thiệp của tôi</span></button>
+        <button onClick={() => setIsMobileMenuOpen(true)}><UserRound /><span>Tài khoản</span></button>
+      </nav>}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ArrowRight, Headphones, Heart, Mail, Music2, QrCode, ShieldCheck } from 'lucide-react';
-import logo from '../assets/logo.png';
-import background from '../../images/section-08-footer/footer-background.png';
+import logo from '../assets/logo.webp';
+import background from '../../images/section-08-footer/footer-background.webp';
 import './SiteFooter.css';
 
 const safeUrl = value => typeof value === 'string' && /^(https?:\/\/|mailto:|tel:)/i.test(value.trim()) ? value.trim() : null;
@@ -9,7 +9,7 @@ const Facebook = () => <svg width="21" height="21" viewBox="0 0 24 24" fill="cur
 const Instagram = () => <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>;
 const Youtube = () => <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" /><path d="m10 9 6 3-6 3z" fill="#ffe7e9" /></svg>;
 const columns = [
-  { title: 'Sản phẩm', links: [['Mẫu thiệp cưới', '#templates'], ['Tính năng', '#features'], ['Bảng giá', '#pricing'], ['Khách hàng', '#testimonials'], ['Câu hỏi thường gặp', '#faq']] },
+  { title: 'Sản phẩm', links: [['Mẫu thiệp cưới', '/templates'], ['Tính năng', '#features'], ['Bảng giá', '#pricing'], ['Khách hàng', '#testimonials'], ['Câu hỏi thường gặp', '#faq']] },
   { title: 'Hỗ trợ', links: [['Hướng dẫn sử dụng', '#steps'], ['Liên hệ', '#footer-contact'], ['Chính sách bảo mật', null, 'privacy_url'], ['Điều khoản dịch vụ', null, 'terms_url'], ['Hướng dẫn thanh toán', '#pricing']] },
   { title: 'Về chúng tôi', links: [['Giới thiệu', '#whyus'], ['Blog chia sẻ', null, 'blog_url'], ['Câu chuyện khách hàng', '#testimonials'], ['Tuyển dụng', null, 'careers_url'], ['Đối tác', null, 'partners_url']] },
 ];

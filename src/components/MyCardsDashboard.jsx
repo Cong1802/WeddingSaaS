@@ -1,22 +1,40 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Eye, Pencil, Copy, Check, Heart, Mail, ChevronDown, QrCode, Share2, LockKeyhole, RefreshCw, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { Eye, Pencil, Copy, Check, Heart, Mail, ChevronDown, QrCode, Share2, LockKeyhole, RefreshCw, ExternalLink, Home, LayoutGrid, UserRound, X, ArrowLeft } from 'lucide-react';
 import logo from '../assets/logo.png';
 import useTemplates, { normalizeTemplate } from '../templates/useTemplates';
 import PurchaseModal from './PurchaseModal';
 import './MyCardsDashboard.css';
+import MyCardsEmpty from './MyCardsEmpty';
+import TemplateCatalogPage from './TemplateCatalogPage';
+import './MyCardsMobile.css';
+import './AccountScreen.css';
+import './MyCardsPlaceholder.css';
+import cornerFlowers from '../../images/shared/florals/shared-floral-sprig.png';
 
 const date = value => value ? new Date(value).toLocaleDateString('vi-VN') : 'Chưa kích hoạt';
 
-export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToEditor, onOpenAuthModal, onOpenAdmin, onLogout, settings = {} }) {
+export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToEditor, onOpenAuthModal, onOpenAdmin, onLogout, settings = {}, initialSection = 'cards', catalogPage = false, onOpenTemplates, onMyCards }) {
   const templates = useTemplates();
   const [account, setAccount] = useState({ cards: [], licenses: [], legacy_cards: [] });
   const [loading, setLoading] = useState(true);
+  const [loadedToken, setLoadedToken] = useState(null);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [menu, setMenu] = useState(false);
-  const [showTemplates, setShowTemplates] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 800px)');
+    const update = event => setIsMobile(event.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+  const [showTemplates, setShowTemplates] = useState(initialSection === 'templates');
   const [purchase, setPurchase] = useState(null);
+  const purchaseRef = useRef(purchase);
+  useEffect(() => { purchaseRef.current = purchase; }, [purchase]);
   const [primaryId, setPrimaryId] = useState('');
+  const [category, setCategory] = useState('Tất cả');
   const [busy, setBusy] = useState(false);
   const card = account.cards[0];
   const active = !!card?.access?.active;
@@ -31,6 +49,7 @@ export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToE
       const data = await response.json();
       if (!response.ok) throw Error(data.message || 'Không tải được thiệp.');
       setAccount(data);
+      setLoadedToken(token);
       setPrimaryId(String(data.cards[0]?.id || data.legacy_cards?.[0]?.id || ''));
     } catch (error) { setError(error.message); }
     finally { setLoading(false); }
@@ -66,6 +85,7 @@ export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToE
     } catch { setError('Không tải được mã QR. Vui lòng thử lại.'); }
   };
   const activateTemplate = async template => {
+    if (!user) { onOpenAuthModal(); return; }
     const owned = account.licenses.find(license => license.template_code === template.id && new Date(license.expires_at) > new Date());
     if (!owned) { setPurchase(template); return; }
     if (card) {
@@ -81,19 +101,66 @@ export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToE
     else { setShowTemplates(true); setError('Thiết kế cũ không còn trong danh sách. Hãy chọn mẫu đang được bán.'); }
   };
 
-  return <div className="my-card-page">
+  useEffect(() => {
+    if (!menu) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const close = event => { if (event.key === 'Escape') { setMenu(false); setPurchase(null); } };
+    window.addEventListener('keydown', close);
+    return () => { document.body.style.overflow = previous; window.removeEventListener('keydown', close); };
+  }, [menu]);
+  const openTemplates = () => {
+    if (onOpenTemplates) { onOpenTemplates(); return; }
+    setMenu(false); setShowTemplates(true);
+  };
+  useEffect(() => {
+    if (!showTemplates) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    document.body.style.overflow = 'hidden';
+    const dialog = document.querySelector('.my-card-template-dialog');
+    dialog?.querySelector('button')?.focus();
+    const onKeyDown = event => {
+      if (purchaseRef.current) return;
+      if (event.key === 'Escape') setShowTemplates(false);
+      if (event.key !== 'Tab' || !dialog) return;
+      const controls = [...dialog.querySelectorAll('button:not(:disabled), a[href]')];
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+      if (previousFocus?.isConnected) previousFocus.focus();
+    };
+  }, [showTemplates, loading]);
+  const categories = ['Tất cả', ...new Set(templates.map(template => template.category).filter(Boolean))];
+  const isEmpty = !!user && loadedToken === token && !card;
+  const accountMenu = <><button className="my-card-menu-backdrop" aria-label="Đóng tài khoản" onClick={() => setMenu(false)} /><div className={`my-card-menu${isMobile ? ' my-card-account-screen' : ''}`} role={isMobile ? 'dialog' : undefined} aria-modal={isMobile ? true : undefined} aria-label="Tài khoản">
+    {isMobile ? <><header className="account-screen-header"><button aria-label="Quay lại" onClick={() => setMenu(false)}><ArrowLeft size={22} /></button><h2>Tài khoản</h2></header><div className="account-screen-body"><section className="account-screen-profile">{user?.avatar ? <img src={user.avatar} alt="" /> : <span><UserRound size={32} /></span>}<h3>{user?.name}</h3><p>{user?.email}</p></section><div className="account-screen-actions"><button onClick={() => { setMenu(false); onMyCards?.(); }}><Heart size={21} />Thiệp của tôi</button><button onClick={() => { setMenu(false); onOpenTemplates?.(); }}><LayoutGrid size={21} />Kho mẫu thiệp</button>{user?.role === 'admin' && <button onClick={() => { setMenu(false); onOpenAdmin(); }}><UserRound size={21} />Quản trị admin</button>}<button className="account-screen-logout" onClick={() => { setMenu(false); onLogout(); }}>Đăng xuất</button></div></div></> : <><div className="my-card-menu-title"><strong>{user?.name}</strong><button aria-label="Đóng tài khoản" onClick={() => setMenu(false)}><X size={20} /></button></div><p>{user?.email}</p>{user?.role === 'admin' && <button onClick={onOpenAdmin}>Quản trị admin</button>}<button onClick={onLogout}>Đăng xuất</button></>}
+  </div></>;
+  if (catalogPage) return <>
+    <TemplateCatalogPage templates={templates} user={user} busy={busy || account.primary_selection_pending} onHome={onBackToLanding} onMyCards={onMyCards} onAccount={() => user ? setMenu(!menu) : onOpenAuthModal()} onSelect={activateTemplate} onBlank={() => onGoToEditor()} error={error} accountMenu={menu ? accountMenu : null} />
+    <PurchaseModal isOpen={!!purchase} token={token} templateCode={purchase?.id} templateName={purchase?.name} onClose={() => setPurchase(null)} onPurchaseSuccess={async () => { setPurchase(null); await load(); }} />
+  </>;
+  return <div className={`my-card-page${isEmpty ? ' is-empty' : ''}`}>
+    {isEmpty && <><img className="my-card-corner top" src={cornerFlowers} alt="" /><img className="my-card-corner bottom" src={cornerFlowers} alt="" /></>}
     <header className="my-card-header">
       <button className="my-card-brand" onClick={onBackToLanding}><img src={settings.site_logo || logo} alt={settings.site_name || 'WeddingSaaS'} /></button>
       <nav aria-label="Điều hướng website">{[['Trang chủ', ''], ['Mẫu thiệp', 'templates'], ['Tính năng', 'features'], ['Bảng giá', 'pricing'], ['Hướng dẫn', 'how-it-works'], ['Liên hệ', 'faq']].map(([label, anchor]) => <a key={label} href={`/#${anchor}`}>{label}</a>)}</nav>
       <div className="my-card-account">
-        <button onClick={() => user ? setMenu(!menu) : onOpenAuthModal()}>{user?.avatar && <img src={user.avatar} alt="" />}<span>{user?.name || 'Đăng nhập'}</span><ChevronDown size={18} /></button>
-        {menu && <div className="my-card-menu">{user?.role === 'admin' && <button onClick={onOpenAdmin}>Quản trị admin</button>}<button onClick={onLogout}>Đăng xuất</button></div>}
+        <button aria-label={user ? `Tài khoản ${user.name}` : 'Đăng nhập'} onClick={() => user ? setMenu(!menu) : onOpenAuthModal()}>{user?.avatar ? <img src={user.avatar} alt="" /> : <span className="my-card-avatar">{user?.name?.trim().charAt(0).toUpperCase() || <UserRound size={22} />}</span>}<span>{user?.name || 'Đăng nhập'}</span><ChevronDown size={18} /></button>
+        {menu && (isMobile ? createPortal(<div className="my-card-page" style={{ display: 'contents' }}>{accountMenu}</div>, document.body) : accountMenu)}
       </div>
     </header>
     <main className="my-card-main">
-      <div className="my-card-heading"><h1>Thiệp cưới của bạn</h1><div className="my-card-divider"><Heart size={14} fill="currentColor" /></div><p>Mọi thông tin cho ngày vui, trong một không gian.</p></div>
+      <div className="my-card-mobile-greeting"><p>{showTemplates ? 'Một phong cách cho ngày vui' : `Chào ${user?.name?.trim().split(/\s+/).pop() || 'bạn'} 👋`}</p><h1>{showTemplates ? 'Khám phá mẫu thiệp' : 'Thiệp cưới của bạn'}</h1></div>
+      {!isEmpty && <div className="my-card-heading"><h1>Thiệp cưới của bạn</h1><div className="my-card-divider"><Heart size={14} fill="currentColor" /></div><p>Mọi thông tin cho ngày vui, trong một không gian.</p></div>}
       {error && <div className="my-card-alert" role="alert">{error}<button onClick={load}><RefreshCw size={16} /> Thử lại</button></div>}
-      {!user ? <section className="my-card-empty"><Heart size={36} /><h2>Lưu giữ ngày vui của bạn</h2><p>Đăng nhập để quản lý thiệp và mẫu đã mua.</p><button className="primary" onClick={onOpenAuthModal}>Đăng nhập</button></section> : loading ? <div className="my-card-empty" role="status">Đang tải thiệp của bạn…</div> : <>
+      {!user ? <section className="my-card-empty"><Heart size={36} /><h2>Lưu giữ ngày vui của bạn</h2><p>Đăng nhập để quản lý thiệp và mẫu đã mua.</p><button className="primary" onClick={onOpenAuthModal}>Đăng nhập</button></section> : loading && loadedToken !== token ? <div className="my-card-placeholder" aria-busy="true" aria-label="Đang chuẩn bị thiệp của bạn"><div className="my-card-placeholder-cover" aria-hidden="true"><Heart size={40} strokeWidth={1} /></div><div className="my-card-placeholder-info" aria-hidden="true"><span className="placeholder-line short" /><span className="placeholder-line title" /><span className="placeholder-line" /><div className="placeholder-actions"><span /><span /></div><span className="placeholder-line" /><span className="placeholder-line short" /></div></div> : error && loadedToken !== token ? null : <>
         {account.primary_selection_pending && <section className="my-card-selection"><h2>Chọn thiệp chính của bạn</h2><p>Bạn có nhiều thiệp từ trước. Chọn một URL sử dụng lâu dài; các thiệp còn lại được lưu trữ, giữ nguyên dữ liệu. Lựa chọn này chỉ thực hiện một lần.</p><select aria-label="Thiệp chính" value={primaryId} onChange={event => setPrimaryId(event.target.value)}>{account.legacy_cards.map(item => <option key={item.id} value={item.id}>{item.card_data?.title || item.slug} — /v/{item.slug}</option>)}</select><button className="primary" disabled={busy || !primaryId} onClick={() => window.confirm('Giữ URL của thiệp này làm URL cố định?') && mutate('/api/user/cards/select-primary', { card_id: Number(primaryId) })}>Chọn thiệp chính</button></section>}
         {card ? <article className="my-card-feature">
           <div className="my-card-cover"><img src={card.card_data?.heroImage || card.template?.thumbnail || logo} onError={event => { event.currentTarget.src = logo; }} alt={`Ảnh bìa ${title}`} /><a href={active && card.is_published ? url : undefined} aria-disabled={!active || !card.is_published} target="_blank" rel="noopener noreferrer">{active && card.is_published ? <>Xem thiệp hoàn chỉnh <ExternalLink size={15} /></> : 'Thiệp hiện đang khóa hoặc được ẩn'}</a></div>
@@ -106,26 +173,34 @@ export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToE
             <div className="my-card-share"><h3>Chia sẻ ngày vui</h3><p>{active ? 'Gửi liên kết này đến người thân và bạn bè.' : 'Liên kết được giữ nguyên và sẽ mở lại khi mẫu được kích hoạt.'}</p><div className="my-card-link"><input aria-label="Liên kết thiệp cố định" readOnly value={url} /><button onClick={copy}>{copied ? <Check size={20} /> : <Copy size={20} />}{copied ? 'Đã sao chép' : 'Sao chép'}</button></div><div className="my-card-share-actions"><button className="outline" disabled={!active || !card.is_published} onClick={share}><Share2 size={20} /> Chia sẻ</button><button className="outline" disabled={!active || !card.is_published} onClick={downloadQr}><QrCode size={21} /> Tải mã QR</button></div></div>
             <div className="my-card-management"><button disabled={busy} onClick={() => setShowTemplates(!showTemplates)}>Đổi mẫu thiệp</button>{active && <button disabled={busy} onClick={() => mutate('/api/user/cards/visibility', { is_published: !card.is_published }, 'PATCH')}>{card.is_published ? 'Ẩn thiệp' : 'Hiển thị thiệp'}</button>}</div>
           </div>
-        </article> : <section className="my-card-empty"><Heart size={36} /><h2>Ngày vui bắt đầu từ một tấm thiệp</h2><p>Chọn mẫu và mua quyền sử dụng 6 tháng. Khi lưu lần đầu, bạn có một URL cố định cho tài khoản.</p><button className="primary" onClick={() => setShowTemplates(true)}>Chọn mẫu thiệp</button></section>}
-        {showTemplates && <section className="my-card-catalog">
-          <h2>{card ? 'Chọn mẫu cho cùng một URL' : 'Chọn mẫu thiệp đầu tiên'}</h2>
-          <p>Mẫu mới cần mua riêng. Mẫu đã sở hữu còn hạn có thể dùng lại; hết hạn cần gia hạn.</p>
-          <div>{templates.map(template => {
+        </article> : <MyCardsEmpty onChooseTemplate={openTemplates} />}
+        {showTemplates && <div className={showTemplates ? 'my-card-template-overlay' : undefined} onClick={event => { if (showTemplates && event.target === event.currentTarget) setShowTemplates(false); }}>
+          <div className={showTemplates ? 'my-card-template-dialog' : undefined} role={showTemplates ? 'dialog' : undefined} aria-modal={showTemplates ? true : undefined} aria-labelledby={showTemplates ? 'my-card-template-title' : undefined}>
+          {showTemplates && <header className="my-card-template-header"><button aria-label="Quay lại thiệp của tôi" onClick={() => setShowTemplates(false)}><ArrowLeft size={22} /></button><h2 id="my-card-template-title">Chọn mẫu thiệp</h2><button aria-label="Đóng chọn mẫu" onClick={() => setShowTemplates(false)}><X size={22} /></button></header>}
+          <section className={`my-card-catalog${showTemplates ? ' is-open' : ' mobile-recommendations'}`}>
+          <nav className="my-card-categories" aria-label="Phong cách mẫu thiệp">{categories.map(item => <button key={item} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>)}</nav>
+          <div>{templates.filter(template => category === 'Tất cả' || template.category === category).map(template => {
             const license = account.licenses.find(item => item.template_code === template.id);
             const owned = license && new Date(license.expires_at) > new Date();
             return <article key={template.id}>
-              <img src={template.thumbnail} alt={template.name} />
+              <div className="my-card-template-image"><img src={template.thumbnail} alt={template.name} loading="lazy" /><a href={template.fileUrl} target="_blank" rel="noopener noreferrer" aria-label={`Xem trước ${template.name}`}><Eye size={20} /></a></div>
               <h3>{template.name}</h3>
-              <p>{owned ? `Đã sở hữu · đến ${date(license.expires_at)}` : license ? 'Đã hết hạn' : 'Chưa sở hữu'}</p>
-              <button className={owned ? 'outline' : 'primary'} disabled={busy || account.primary_selection_pending} onClick={() => activateTemplate(template)}>{owned ? 'Sử dụng mẫu' : license ? 'Gia hạn 6 tháng' : 'Mua mẫu · 6 tháng'}</button>
+              <p className={`my-card-template-license${owned ? ' owned' : ''}`}><span>{owned ? <Check size={13} /> : <LockKeyhole size={13} />}{owned ? 'Đã sở hữu' : license ? 'Đã hết hạn' : 'Chưa sở hữu'}</span><small>{owned ? `Đến ${date(license.expires_at)}` : '6 tháng'}</small></p>
+              <button className={owned ? 'outline' : 'primary'} disabled={busy || account.primary_selection_pending} onClick={() => activateTemplate(template)}>{owned ? 'Sử dụng mẫu' : license ? 'Gia hạn 6 tháng' : 'Chọn mẫu'}</button>
             </article>;
           })}</div>
-        </section>}
-        <div className="my-card-help"><section><Heart size={30} /><div><h3>Một liên kết cho ngày vui</h3><p>Đổi mẫu vẫn giữ nguyên URL và thông tin thiệp.</p></div></section><a href="/#how-it-works"><Mail size={30} /><div><h3>Cần một chút hướng dẫn?</h3><p>Cách gửi thiệp và cập nhật thông tin.</p></div><span>Xem hướng dẫn →</span></a></div>
+        </section></div></div>}
+        {card && <div className="my-card-help"><section><Heart size={30} /><div><h3>Một liên kết cho ngày vui</h3><p>Đổi mẫu vẫn giữ nguyên URL và thông tin thiệp.</p></div></section><a href="/#how-it-works"><Mail size={30} /><div><h3>Cần một chút hướng dẫn?</h3><p>Cách gửi thiệp và cập nhật thông tin.</p></div><span>Xem hướng dẫn →</span></a></div>}
         {account.archived_count > 0 && <p className="my-card-archive-note">{account.archived_count} thiệp cũ được lưu trữ; dữ liệu vẫn được giữ nguyên.</p>}
       </>}
       <footer className="my-card-footer"><span>© {new Date().getFullYear()} WeddingSaaS. Thiệp cưới online thông minh.</span><div>{settings.terms_url && <a href={settings.terms_url}>Điều khoản sử dụng</a>}{settings.privacy_url && <a href={settings.privacy_url}>Chính sách bảo mật</a>}<a href="/#faq">Liên hệ</a></div></footer>
     </main>
+    <nav className="my-card-bottom-nav" aria-label="Điều hướng trên điện thoại">
+      <button onClick={onBackToLanding}><Home /><span>Trang chủ</span></button>
+      <button aria-current={showTemplates ? 'page' : undefined} onClick={openTemplates}><LayoutGrid /><span>Mẫu thiệp</span></button>
+      <button aria-current={!showTemplates && !menu ? 'page' : undefined} onClick={() => { setMenu(false); setShowTemplates(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><Heart /><span>Thiệp của tôi</span></button>
+      <button aria-current={menu ? 'page' : undefined} onClick={() => user ? setMenu(!menu) : onOpenAuthModal()}><UserRound /><span>Tài khoản</span></button>
+    </nav>
     <PurchaseModal isOpen={!!purchase} token={token} templateCode={purchase?.id} templateName={purchase?.name} onClose={() => setPurchase(null)} onPurchaseSuccess={async () => { setPurchase(null); await load(); setShowTemplates(true); }} />
   </div>;
 }

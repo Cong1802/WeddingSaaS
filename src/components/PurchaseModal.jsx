@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { CheckCircle2, Check, CreditCard, ArrowLeft, ChevronRight } from 'lucide-react';
+import FeatureText from './FeatureText';
+import './PurchaseModal.css';
 
 export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSuccess, onSuccess, templateCode, templateName, initialPackage = 'pro' }) {
   const [selectedPackage, setSelectedPackage] = useState('pro'); // 'pro' | 'vip'
@@ -10,10 +12,29 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
   const [plans, setPlans] = useState([]);
   const [catalogError, setCatalogError] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('pending');
+  const [catalogLoading, setCatalogLoading] = useState(false);
+  const dialogRef = useRef(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    document.body.style.overflow = 'hidden';
+    dialogRef.current?.focus();
+    const key = event => {
+      if (event.key === 'Escape') onClose();
+      if (event.key !== 'Tab') return;
+      const buttons = [...(dialogRef.current?.querySelectorAll('button:not(:disabled), a[href]') || [])].filter(item => item.getClientRects().length);
+      const first = buttons[0], last = buttons[buttons.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', key);
+    return () => { document.body.style.overflow = previous; document.removeEventListener('keydown', key); previousFocus?.focus(); };
+  }, [isOpen, onClose]);
   useEffect(() => {
     if (!isOpen) return;
     let active = true;
-    setOrderData(null); setConfirmed(false); setCatalogError(''); setPaymentStatus('pending');
+    setOrderData(null); setConfirmed(false); setCatalogError(''); setPaymentStatus('pending'); setPlans([]); setCatalogLoading(true);
     fetch('/api/public/plans', { headers: { Accept: 'application/json' } })
       .then(response => { if (!response.ok) throw new Error('Không tải được gói cước.'); return response.json(); })
       .then(data => {
@@ -22,7 +43,8 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
         setPlans(available);
         setSelectedPackage(available.find(plan => plan.code === initialPackage)?.code || available[0]?.code || '');
       })
-      .catch(error => { if (active) { setPlans([]); setCatalogError(error.message); } });
+      .catch(error => { if (active) { setPlans([]); setCatalogError(error.message); } })
+      .finally(() => { if (active) setCatalogLoading(false); });
     return () => { active = false; };
   }, [isOpen, initialPackage, templateCode]);
 
@@ -91,7 +113,7 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
 
   return (
     <div 
-      className="app-modal-overlay animate-fade-in"
+      className="app-modal-overlay purchase-modal-overlay animate-fade-in"
       style={{
         position: 'fixed',
         top: 0,
@@ -113,7 +135,7 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
       onClick={onClose}
     >
       <div
-        className="app-modal-container"
+        className="app-modal-container purchase-modal" ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="purchase-title"
         onClick={e => e.stopPropagation()}
         style={{
           width: '100%',
@@ -129,16 +151,18 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
         }}
       >
         {/* Mobile Drag Handle */}
-        <div className="mobile-only" style={{ width: '36px', height: '4px', borderRadius: '2px', backgroundColor: 'rgba(255, 255, 255, 0.3)', margin: '10px auto 4px auto', flexShrink: 0 }} />
+        <div className="purchase-modal-handle" />
         {/* Header */}
-        <div style={{
+        <div className="purchase-modal-header" style={{
           background: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%)',
           padding: '24px 20px',
           textAlign: 'center',
           color: '#ffffff',
           position: 'relative'
         }}>
+          <button className="purchase-modal-back" aria-label="Quay lại chọn mẫu" onClick={onClose}><ArrowLeft size={22} /></button>
           <button
+            className="purchase-modal-close" aria-label="Đóng thanh toán"
             onClick={onClose}
             style={{
               position: 'absolute',
@@ -172,10 +196,10 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
             fontSize: '24px',
             backdropFilter: 'blur(6px)'
           }}>
-            💳
+            <CreditCard size={25} />
           </div>
-          <h2 style={{ fontSize: '20px', fontWeight: '800', fontFamily: "'Playfair Display', serif", margin: 0 }}>
-            Thanh Toán Mua Thiệp Cưới
+          <h2 id="purchase-title" style={{ fontSize: '20px', fontWeight: '800', margin: 0 }}>
+            {orderData ? 'Thanh toán VietQR' : 'Chọn gói thiệp'}
           </h2>
           <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)', margin: '4px 0 0 0' }}>
             {templateName || 'Chọn mẫu trước khi thanh toán'} · Quyền sử dụng mẫu trong 6 tháng
@@ -183,7 +207,8 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
         </div>
 
         {/* Content Body */}
-        <div style={{ padding: '24px' }}>
+        <div className="purchase-modal-body" style={{ padding: '24px' }}>
+          <div className="purchase-mobile-context"><span>Bước {orderData ? '2' : '1'} / 2 · {orderData ? 'Thanh toán' : 'Chọn gói'}</span><h3>{templateName || 'Chọn mẫu trước khi thanh toán'}</h3><p>Quyền sử dụng mẫu trong 6 tháng</p></div>
           
           {paymentStatus === 'cancelled' && <p role="alert" style={{ color: '#dc2626' }}>Đơn đã bị hủy. Đóng cửa sổ và tạo đơn mới nếu muốn mua mẫu.</p>}
           {!orderData ? (
@@ -193,34 +218,19 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
                 1. Chọn Gói Thiệp Cưới Của Bạn:
               </h3>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {plans.map(plan => <button key={plan.code} type="button" onClick={() => setSelectedPackage(plan.code)} style={{ padding: 16, borderRadius: 16, textAlign: 'left', border: selectedPackage === plan.code ? '2px solid #f43f5e' : '1px solid #cbd5e1', background: selectedPackage === plan.code ? '#fff1f2' : '#f8fafc', cursor: 'pointer' }}>
-                  <h4 style={{ fontSize: 16, color: '#0f172a', margin: '4px 0' }}>{plan.name}</h4>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: '#f43f5e' }}>{Number(plan.price).toLocaleString('vi-VN')} VND</div>
-                  <p style={{ fontSize: 11, color: '#64748b' }}>{plan.description}</p>
+              <div className="purchase-plans" role="group" aria-label="Gói thiệp cưới">
+                {plans.map(plan => <button className="purchase-plan" aria-pressed={selectedPackage === plan.code} key={plan.code} type="button" onClick={() => setSelectedPackage(plan.code)}>
+                  <span className="purchase-plan-top"><strong>{plan.name}</strong>{plan.is_popular && <span className="purchase-plan-popular">Phổ biến</span>}<span className="purchase-plan-radio">{selectedPackage === plan.code && <Check size={15} />}</span></span>
+                  {plan.subtitle && <span className="purchase-plan-subtitle">{plan.subtitle}</span>}
+                  <span className="purchase-plan-price">{Number(plan.price).toLocaleString('vi-VN')} đ <small>{plan.period}</small></span>
+                  {plan.description && <span className="purchase-plan-description">{plan.description}</span>}
+                  {!!plan.features?.length && <ul className="purchase-plan-features">{plan.features.map((feature, index) => <li key={index}><Check size={16} /><span><FeatureText text={feature} /></span></li>)}</ul>}
                 </button>)}
               </div>
+              {catalogLoading && <p role="status">Đang tải gói thiệp…</p>}
+              {!catalogLoading && !catalogError && !plans.length && <p role="status">Chưa có gói trả phí đang mở bán.</p>}
               {catalogError && <p role="alert">{catalogError}</p>}
 
-              <button
-                onClick={() => handleCreateOrder(selectedPackage)}
-                disabled={loading || !templateCode || !plans.some(plan => plan.code === selectedPackage)}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  fontWeight: '700',
-                  border: 'none',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(244, 63, 94, 0.35)',
-                  marginTop: '8px'
-                }}
-              >
-                {loading ? 'Đang tạo mã VietQR thanh toán...' : '👉 Tiếp Tục Thanh Toán VietQR'}
-              </button>
             </div>
           ) : (
             /* Step 2: VietQR Checkout Display */
@@ -324,6 +334,10 @@ export default function PurchaseModal({ isOpen, onClose, token, onPurchaseSucces
           )}
 
         </div>
+        {!orderData && <footer className="purchase-modal-footer">
+          <div className="purchase-selected-summary"><span>{plans.find(plan => plan.code === selectedPackage)?.name || 'Chọn gói phù hợp'}</span><strong>{plans.some(plan => plan.code === selectedPackage) ? `${Number(plans.find(plan => plan.code === selectedPackage).price).toLocaleString('vi-VN')} đ` : '—'}</strong></div>
+          <button className="purchase-continue" onClick={() => handleCreateOrder(selectedPackage)} disabled={loading || !templateCode || !plans.some(plan => plan.code === selectedPackage)}>{loading ? 'Đang tạo mã VietQR…' : <>Tiếp tục thanh toán <ChevronRight size={19} /></>}</button>
+        </footer>}
       </div>
     </div>
   );

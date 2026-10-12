@@ -1,7 +1,7 @@
 ﻿import { ArrowRight, Brush, ChartColumn, Gift, Headphones, Mail, Settings, ShieldCheck, Sparkles, Users, Zap } from 'lucide-react';
-import preview from '../../images/section-05-features/features-product.png';
-import flowers from '../../images/section-05-features/features-sprig.png';
-import background from '../../images/section-05-features/features-background-no-arch.png';
+import preview from '../../images/section-05-features/features-product.webp';
+import flowers from '../../images/section-05-features/features-sprig.webp';
+import background from '../../images/section-05-features/features-background-no-arch.webp';
 import './FeaturesSection.css';
 
 const features = [

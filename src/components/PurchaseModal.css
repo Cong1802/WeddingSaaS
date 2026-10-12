@@ -1,0 +1,48 @@
+.purchase-modal{font-family:'Plus Jakarta Sans',sans-serif;outline:none;display:flex;flex-direction:column;overflow-y:hidden!important}
+.purchase-modal-header{flex-shrink:0}
+.purchase-modal-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.purchase-modal-back,.purchase-mobile-context{display:none}
+.purchase-modal-footer{flex-shrink:0;padding:14px 24px 20px;background:white;border-top:1px solid #f1e3e9}
+.purchase-selected-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:#718096;margin-bottom:10px}
+.purchase-selected-summary strong{font-size:20px;color:#f43f6b;white-space:nowrap}
+.purchase-modal *{box-sizing:border-box}
+.purchase-modal button{font-family:inherit;touch-action:manipulation}
+.purchase-modal button:disabled{opacity:.55;cursor:wait!important}
+.purchase-modal button:focus-visible{outline:3px solid #c3275b;outline-offset:3px}
+.purchase-modal-handle{display:none}
+.purchase-plans{display:grid;gap:12px}
+.purchase-plan{display:block;width:100%;padding:18px;border:1px solid #eadce3;border-radius:18px;background:#fff;text-align:left;color:#17233c;cursor:pointer}
+.purchase-plan[aria-pressed=true]{border:2px solid #fa386b;padding:17px;background:#fff4f7;box-shadow:0 3px 14px #f43f5e12}
+.purchase-plan-top{display:flex;align-items:center;gap:9px;font-size:15px}
+.purchase-plan-popular{font-size:10px;border-radius:20px;color:#e32c61;background:#ffe0ea;padding:4px 8px}
+.purchase-plan-radio{margin-left:auto;width:22px;height:22px;border:1px solid #d8ccd4;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+[aria-pressed=true]>.purchase-plan-top .purchase-plan-radio{background:#fa386b;border-color:#fa386b;color:white}
+.purchase-plan-price{display:block;color:#f43f6b;font-size:23px;font-weight:700;margin:10px 0 8px}
+.purchase-plan-price small{font-size:11px;font-weight:400;color:#718096}
+.purchase-plan-description,.purchase-plan-subtitle{display:block;font-size:12px;line-height:1.6;color:#718096;overflow-wrap:anywhere}
+.purchase-plan-subtitle{margin-top:5px}
+.purchase-plan-features{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid #efdee5;display:grid;gap:8px}
+.purchase-plan-features li{display:flex;gap:8px;font-size:12px;line-height:1.6}
+.purchase-plan-features svg{color:#ec3a6c;flex-shrink:0;margin-top:2px}
+.purchase-plan-features span{overflow-wrap:anywhere}
+.purchase-modal-close{width:44px!important;height:44px!important;min-height:44px}
+.purchase-modal-header p{line-height:1.6}
+.purchase-continue{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:50px;padding:14px;border:0;border-radius:14px;background:linear-gradient(135deg,#f43f5e,#ec4899);color:white;font-size:14px;font-weight:700;cursor:pointer}
+@media(max-width:800px){
+ .purchase-modal-overlay{height:100dvh!important;width:100%!important;padding:0!important;align-items:flex-end!important;background:#18223988!important}
+ .purchase-modal-overlay .purchase-modal{width:100%!important;max-width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;padding-top:env(safe-area-inset-top)!important;padding-bottom:env(safe-area-inset-bottom)!important;overscroll-behavior:contain}
+ .purchase-modal-handle{display:none}
+ .purchase-modal-header{background:white!important;color:#17233c!important;padding:18px 56px!important;border-bottom:1px solid #f1e3e9}
+ .purchase-modal-header>div{display:none!important}
+ .purchase-modal-header h2{font-size:17px!important;line-height:1.4}
+ .purchase-modal-header p,.purchase-modal-close{display:none!important}
+ .purchase-modal-back{display:flex;align-items:center;justify-content:center;position:absolute;left:12px;top:8px;width:44px;height:44px;background:transparent;border:0;color:#17233c;border-radius:50%}
+ .purchase-modal-body{padding:20px 16px 24px!important;background:#fff8fa}
+ .purchase-mobile-context{display:block;margin-bottom:20px}
+ .purchase-mobile-context>span{font-size:11px;font-weight:600;color:#e13267}
+ .purchase-mobile-context h3{font-size:16px;line-height:1.5;margin:8px 0 4px}
+ .purchase-mobile-context p{font-size:12px;color:#718096;margin:0}
+ .purchase-modal-body>div:not(.purchase-mobile-context)>h3{display:none}
+ .purchase-modal-footer{padding:12px 16px 16px;box-shadow:0 -4px 20px #543c4508}
+ .purchase-modal-body button{min-height:44px}
+}

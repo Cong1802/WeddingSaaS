@@ -1,0 +1,42 @@
+@media (max-width: 800px) {
+  .my-card-menu.my-card-account-screen {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh;
+    margin: 0;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px) !important;
+    border: 0;
+    border-radius: 0 !important;
+    background: #fff7f4;
+    box-shadow: none !important;
+    z-index: 2001;
+    display: flex;
+    flex-direction: column;
+    color: #624347;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .account-screen-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #fffaf8;
+    border-bottom: 1px solid #f5ced8;
+    flex-shrink: 0;
+  }
+  .account-screen-header h2 {font: 700 18px/1.4 var(--font-sans); margin: 0; color: #4f3033;}
+  .account-screen-header button {width: 44px !important; height: 44px; padding: 0 !important; display: grid !important; place-items: center; border-radius: 50%; color: #d24f72; background: #ffe9ee; border: 0;}
+  .account-screen-body {flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 24px 20px;}
+  .account-screen-profile {text-align: center; padding: 24px 16px; background: #fffaf8; border: 1px solid #f5ced8; border-radius: 12px;}
+  .account-screen-profile > img, .account-screen-profile > span {width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 14px; display: grid; place-items: center; object-fit: cover; background: #ffe9ee; color: #d24f72;}
+  .account-screen-profile h3 {font: 600 16px/1.6 var(--font-sans); margin: 0 0 4px; color: #4f3033; overflow-wrap: anywhere;}
+  .my-card-menu .account-screen-profile p {margin: 0; font: 400 12px/1.6 var(--font-sans); color: #987c80;}
+  .account-screen-actions {margin-top: 20px; display: grid; gap: 10px;}
+  .my-card-account-screen .account-screen-actions button {display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 14px 16px; border: 1px solid #f5ced8; border-radius: 12px; background: #fffaf8; font: 600 14px/1.6 var(--font-sans); text-align: left; color: #624347;}
+  .account-screen-actions svg {color: #d73c64; width: 20px; height: 20px;}
+  .my-card-account-screen .account-screen-actions .account-screen-logout {font: 600 13px/1.6 var(--font-sans); color: white; justify-content: center; background: linear-gradient(135deg, #f04468, #dc3659); border-color: transparent; box-shadow: 0 6px 16px #f0446826;}
+}

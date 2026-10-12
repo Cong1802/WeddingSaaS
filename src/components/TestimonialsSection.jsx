@@ -3,10 +3,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Keyboard } from 'swiper/modules';
 import 'swiper/css';
 import { ArrowRight, ChevronLeft, ChevronRight, Heart, Quote, Star } from 'lucide-react';
-import background from '../../images/section-07-testimonials/background.png';
-import couple01 from '../../images/section-07-testimonials/couple-01.png';
-import couple02 from '../../images/section-07-testimonials/couple-02.png';
-import couple03 from '../../images/section-07-testimonials/couple-03.png';
+import background from '../../images/section-07-testimonials/background.webp';
+import couple01 from '../../images/section-07-testimonials/couple-01.webp';
+import couple02 from '../../images/section-07-testimonials/couple-02.webp';
+import couple03 from '../../images/section-07-testimonials/couple-03.webp';
 import './TestimonialsSection.css';
 
 // Illustrative content supplied by the design reference; replace with verified reviews when available.

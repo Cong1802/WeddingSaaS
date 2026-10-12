@@ -1,6 +1,6 @@
 import { ArrowRight, Heart, Zap, ShieldCheck } from 'lucide-react';
-import background from '../../images/section-01-hero/hero-pastel-curtain-bg3.png';
-import stepArtwork from '../../images/section-04-how-it-works/steps-illustrations.png';
+import background from '../../images/section-01-hero/hero-pastel-curtain-bg3.webp';
+import stepArtwork from '../../images/section-04-how-it-works/steps-illustrations.webp';
 import './HowItWorksSection.css';
 
 const steps = [

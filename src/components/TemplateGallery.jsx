@@ -4,7 +4,7 @@ import { A11y, Keyboard } from 'swiper/modules';
 import 'swiper/css';
 import { ArrowRight, ChevronLeft, ChevronRight, Crown, Flower2, Gem, Heart, Image, LayoutGrid, Leaf } from 'lucide-react';
 import useTemplates from '../templates/useTemplates';
-import background from '../../images/section-02-why-us/why-us-background-hero-matched.png';
+import background from '../../images/section-02-why-us/why-us-background-hero-matched.webp';
 import './TemplateGallery.css';
 
 const categories = [

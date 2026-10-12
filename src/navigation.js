@@ -5,6 +5,7 @@ export function pageFromLocation(location = window.location) {
   if (/^\/admin(?:\/|$)/.test(location.pathname) || params.get('page') === 'admin' || params.has('admin') || /^#admin(?:$|[-/])/.test(location.hash)) return 'admin';
   if (location.pathname === '/editor') return 'editor';
   if (location.pathname === '/my-cards') return 'my-cards';
+  if (location.pathname.replace(/\/$/, '') === '/templates') return 'templates';
   return 'landing';
 }
 
@@ -16,5 +17,5 @@ export function adminModuleFromLocation(location = window.location) {
 }
 
 export function pathForPage(page) {
-  return ({ admin: '/admin/dashboard', editor: '/editor', 'my-cards': '/my-cards', landing: '/' })[page] || '/';
+  return ({ admin: '/admin/dashboard', editor: '/editor', 'my-cards': '/my-cards', templates: '/templates', landing: '/' })[page] || '/';
 }

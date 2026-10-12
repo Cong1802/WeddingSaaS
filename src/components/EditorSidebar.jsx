@@ -57,7 +57,7 @@ const PRESET_SONGS = [
   }
 ];
 
-function WordPressImageControl({ id, label, value, onChange, onRemove, onFocusField }) {
+function WordPressImageControl({ id, label, value, onChange, onRemove, onFocusField, compact = false }) {
   const fileInputRef = useRef(null);
 
   const handleFile = (e) => {
@@ -71,6 +71,16 @@ function WordPressImageControl({ id, label, value, onChange, onRemove, onFocusFi
     }
     e.target.value = '';
   };
+
+  if (compact) return <div id={id} className="editor-image-row">
+    <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFile} hidden />
+    <button className="editor-image-thumbnail" onClick={onFocusField} aria-label={`Xem ${label}`}>
+      {value ? <img src={value} alt={label} /> : <ImageIcon size={21} />}
+    </button>
+    <div className="editor-image-label"><strong>{label}</strong><small>{value ? 'Đã chọn ảnh' : 'Chưa có ảnh'}</small></div>
+    <button className="editor-image-upload" onClick={() => fileInputRef.current?.click()} aria-label={`Tải lên ${label}`}><Upload size={17} /></button>
+    <button className="editor-image-remove" onClick={onRemove} disabled={!value} aria-label={`Xóa ${label}`}><Trash2 size={16} /></button>
+  </div>;
 
   return (
     <div id={id} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -193,7 +203,12 @@ export default function EditorSidebar({
   onFocusPreviewElement,
   onOpenVietQR,
   onOpenRSVP,
-  onOpenDatePicker
+  onOpenDatePicker,
+  user,
+  onAccount,
+  onLogout,
+  onAdmin,
+  onHome
 }) {
   const [localActiveTab, setLocalActiveTab] = useState('content');
   const [playingUrl, setPlayingUrl] = useState(null);
@@ -256,15 +271,25 @@ export default function EditorSidebar({
     }
   }, [targetFieldId, activeTab]);
 
-  // 3 Clean Tabs: Content, Music Selection, VietQR
   const tabs = [
-    { id: 'content', label: 'Nội Dung Thiệp', icon: FileText },
-    { id: 'music', label: 'Chọn Nhạc', icon: Music },
-    { id: 'vietqr', label: 'VietQR Mừng Cưới', icon: CreditCard }
+    { id: 'content', label: 'Thông tin chính', icon: FileText },
+    { id: 'couple', label: 'Cô dâu & chú rể', icon: Heart },
+    { id: 'event', label: 'Lịch & địa điểm', icon: Calendar },
+    { id: 'music', label: 'Nhạc nền', icon: Music },
+    { id: 'album', label: 'Ảnh thiệp', icon: ImageIcon },
+    { id: 'vietqr', label: 'QR mừng cưới', icon: CreditCard }
   ];
+  const step = Math.max(0, tabs.findIndex(tab => tab.id === activeTab));
+  useEffect(() => {
+    if (!targetFieldId) return;
+    if (/Photo|Image/.test(targetFieldId)) setActiveTab('album');
+    else if (/Name|Parents/.test(targetFieldId)) setActiveTab('couple');
+    else if (/Address|Map/.test(targetFieldId)) setActiveTab('event');
+    else if (/title|date/.test(targetFieldId)) setActiveTab('content');
+  }, [targetFieldId]);
 
   return (
-    <aside style={{
+    <aside className={`editor-panel editor-step-${activeTab}`} style={{
       width: '380px',
       backgroundColor: '#ffffff',
       borderRight: '1px solid #fee2e2',
@@ -274,8 +299,18 @@ export default function EditorSidebar({
       overflow: 'hidden',
       boxShadow: '4px 0 20px rgba(225, 29, 72, 0.04)'
     }}>
+      <nav className="editor-navigation" aria-label="Các bước chỉnh sửa thiệp">
+        <button className="editor-brand" onClick={onHome}><Heart size={28} fill="currentColor" /><span>WeddingSaaS<small>THIỆP CƯỚI ONLINE</small></span></button>
+        {tabs.map((tab, index) => <button key={tab.id} className={index === step ? 'is-active' : ''} onClick={() => setActiveTab(tab.id)} aria-current={index === step ? 'step' : undefined}><tab.icon size={18} /><span>{tab.label}</span></button>)}
+        <div className="editor-account-actions">
+          <button onClick={onHome}>← Trang chủ</button>
+          <button onClick={onAccount}>{user ? 'Thiệp của tôi' : 'Đăng nhập'}</button>
+          {user?.role === 'admin' && <button onClick={onAdmin}>Quản trị</button>}
+          {user && <button onClick={onLogout}>Đăng xuất</button>}
+        </div>
+      </nav>
       {/* Tab Navigation (Icon-Only Compact Tabs to optimize space) */}
-      <div style={{
+      <div className="editor-legacy-tabs" style={{
         display: 'flex',
         borderBottom: '1px solid #fee2e2',
         backgroundColor: '#fff8f9'
@@ -309,7 +344,7 @@ export default function EditorSidebar({
       </div>
 
       {/* Tab Form Content (Arranged strictly top-to-bottom matching Preview order) */}
-      <div style={{
+      <div className="editor-form-scroll" style={{
         flex: 1,
         overflowY: 'auto',
         padding: '20px',
@@ -317,11 +352,13 @@ export default function EditorSidebar({
         flexDirection: 'column',
         gap: '18px'
       }}>
+        <header className="editor-step-heading"><span>{step + 1}</span><h2>{tabs[step].label}</h2></header>
+        <p className="editor-step-description">Chỉnh sửa thông tin và xem thay đổi trực tiếp trên thiệp bên phải.</p>
         {/* TAB 1: NỘI DUNG THIỆP & ẢNH BÌA/CẶP ĐÔI */}
         {(activeTab === 'content' || activeTab === 'couple' || activeTab === 'event') && (
           <>
             {/* 1. TOP HERO SECTION: TITLE, DATE & COVER IMAGE */}
-            <div style={{ padding: '14px', background: '#fffdfd', borderRadius: '12px', border: '1px solid #fee2e2', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="editor-section-main" style={{ padding: '14px', background: '#fffdfd', borderRadius: '12px', border: '1px solid #fee2e2', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <h3 style={{ fontSize: '13px', fontWeight: '800', color: '#e11d48', textTransform: 'uppercase', letterSpacing: '0.5px', margin: 0 }}>
                 1. Tiêu Đề & Ảnh Bìa Chính (Trang Đầu)
               </h3>
@@ -354,6 +391,7 @@ export default function EditorSidebar({
                 </div>
 
                 <WordPressImageControl
+                  compact
                   id="field-heroImage"
                   label="Ảnh Banner Bìa Chính"
                   value={cardData.heroImage}
@@ -365,7 +403,7 @@ export default function EditorSidebar({
             </div>
 
             {/* 2. SECTION 2: CHÚ RỂ & CÔ DÂU (NHÀ TRAI & NHÀ GÁI + CHÂN DUNG) */}
-            <div style={{ padding: '14px', background: '#fff5f7', borderRadius: '12px', border: '1px solid #fecdd3', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="editor-section-couple" style={{ padding: '14px', background: '#fff5f7', borderRadius: '12px', border: '1px solid #fecdd3', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <h3 style={{ fontSize: '13px', fontWeight: '800', color: '#e11d48', textTransform: 'uppercase', letterSpacing: '0.5px', margin: 0 }}>
                 2. Thông Tin & Ảnh Cặp Đôi
               </h3>
@@ -396,6 +434,7 @@ export default function EditorSidebar({
                   />
                 </div>
                 <WordPressImageControl
+                  compact
                   id="field-groomPhoto"
                   label="Ảnh Chú Rể"
                   value={cardData.groomPhoto}
@@ -429,6 +468,7 @@ export default function EditorSidebar({
                   />
                 </div>
                 <WordPressImageControl
+                  compact
                   id="field-bridePhoto"
                   label="Ảnh Cô Dâu"
                   value={cardData.bridePhoto}
@@ -440,7 +480,7 @@ export default function EditorSidebar({
             </div>
 
             {/* 3. SECTION 5: ĐỊA ĐIỂM & BẢN ĐỒ CƯỚI */}
-            <div style={{ padding: '14px', background: '#fff5f7', borderRadius: '12px', border: '1px solid #fecdd3' }}>
+            <div className="editor-section-event" style={{ padding: '14px', background: '#fff5f7', borderRadius: '12px', border: '1px solid #fecdd3' }}>
               <h3 style={{ fontSize: '13px', fontWeight: '800', color: '#e11d48', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 10px 0' }}>
                 3. Địa Điểm & Bản Đồ Tiệc Cưới
               </h3>
@@ -502,8 +542,14 @@ export default function EditorSidebar({
           </>
         )}
 
+        {activeTab === 'album' && <section className="editor-images-section"><h3>Ảnh chính</h3><p>Bấm ảnh để xem vị trí trên thiệp. Chọn nút tải lên để thay ảnh.</p><div className="editor-image-grid">{[
+          ['heroImage', 'Ảnh đầu thiệp / poster', '#SECTION1'],
+          ['groomPhoto', 'Ảnh chú rể', '#IMAGE50'],
+          ['bridePhoto', 'Ảnh cô dâu', '#IMAGE49']
+        ].map(([field, label, selector]) => <WordPressImageControl compact key={field} id={`field-${field}`} label={label} value={cardData[field]} onFocusField={() => onFocusPreviewElement?.(selector)} onChange={url => updateField(field, url)} onRemove={() => updateField(field, '')} />)}</div></section>}
+
         {/* TAB 2: CHỌN NHẠC NỀN THIỆP CƯỚI */}
-        {(activeTab === 'music' || activeTab === 'album') && (
+        {(activeTab === 'music') && (
           <>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Music size={15} color="#e11d48" />
@@ -734,6 +780,9 @@ export default function EditorSidebar({
           </>
         )}
       </div>
+      <footer className="editor-step-footer">
+        <div><button disabled={step === 0} onClick={() => setActiveTab(tabs[step - 1].id)}>← Quay lại</button><span>{step + 1} / {tabs.length}</span><button className="primary" disabled={step === tabs.length - 1} onClick={() => setActiveTab(tabs[step + 1].id)}>Tiếp theo →</button></div>
+      </footer>
     </aside>
   );
 }

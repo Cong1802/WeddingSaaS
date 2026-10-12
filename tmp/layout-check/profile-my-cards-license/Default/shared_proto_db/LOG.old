@@ -1,3 +1,6 @@
-2026/10/04-13:53:07.536 5cb8 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-my-cards-license\Default\shared_proto_db/MANIFEST-000001
-2026/10/04-13:53:07.536 5cb8 Recovering log #3
-2026/10/04-13:53:07.537 5cb8 Reusing old log C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-my-cards-license\Default\shared_proto_db/000003.log 
+2026/10/04-19:21:12.219 36ac Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-my-cards-license\Default\shared_proto_db/MANIFEST-000001
+2026/10/04-19:21:12.219 36ac Recovering log #3
+2026/10/04-19:21:12.221 36ac Reusing old log C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-my-cards-license\Default\shared_proto_db/000003.log 
+2026/10/04-19:21:29.166 1fc0 Level-0 table #5: started
+2026/10/04-19:21:29.171 1fc0 Level-0 table #5: 119476 bytes OK
+2026/10/04-19:21:29.173 1fc0 Delete type=0 #3

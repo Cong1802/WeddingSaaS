@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowRight, FolderHeart, LogOut, Shield, X } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.webp';
 
 export const landingLinks = [
   { id: 'home', label: 'Trang chủ' },
@@ -40,12 +40,13 @@ export default function MobileLandingMenu({ isOpen, onClose, activeNav, onNaviga
     };
   }, [isOpen, onClose]);
   const act = callback => { onClose(); callback?.(); };
+  if (typeof document === 'undefined') return null;
   return createPortal(
     <div className={`landing-mobile-menu${isOpen ? ' is-open' : ''}`} aria-hidden={!isOpen} inert={!isOpen ? true : undefined} onClick={onClose}>
       <aside id="landing-mobile-menu" ref={panel} className="landing-mobile-menu__panel" role="dialog" aria-modal="true" aria-label="Menu điều hướng" onClick={event => event.stopPropagation()}>
         <div className="landing-mobile-menu__top"><img src={logo} alt="WeddingSaaS" /><button type="button" onClick={onClose} aria-label="Đóng menu"><X size={22} /></button></div>
         <p className="landing-mobile-menu__intro">Thiệp cưới cho ngày trọng đại</p>
-        <nav aria-label="Điều hướng mobile">{landingLinks.map(link => <a key={link.id} href={`#${link.id}`} aria-current={activeNav === link.id ? 'page' : undefined} onClick={event => { event.preventDefault(); act(() => onNavigate(link.id)); }}>{link.label}<ArrowRight size={17} /></a>)}</nav>
+        <nav aria-label="Điều hướng mobile">{landingLinks.map(link => <a key={link.id} href={link.id === 'templates' ? '/templates' : `#${link.id}`} aria-current={activeNav === link.id ? 'page' : undefined} onClick={event => { event.preventDefault(); act(() => onNavigate(link.id)); }}>{link.label}<ArrowRight size={17} /></a>)}</nav>
         <div className="landing-mobile-menu__actions">
           {user ? <><p className="landing-mobile-menu__user">Xin chào, {user.name}</p><button type="button" onClick={() => act(user.role === 'admin' ? onAdmin : onMyCards)}>{user.role === 'admin' ? <Shield size={18} /> : <FolderHeart size={18} />}{user.role === 'admin' ? 'Trang quản trị' : 'Thiệp của tôi'}</button><button type="button" onClick={() => act(onLogout)}><LogOut size={18} />Đăng xuất</button></> : <button type="button" onClick={() => act(onLogin)}>Đăng nhập / Đăng ký</button>}
           <button type="button" className="landing-mobile-menu__create" onClick={() => act(onCreate)}>{user?.role === 'admin' ? 'Trang quản trị' : 'Tạo thiệp ngay'}<ArrowRight size={18} /></button>

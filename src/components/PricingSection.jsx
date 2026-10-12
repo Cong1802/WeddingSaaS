@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import FeatureText from './FeatureText';
 import { ArrowRight, Check, Crown, Gift, Headphones, Heart, Settings, ShieldCheck, X } from 'lucide-react';
-import ornaments from '../../images/section-06-pricing/pricing-ornaments.png';
+import ornaments from '../../images/section-06-pricing/pricing-ornaments.webp';
 import './PricingSection.css';
 
 const defaultPlans = [

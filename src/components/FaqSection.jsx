@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ArrowRight, ChevronDown, Mail, MessageCircle, Users } from 'lucide-react';
-import background from '../../images/section-09-faq/background.png';
-import couple from '../../images/section-09-faq/couple.png';
-import flowers from '../../images/shared/florals/shared-floral-branch-left.png';
+import background from '../../images/section-09-faq/background.webp';
+import couple from '../../images/section-09-faq/couple.webp';
+import flowers from '../../images/shared/florals/shared-floral-branch-left.webp';
 import './FaqSection.css';
 
 const questions = [

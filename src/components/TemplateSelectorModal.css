@@ -1,0 +1,74 @@
+.template-selector-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.template-selector-card {
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  min-width: 0;
+}
+
+.template-selector-card:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.template-selector-grid {
+  min-height: 0;
+}
+
+@media (min-width: 768px) {
+  .template-selector-backdrop {
+    padding: 32px;
+    backdrop-filter: blur(4px);
+  }
+
+  .template-selector-dialog {
+    position: relative !important;
+    inset: auto !important;
+    width: min(960px, 100%) !important;
+    height: auto !important;
+    max-height: calc(100dvh - 64px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
+  }
+
+  .template-selector-back {
+    display: none !important;
+  }
+
+  .template-selector-grid {
+    flex: 0 1 auto !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    padding: 20px !important;
+  }
+
+  .template-selector-image {
+    height: auto !important;
+    aspect-ratio: 3 / 4;
+  }
+
+  .template-selector-card > div:last-child > div:first-child {
+    white-space: normal !important;
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .template-selector-dialog {
+    width: 640px !important;
+  }
+
+  .template-selector-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}

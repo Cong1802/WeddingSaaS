@@ -44,6 +44,17 @@ let socket;
   await evaluate("document.querySelector('.auth-modal__form').requestSubmit()");
   await delay(150);
   if (!await evaluate("window.__authCalls.at(-1)?.url === '/api/auth/forgot-password' && !!document.querySelector('[role=status]')")) throw Error('Forgot submission failed');
-  console.log('PASS: reset-link initialization, token removal from URL, reset payload, return to login, forgot-password form and submission');
+  await evaluate("document.querySelectorAll('.auth-modal__tabs button')[1].click()");await delay(150);
+  for (const width of [360,393,430]) {
+    await send('Emulation.setDeviceMetricsOverride',{width,height:852,deviceScaleFactor:1,mobile:true});await delay(150);
+    if(await evaluate('document.documentElement.scrollWidth>innerWidth+1'))throw Error('Auth mobile overflow '+width);
+    if(!await evaluate(`Math.abs(document.querySelector('.auth-modal').getBoundingClientRect().top)<1&&Math.abs(document.querySelector('.auth-modal').getBoundingClientRect().height-innerHeight)<1`))throw Error('Auth is not fullscreen '+width);
+    if(!await evaluate("getComputedStyle(document.querySelector('.auth-modal-overlay')).alignItems==='flex-end'&&parseFloat(getComputedStyle(document.querySelector('#auth-email')).fontSize)>=16"))throw Error('Auth app sheet layout failed');
+  }
+  await fill('auth-name','Mobile Test');await fill('auth-email','mobile-test@example.com');await fill('auth-password','newPassword12345');
+  await evaluate("document.querySelector('.auth-modal__form').requestSubmit()");await delay(200);
+  if(!await evaluate("window.__authCalls.at(-1)?.url==='/api/auth/register'&&window.__authCalls.at(-1)?.body.name==='Mobile Test'"))throw Error('Mobile registration payload failed');
+  fs.writeFileSync(path.join(root,'auth-register-app-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  console.log('PASS: reset and forgot-password flows, mobile sheet at 360/393/430px, registration payload');
   await send('Browser.close');
 })().catch(e => { console.error(e.message); process.exitCode = 1; }).finally(() => { socket?.close(); chrome.kill(); });

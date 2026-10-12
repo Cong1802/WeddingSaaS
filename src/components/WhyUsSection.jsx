@@ -1,6 +1,6 @@
 import { Gift, Headphones, Heart, LayoutGrid, Users } from 'lucide-react';
-import background from '../../images/section-02-why-us/why-us-background-v2.png';
-import showcase from '../../images/section-02-why-us/why-us-product-no-base-matched.png';
+import background from '../../images/section-02-why-us/why-us-background-v2.webp';
+import showcase from '../../images/section-02-why-us/why-us-product-no-base-matched.webp';
 import './WhyUsSection.css';
 
 const features = [

@@ -1,2 +1,3 @@
-2026/10/04-10:57:59.355 46d8 Creating DB C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\shared_proto_db since it was missing.
-2026/10/04-10:57:59.369 46d8 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\shared_proto_db/MANIFEST-000001
+2026/10/04-19:21:02.553 4960 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\shared_proto_db/MANIFEST-000001
+2026/10/04-19:21:02.554 4960 Recovering log #3
+2026/10/04-19:21:02.555 4960 Reusing old log C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-auth-security\Default\shared_proto_db/000003.log 
