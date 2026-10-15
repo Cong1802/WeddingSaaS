@@ -15,6 +15,7 @@ class OrderController extends Controller
      */
     public function createOrder(Request $request)
     {
+        abort_if(\App\Services\TemplateAvailability::demoOnly() && $request->user()?->role !== 'admin', 403, 'Hiện chỉ mở xem demo mẫu thiệp. Tính năng tạo và chỉnh sửa sẽ được mở sau.');
         $validated = $request->validate([
             'package_name' => 'nullable|string',
             'amount' => 'required_without:plan_code|numeric|min:10000',

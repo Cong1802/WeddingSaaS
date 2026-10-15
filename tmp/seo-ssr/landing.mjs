@@ -10,7 +10,7 @@ var normalizeTemplate = (template) => ({
 	...template,
 	databaseId: template.id,
 	id: template.code,
-	fileUrl: template.file_url || "/template.html"
+	fileUrl: template.file_url || "/templates/mau-thiep-1/mau-thiep-1.html"
 });
 function useTemplates() {
 	const [templates, setTemplates] = useState([]);
@@ -69,7 +69,8 @@ var categories = [
 	}
 ];
 function TemplateGallery({ onGoToEditor }) {
-	const previews = useTemplates().map((template) => {
+	const templates = useTemplates();
+	const previews = templates.map((template) => {
 		const categoryMap = {
 			"Hiện Đại": "modern",
 			"Hiện đại": "modern",
@@ -126,7 +127,8 @@ function TemplateGallery({ onGoToEditor }) {
 	};
 	const handleCardClick = (cardId) => {
 		if (isMovedRef.current) return;
-		onGoToEditor(cardId);
+		const template = templates.find((item) => item.id === cardId);
+		if (template) window.open(template.fileUrl, "_blank", "noopener,noreferrer");
 	};
 	const renderCard = (card, keyPrefix = "") => /* @__PURE__ */ jsxs("article", {
 		className: "template-gallery__card",
@@ -137,7 +139,7 @@ function TemplateGallery({ onGoToEditor }) {
 				type: "button",
 				className: "template-gallery__preview",
 				onClick: () => handleCardClick(card.id),
-				"aria-label": `Dùng mẫu ${card.name}`,
+				"aria-label": `Xem mẫu ${card.name}`,
 				children: /* @__PURE__ */ jsx("img", {
 					src: card.image,
 					alt: `Ảnh minh họa mẫu ${card.name}`,

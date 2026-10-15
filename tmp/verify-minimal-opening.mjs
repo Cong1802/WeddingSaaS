@@ -1,0 +1,11 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';import vm from 'node:vm';import assert from 'node:assert/strict';
+const {document,window}=parseHTML(readFileSync('public/templates/minimalism_red/minimalism_red.html','utf8'));window.scrollTo=()=>{};const timers=[];
+vm.runInNewContext(readFileSync('public/templates/minimalism_red/opening.js','utf8'),{document,window,Math,setTimeout:(fn,ms)=>timers.push({fn,ms})});
+const gate=document.getElementById('minimal-opening');assert.equal(document.documentElement.dataset.minimalOpened,'false');assert.equal(gate.querySelectorAll('.minimal-opening-heart').length,14);
+const wheel=new window.Event('wheel',{cancelable:true});document.dispatchEvent(wheel);assert(wheel.defaultPrevented);
+gate.querySelector('button').dispatchEvent(new window.Event('click'));assert.equal(gate.dataset.state,'opening');
+timers.find(t=>t.ms===500).fn();assert.equal(gate.dataset.state,'away');assert.equal(gate.querySelectorAll('.minimal-opening-burst').length,28);
+timers.find(t=>t.ms===1300).fn();assert(!document.getElementById('minimal-opening'));assert.equal(document.documentElement.dataset.minimalOpened,'true');
+assert.equal(readFileSync('public/templates/minimalism_red/opening.js','utf8'),readFileSync('laravel-backend/public/templates/minimalism_red/opening.js','utf8'));
+for(const url of ['minimalism_red.html','opening.js?v=1','opening.css?v=1'])assert.equal((await fetch('http://127.0.0.1:8000/templates/minimalism_red/'+url)).status,200);
+console.log('PASS: initial invitation, falling hearts, locked scroll, 500ms burst, 1300ms reveal/unlock, synchronized copies and live HTTP assets.');

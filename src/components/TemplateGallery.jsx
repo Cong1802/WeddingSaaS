@@ -58,7 +58,8 @@ export default function TemplateGallery({ onGoToEditor }) {
 
   const handleCardClick = (cardId) => {
     if (isMovedRef.current) return;
-    onGoToEditor(cardId);
+    const template = templates.find(item => item.id === cardId);
+    if (template) window.open(template.fileUrl, '_blank', 'noopener,noreferrer');
   };
 
   const renderCard = (card, keyPrefix = '') => (
@@ -67,7 +68,7 @@ export default function TemplateGallery({ onGoToEditor }) {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
     >
-      <button type="button" className="template-gallery__preview" onClick={() => handleCardClick(card.id)} aria-label={`Dùng mẫu ${card.name}`}><img src={card.image} alt={`Ảnh minh họa mẫu ${card.name}`} loading="lazy" /></button>
+      <button type="button" className="template-gallery__preview" onClick={() => handleCardClick(card.id)} aria-label={`Xem mẫu ${card.name}`}><img src={card.image} alt={`Ảnh minh họa mẫu ${card.name}`} loading="lazy" /></button>
       <button type="button" className={`template-gallery__favorite${favorites.includes(card.id) ? ' is-favorite' : ''}`} aria-label={`${favorites.includes(card.id) ? 'Bỏ yêu thích' : 'Yêu thích'} ${card.name}`} aria-pressed={favorites.includes(card.id)} onClick={(e) => { e.stopPropagation(); toggleFavorite(card.id); }}><Heart size={23} fill={favorites.includes(card.id) ? 'currentColor' : 'none'} /></button>
       <span className="template-gallery__label">{card.categoryLabel}</span>
     </article>

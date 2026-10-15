@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';const h=readFileSync('public/templates/mau-thiep-1/mau-thiep-1.html','utf8');const {document:d}=parseHTML(h);console.log('Replacement title:',d.querySelector('#HEADLINE3')?.textContent);console.log('Doors:',!!d.getElementById('GROUP88'),!!d.getElementById('GROUP89'),'Door CSS:',h.includes('door-open'));

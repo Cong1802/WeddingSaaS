@@ -1,0 +1,2 @@
+﻿from pathlib import Path
+p=Path('src/components/TemplateAdminModal.jsx');s=p.read_text(encoding='utf-8').replace('    if (!form.name) {','    if (autoName.current) {',1).replace('      if (design) setForm(previous => ({ ...previous, name: design.name }));','      if (design && form.name !== design.name) setForm(previous => ({ ...previous, name: design.name }));',1).replace('autoName.current = !value || value ===','autoName.current = value ===');p.write_text(s,encoding='utf-8')

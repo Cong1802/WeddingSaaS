@@ -1,0 +1,2 @@
+﻿from pathlib import Path
+p=Path('src/components/AdminCMS.jsx');s=p.read_text(encoding='utf-8');start=s.index("{activeModule === 'templates' && (");end=s.index('{/*',start+10);section=s[start:end];section=section.replace("position: 'relative', height: '180px', backgroundColor: '#030712'", "position: 'relative', aspectRatio: '5 / 7', width: '100%', flexShrink: 0, overflow: 'hidden', backgroundColor: '#030712'");s=s[:start]+section+s[end:];p.write_text(s,encoding='utf-8')

@@ -1,0 +1,18 @@
+﻿import {readFileSync,writeFileSync,cpSync,copyFileSync} from 'node:fs';import {parseHTML} from 'linkedom';
+const root='public/templates/mau-thiep-1';cpSync(root,'tmp/template-one-before-replacement-20261014',{recursive:true});
+const source='C:/Users/Administrator/Pictures/template thiệp 5';const {document:d}=parseHTML(readFileSync(source+'/Thư Mời Lễ Cưới.html','utf8'));
+const events=JSON.parse(d.getElementById('script_event_data').textContent);
+const config={width:420,animations:Object.entries(events).filter(([id,e])=>e.D&&d.getElementById(id)).map(([id,e])=>({id,name:e.D,repeat:e.D==='pulse'})),actions:Object.entries(events).flatMap(([id,e])=>(e.cs||[]).map(action=>({id,...action}))).filter(e=>e.a!=='phone'&&!(e.a==='link'&&!/maps/.test(e.dw||''))),tabs:Object.entries(events).filter(([id,e])=>e.a==='tabs').map(([id,e])=>({id,initial:e.aP})),countdowns:Object.entries(events).filter(([id,e])=>e.a==='countdown').map(([id,e])=>({id,date:e.bT})),countdownParts:Object.entries(events).filter(([id,e])=>e.a==='countdown_item').map(([id,e])=>({id,unit:e.bY}))};
+for(const node of [...d.documentElement.children])if(!['HEAD','BODY'].includes(node.tagName))node.remove();
+for(const node of d.querySelectorAll('script,link[rel="canonical"],link[rel="preconnect"],link[rel="dns-prefetch"],link[rel="preload"],link[rel*="icon"],meta[property],meta[name^="twitter:"],#live-editor-bar'))node.remove();
+for(const [id,e] of Object.entries(events))if(e.cs?.some(a=>a.a==='phone'||a.a==='link'&&/lovecard|facebook|zalo|tiktok/.test(a.dw||'')))d.getElementById(id)?.remove();
+for(const node of d.querySelectorAll('*'))for(const attr of [...node.attributes])if(attr.name.startsWith('on'))node.removeAttribute(attr.name);
+d.documentElement.className='';d.documentElement.dataset.designNumber='1';
+const csp=d.createElement('meta');csp.setAttribute('http-equiv','Content-Security-Policy');csp.content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'";d.head.prepend(csp);
+const style=d.createElement('style');style.textContent='body.lazyload{opacity:1}.ladi-animation{opacity:1}.ladi-lazyload{visibility:visible}.standalone-popup-backdrop{position:fixed;inset:0;z-index:9998;background:#0007}.standalone-popup-close{position:absolute;right:12px;top:12px;z-index:10002;border:0;background:white;color:#4c2437;width:32px;height:32px;border-radius:50%;font-size:22px;cursor:pointer}';d.head.appendChild(style);
+const css=d.createElement('link');css.rel='stylesheet';css.href='./assets/standalone.css?v=replacement-1';d.head.appendChild(css);
+const data=d.createElement('script');data.type='application/json';data.id='standalone-design-config';data.textContent=JSON.stringify(config);d.body.appendChild(data);
+for(const name of ['standalone.js','local-interactions.js']){const script=d.createElement('script');script.src='./assets/'+name+'?v=replacement-1';script.defer=true;d.body.appendChild(script);}
+copyFileSync(source+'/Thư Mời Lễ Cưới_files/css2',root+'/assets/source-fonts.css');copyFileSync(source+'/Thư Mời Lễ Cưới_files/musical-notes.png',root+'/assets/musical-notes.png');
+let html='<!doctype html>\n'+d.documentElement.outerHTML;html=html.replaceAll('./Thư Mời Lễ Cưới_files/css2','./assets/source-fonts.css').replaceAll('./Thư Mời Lễ Cưới_files/musical-notes.png','./assets/musical-notes.png').replace(/<!--[^]*?-->/g,'');writeFileSync(root+'/mau-thiep-1.html',html);
+console.log('Imported replacement source, retaining local runtime, animations, doors and form.');

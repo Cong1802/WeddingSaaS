@@ -105,7 +105,7 @@ class AuthAndAdminTest extends TestCase
             'category' => 'Cổ Điển',
             'tag' => 'TEST',
             'thumbnail' => 'https://example.com/thumb.jpg',
-            'file_url' => '/template.html',
+            'file_url' => '/templates/mau-thiep-1/mau-thiep-1.html',
             'price' => 150000,
             'is_active' => true,
             'sort_order' => 5

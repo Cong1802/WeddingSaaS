@@ -17,6 +17,7 @@ Route::post('/auth/google', [AuthController::class, 'googleLogin'])->middleware(
 
 // Public Card & Dynamic Catalog Routes
 Route::post('/cards/save', [WeddingCardController::class, 'saveCard'])->middleware('auth:sanctum');
+Route::post('/cards/view/{slug}/rsvp', [\App\Http\Controllers\CardRsvpController::class, 'store'])->middleware('throttle:5,1');
 Route::get('/cards/view/{slug}', [WeddingCardController::class, 'getCardBySlug']);
 Route::get('/public/templates', [AdminController::class, 'getPublicTemplates']);
 Route::get('/public/plans', [AdminController::class, 'getPublicPlans']);
@@ -28,6 +29,7 @@ Route::post('/public/newsletter', [NewsletterController::class, 'subscribe'])->m
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::post('/auth/change-password', [AuthController::class, 'changePassword'])->middleware('throttle:5,1');
+    Route::get('/user/cards/{id}/rsvps', [\App\Http\Controllers\CardRsvpController::class, 'index']);
     Route::get('/auth/me', [AuthController::class, 'me']);
     
     // User My Cards & Orders
@@ -52,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
         
         // Template CMS
+        Route::patch('/templates/catalog-mode', [AdminController::class, 'setTemplateCatalogMode']);
         Route::get('/templates', [AdminController::class, 'getTemplates']);
         Route::post('/templates', [AdminController::class, 'saveTemplate']);
         Route::post('/templates/{id}/toggle', [AdminController::class, 'toggleTemplate']);

@@ -206,7 +206,16 @@ class AdminController extends Controller
             'success' => true,
             'templates' => $templates,
             'designs' => $this->templateDesigns(),
+            'demo_only' => \App\Services\TemplateAvailability::demoOnly(),
         ], 200);
+    }
+
+    public function setTemplateCatalogMode(Request $request)
+    {
+        $this->checkAdmin($request);
+        $data = $request->validate(['demo_only' => 'required|boolean']);
+        SystemSetting::updateOrCreate(['key' => 'templates_demo_only'], ['value' => $data['demo_only'] ? '1' : '0']);
+        return response()->json(['success' => true, 'demo_only' => $data['demo_only']]);
     }
 
     public function saveTemplate(Request $request)
@@ -234,7 +243,7 @@ class AdminController extends Controller
         } else {
             $validated['code'] = 'template_'.\Illuminate\Support\Str::uuid();
             $validated['price'] = 0;
-            $validated['file_url'] = $validated['file_url'] ?? '/template.html';
+            $validated['file_url'] = $validated['file_url'] ?? '/templates/mau-thiep-1/mau-thiep-1.html';
             $template = Template::create($validated);
             $msg = 'Đã thêm mẫu thiệp mới thành công!';
         }
@@ -481,6 +490,7 @@ class AdminController extends Controller
         $settings['mail_password_configured'] = !empty($settings['mail_password']);
         unset($settings['mail_password']);
 
+        $settings['templates_demo_only'] = \App\Services\TemplateAvailability::demoOnly() ? '1' : '0';
         return response()->json([
             'success' => true,
             'settings' => $settings
@@ -567,18 +577,26 @@ class AdminController extends Controller
 
     private function templateDesigns(): array
     {
-        $designs = [
-            ['url' => '/template.html', 'name' => 'Thiệp truyền thống đỏ vàng'],
-            ['url' => '/https___www.lovecard.click_thiepso48/www.lovecard.click/thiepso48.html', 'name' => 'Thiệp số 48'],
-        ];
+        $designs = [];
         $directory = public_path('templates');
         if (is_dir($directory)) {
             foreach (\Illuminate\Support\Facades\File::allFiles($directory) as $file) {
                 if (strtolower($file->getExtension()) !== 'html') continue;
                 $relative = str_replace('\\', '/', $file->getRelativePathname());
+                if (preg_match('~(?:^|/)[^/]+_files/|(?:^|/)assets/|(?:^|/)maps\.html$~i', $relative)) continue;
                 $designs[] = ['url' => '/templates/'.$relative, 'name' => $relative];
             }
         }
+        $preferred = ['/templates/mau-thiep-1/mau-thiep-1.html', '/templates/mau-thiep-2/mau-thiep-2.html', '/templates/mau-thiep-3/mau-thiep-3.html', '/templates/mau-thiep-4/mau-thiep-4.html', '/templates/mau-thiep-5/mau-thiep-5.html'];
+        usort($designs, function ($a, $b) use ($preferred) {
+            $aIndex = array_search($a['url'], $preferred, true);
+            $bIndex = array_search($b['url'], $preferred, true);
+            return (($aIndex === false ? 999 : $aIndex) <=> ($bIndex === false ? 999 : $bIndex)) ?: strcmp($a['url'], $b['url']);
+        });
+        foreach ($designs as $index => &$design) {
+            $design['name'] = 'Mẫu thiệp cưới '.($index + 1);
+        }
+        unset($design);
         return $designs;
     }
 
@@ -725,6 +743,7 @@ class AdminController extends Controller
             'privacy_url', 'terms_url', 'blog_url', 'careers_url', 'partners_url',
             'vietqr_bank_bin', 'vietqr_account_no', 'vietqr_account_name', 'vietqr_qr_image',
         ])->pluck('value', 'key');
+        $settings['templates_demo_only'] = \App\Services\TemplateAvailability::demoOnly() ? '1' : '0';
         return response()->json([
             'success' => true,
             'settings' => $settings

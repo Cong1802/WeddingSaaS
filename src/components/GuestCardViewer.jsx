@@ -1,3 +1,4 @@
+import { syncPassportTemplate } from '../templates/passportTemplate';
 import React, { useState, useEffect, useRef } from 'react';
 import { Music, Disc, Volume2, VolumeX } from 'lucide-react';
 import { getCardBySlug } from '../services/cardApi';
@@ -75,7 +76,7 @@ export default function GuestCardViewer({ slug }) {
   }
 
   const { template_id, card_data } = cardPayload;
-  const targetTemplate = cardPayload.template ? { id: cardPayload.template.code, fileUrl: cardPayload.template.file_url || '/template.html' } : TEMPLATES.find(t => t.id === template_id) || TEMPLATES[0];
+  const targetTemplate = cardPayload.template ? { id: cardPayload.template.code, fileUrl: cardPayload.template.file_url || '/templates/mau-thiep-1/mau-thiep-1.html' } : TEMPLATES.find(t => t.id === template_id) || TEMPLATES[0];
 
   const handleIframeLoad = () => {
     if (!iframeRef.current) return;
@@ -85,10 +86,15 @@ export default function GuestCardViewer({ slug }) {
 
       // Synchronize text
       const updateText = (selector, val) => {
-        const el = doc.querySelector(selector);
-        if (el && val) el.innerText = val;
+        if (!val) return;
+        const els = doc.querySelectorAll(selector);
+        els.forEach(el => { el.innerText = val; });
       };
 
+      doc.documentElement.dataset.cardSlug = slug;
+      syncPassportTemplate(doc, card_data);
+
+      // Template 01 & Standard Selectors
       updateText('#HEADLINE3 .ladi-headline', card_data.title);
       updateText('#PARAGRAPH2 .ladi-paragraph', card_data.weddingDate);
       updateText('#PARAGRAPH3 .ladi-paragraph', card_data.groomName);
@@ -96,6 +102,38 @@ export default function GuestCardViewer({ slug }) {
       updateText('#PARAGRAPH6 .ladi-paragraph', card_data.groomAddress);
       if (card_data.groomParents) updateText('#PARAGRAPH8 .ladi-paragraph', card_data.groomParents);
       if (card_data.brideParents) updateText('#PARAGRAPH9 .ladi-paragraph', card_data.brideParents);
+
+      // Template Pearl (VIP) Selectors
+      updateText('#HEADLINE261 .ladi-headline, #HEADLINE198 .ladi-headline, #HEADLINE238 .ladi-headline', card_data.title);
+      updateText('#HEADLINE199 .ladi-headline', card_data.weddingDate);
+      updateText('#HEADLINE202 .ladi-headline, #HEADLINE242 .ladi-headline, #HEADLINE321 .ladi-headline, #HEADLINE367 .ladi-headline', card_data.groomName);
+      updateText('#HEADLINE203 .ladi-headline, #HEADLINE245 .ladi-headline, #HEADLINE322 .ladi-headline, #HEADLINE368 .ladi-headline', card_data.brideName);
+      updateText('#HEADLINE325 .ladi-headline, #HEADLINE339 .ladi-headline', card_data.groomAddress);
+      if (card_data.groomParents) updateText('#PARAGRAPH352 .ladi-paragraph, #PARAGRAPH367 .ladi-paragraph', card_data.groomParents);
+      if (card_data.brideParents) updateText('#PARAGRAPH354 .ladi-paragraph, #PARAGRAPH365 .ladi-paragraph', card_data.brideParents);
+
+      // Template Minimalism Red Selectors
+      if (card_data.groomName) {
+        doc.querySelectorAll('h3, p').forEach(el => {
+          if (el.innerText && (el.innerText.trim() === 'Hoàng Đức Long' || el.innerText.trim() === 'Đức Long')) {
+            el.innerText = card_data.groomName;
+          }
+        });
+      }
+      if (card_data.brideName) {
+        doc.querySelectorAll('h3, p').forEach(el => {
+          if (el.innerText && (el.innerText.trim() === 'Phan Hương Châu' || el.innerText.trim() === 'Hương Châu')) {
+            el.innerText = card_data.brideName;
+          }
+        });
+      }
+      if (card_data.groomAddress) {
+        doc.querySelectorAll('p, div, span').forEach(el => {
+          if (el.innerText && el.innerText.includes('The Adora Center')) {
+            el.innerText = card_data.groomAddress;
+          }
+        });
+      }
 
       // Disable live-editor-bar in guest view
       const liveEditorBar = doc.querySelector('#live-editor-bar');

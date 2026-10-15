@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';const {document:d}=parseHTML(readFileSync('C:/Users/Administrator/Pictures/template thiệp 4/Thư Mời Lễ Cưới Phương Linh & Văn Đạt.html','utf8'));console.log(JSON.stringify(JSON.parse(d.querySelector('#script_event_data').textContent).T01,null,2));

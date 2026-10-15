@@ -1,0 +1,32 @@
+[
+  {
+    "number": 1,
+    "downloads": 105,
+    "visited": 111,
+    "failures": []
+  },
+  {
+    "number": 2,
+    "downloads": 0,
+    "visited": 100,
+    "failures": []
+  },
+  {
+    "number": 3,
+    "downloads": 0,
+    "visited": 94,
+    "failures": []
+  },
+  {
+    "number": 4,
+    "downloads": 0,
+    "visited": 104,
+    "failures": []
+  },
+  {
+    "number": 5,
+    "downloads": 0,
+    "visited": 156,
+    "failures": []
+  }
+]

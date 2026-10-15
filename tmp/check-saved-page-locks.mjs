@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';for(let n=1;n<=5;n++){const {document:d}=parseHTML(readFileSync(`public/templates/mau-thiep-${n}/mau-thiep-${n}.html`,'utf8'));console.log(n,d.documentElement.className,d.body.className,d.body.getAttribute('style'));}

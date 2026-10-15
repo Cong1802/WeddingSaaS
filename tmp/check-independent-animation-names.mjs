@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';for(let n=1;n<=2;n++){const {document:d}=parseHTML(readFileSync(`public/templates/mau-thiep-${n}/mau-thiep-${n}.html`,'utf8'));console.log(n,[...new Set(JSON.parse(d.getElementById('standalone-design-config').textContent).animations.map(e=>e.name))]);}

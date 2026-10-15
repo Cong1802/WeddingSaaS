@@ -1,0 +1,2 @@
+﻿from pathlib import Path
+p=Path('laravel-backend/docs/template-designs.md');s=p.read_text(encoding='utf-8');s=s.replace('Form RSVP và nút mừng cưới gốc đã loại bỏ; mẫu này chưa cung cấp hai chức năng đó.','Form RSVP đã khôi phục theo bố cục gốc. Link thiệp chia sẻ truyền slug vào iframe; phản hồi lưu trong bảng `card_rsvps` qua `POST /api/cards/view/{slug}/rsvp`. Chủ thiệp có thể đọc qua `GET /api/user/cards/{id}/rsvps` (đăng nhập). Bản xem mẫu báo rõ chưa gửi. Nút mừng cưới chưa khôi phục.');p.write_text(s,encoding='utf-8')

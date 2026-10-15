@@ -1,0 +1,1 @@
+﻿import {readFileSync,readdirSync} from 'node:fs';for(const f of readdirSync('public/templates/minimalism_red/minimalism_red_files').filter(f=>f.endsWith('.js'))){const s=readFileSync('public/templates/minimalism_red/minimalism_red_files/'+f,'utf8');const i=s.indexOf('Mở thiệp');if(i>=0&&s.includes('envelope-background'))console.log(f,s.slice(Math.max(0,i-300),i+400));}

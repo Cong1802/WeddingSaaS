@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';const s=readFileSync('public/templates/minimalism_red/minimalism_red_files/016w571t4hn9x.js','utf8');for(const term of ['Mở thiệp','Thân Mời','open','511419']){const i=s.indexOf(term);console.log(term,i,s.slice(Math.max(0,i-600),i+800));}

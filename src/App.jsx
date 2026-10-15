@@ -27,6 +27,7 @@ import useTemplates, { normalizeTemplate } from './templates/useTemplates';
 export default function App() {
   const [currentPage, updateCurrentPage] = useState(() => pageFromLocation());
   const setCurrentPage = (page) => {
+    if (page === 'editor' && publicSettings.templates_demo_only !== '0' && user?.role !== 'admin') page = 'templates';
     const path = pathForPage(page);
     if (window.location.pathname !== path) window.history.pushState({}, '', path);
     updateCurrentPage(page);
@@ -134,6 +135,11 @@ export default function App() {
 
   // Dynamic System Settings & SEO Title/Favicon
   const [publicSettings, setPublicSettings] = useState({});
+  React.useEffect(() => {
+    if (currentPage === 'editor' && publicSettings.templates_demo_only !== '0' && user?.role !== 'admin') {
+      setCurrentPage('templates');
+    }
+  }, [currentPage, publicSettings.templates_demo_only, user?.role]);
 
   React.useEffect(() => {
     updateSeo(currentPage, guestSlugParam, publicSettings);
@@ -228,6 +234,11 @@ export default function App() {
 
   const handleGoToEditor = (template = null, packageType = 'pro') => {
     if (typeof template === 'string') template = templates.find(item => item.id === template);
+    if (publicSettings.templates_demo_only !== '0' && user?.role !== 'admin') {
+      if (template?.fileUrl) window.open(template.fileUrl, '_blank', 'noopener,noreferrer');
+      else setCurrentPage('templates');
+      return;
+    }
     requestedEditorTemplate.current = !!template;
     if (template) {
       setSelectedTemplate(template);

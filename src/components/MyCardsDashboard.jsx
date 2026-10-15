@@ -85,6 +85,7 @@ export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToE
     } catch { setError('Không tải được mã QR. Vui lòng thử lại.'); }
   };
   const activateTemplate = async template => {
+    if (settings.templates_demo_only !== '0') { window.open(template.fileUrl, '_blank', 'noopener,noreferrer'); return; }
     if (!user) { onOpenAuthModal(); return; }
     const owned = account.licenses.find(license => license.template_code === template.id && new Date(license.expires_at) > new Date());
     if (!owned) { setPurchase(template); return; }
@@ -143,7 +144,7 @@ export default function MyCardsDashboard({ user, token, onBackToLanding, onGoToE
     {isMobile ? <><header className="account-screen-header"><button aria-label="Quay lại" onClick={() => setMenu(false)}><ArrowLeft size={22} /></button><h2>Tài khoản</h2></header><div className="account-screen-body"><section className="account-screen-profile">{user?.avatar ? <img src={user.avatar} alt="" /> : <span><UserRound size={32} /></span>}<h3>{user?.name}</h3><p>{user?.email}</p></section><div className="account-screen-actions"><button onClick={() => { setMenu(false); onMyCards?.(); }}><Heart size={21} />Thiệp của tôi</button><button onClick={() => { setMenu(false); onOpenTemplates?.(); }}><LayoutGrid size={21} />Kho mẫu thiệp</button>{user?.role === 'admin' && <button onClick={() => { setMenu(false); onOpenAdmin(); }}><UserRound size={21} />Quản trị admin</button>}<button className="account-screen-logout" onClick={() => { setMenu(false); onLogout(); }}>Đăng xuất</button></div></div></> : <><div className="my-card-menu-title"><strong>{user?.name}</strong><button aria-label="Đóng tài khoản" onClick={() => setMenu(false)}><X size={20} /></button></div><p>{user?.email}</p>{user?.role === 'admin' && <button onClick={onOpenAdmin}>Quản trị admin</button>}<button onClick={onLogout}>Đăng xuất</button></>}
   </div></>;
   if (catalogPage) return <>
-    <TemplateCatalogPage templates={templates} user={user} busy={busy || account.primary_selection_pending} onHome={onBackToLanding} onMyCards={onMyCards} onAccount={() => user ? setMenu(!menu) : onOpenAuthModal()} onSelect={activateTemplate} onBlank={() => onGoToEditor()} error={error} accountMenu={menu ? accountMenu : null} />
+    <TemplateCatalogPage demoOnly={settings.templates_demo_only !== '0'} templates={templates} user={user} busy={busy || account.primary_selection_pending} onHome={onBackToLanding} onMyCards={onMyCards} onAccount={() => user ? setMenu(!menu) : onOpenAuthModal()} onSelect={activateTemplate} onBlank={() => onGoToEditor()} error={error} accountMenu={menu ? accountMenu : null} />
     <PurchaseModal isOpen={!!purchase} token={token} templateCode={purchase?.id} templateName={purchase?.name} onClose={() => setPurchase(null)} onPurchaseSuccess={async () => { setPurchase(null); await load(); }} />
   </>;
   return <div className={`my-card-page${isEmpty ? ' is-empty' : ''}`}>

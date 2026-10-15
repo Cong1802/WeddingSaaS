@@ -1,0 +1,37 @@
+[
+  {
+    "number": 1,
+    "files": 111,
+    "removed": 0,
+    "bytes": 8847196,
+    "externalResources": 0
+  },
+  {
+    "number": 2,
+    "files": 100,
+    "removed": 0,
+    "bytes": 38805222,
+    "externalResources": 0
+  },
+  {
+    "number": 3,
+    "files": 94,
+    "removed": 0,
+    "bytes": 8997022,
+    "externalResources": 0
+  },
+  {
+    "number": 4,
+    "files": 104,
+    "removed": 0,
+    "bytes": 17380591,
+    "externalResources": 0
+  },
+  {
+    "number": 5,
+    "files": 156,
+    "removed": 0,
+    "bytes": 21244929,
+    "externalResources": 0
+  }
+]

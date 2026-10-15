@@ -1,0 +1,3 @@
+﻿from pathlib import Path
+p=Path('tmp/fix-minimal-map.mjs');s=p.read_text(encoding='utf-8-sig').replace("link.href='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(address);", "link.setAttribute('href','https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(address));");p.write_text(s,encoding='utf-8')
+p=Path('tmp/verify-minimal-map.mjs');s=p.read_text(encoding='utf-8-sig').replace('new URL(direction.href)','new URL(direction.getAttribute(\'href\'))').replace('!direction.href.includes','!direction.getAttribute(\'href\').includes');p.write_text(s,encoding='utf-8')

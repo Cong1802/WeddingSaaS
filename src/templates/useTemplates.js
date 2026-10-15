@@ -4,7 +4,7 @@ export const normalizeTemplate = template => ({
   ...template,
   databaseId: template.id,
   id: template.code,
-  fileUrl: template.file_url || '/template.html',
+  fileUrl: template.file_url || '/templates/mau-thiep-1/mau-thiep-1.html',
 });
 
 export default function useTemplates() {

@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';const {document:d}=parseHTML(readFileSync('public/templates/minimalism_red/minimalism_red.html','utf8'));console.log([...d.querySelectorAll('iframe')].map(e=>e.outerHTML));console.log([...d.querySelectorAll('a')].filter(e=>/maps|google/.test(e.href)).map(e=>({text:e.textContent,href:e.href})));

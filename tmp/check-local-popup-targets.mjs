@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';const {document:d}=parseHTML(readFileSync('public/templates/mau-thiep-2/mau-thiep-2.html','utf8'));for(const e of d.querySelectorAll('.ladi-popup'))console.log(e.parentElement.id,e.textContent.trim().slice(0,200));

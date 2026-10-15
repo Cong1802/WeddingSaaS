@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';const {document:d}=parseHTML(readFileSync('public/templates/mau-thiep-5/mau-thiep-5.html','utf8'));console.log(d.querySelector('#wedding_rsvp_and_wishes_clean').textContent);

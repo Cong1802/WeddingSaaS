@@ -1,0 +1,11 @@
+﻿import {readFileSync} from 'node:fs';import {parseHTML} from 'linkedom';import vm from 'node:vm';import assert from 'node:assert/strict';
+const {document,window}=parseHTML(readFileSync('public/templates/passport/index.html','utf8'));window.innerWidth=420;
+vm.runInNewContext(readFileSync('public/templates/passport/assets/passport.js','utf8'),{document,window,Date,Math,String,setInterval:()=>0,setTimeout:()=>0});
+assert.equal(document.documentElement.dataset.passportState,'closed');
+const wheel=new window.Event('wheel',{cancelable:true});document.dispatchEvent(wheel);assert(wheel.defaultPrevented);
+const touch=new window.Event('touchmove',{cancelable:true});document.dispatchEvent(touch);assert(touch.defaultPrevented);
+assert(document.querySelector('#passport-open-gate').textContent.includes('visibility:hidden'));
+document.querySelector('#passport-T01').dispatchEvent(new window.Event('click'));
+assert.equal(document.documentElement.dataset.passportState,'open');
+const after=new window.Event('wheel',{cancelable:true});document.dispatchEvent(after);assert(!after.defaultPrevented);
+console.log('PASS: content gated before open, wheel/touch scrolling blocked, then scrolling unlocked on opening.');

@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs'; const h=readFileSync('public/templates/passport/index.html','utf8');for(const term of ['chrome-extension','katex','logo-O35']){const i=h.indexOf(term);console.log(term,i,h.slice(i-180,i+200));}

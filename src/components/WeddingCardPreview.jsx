@@ -1,3 +1,4 @@
+import { syncPassportTemplate } from '../templates/passportTemplate';
 import React, { useRef, useEffect, useState } from 'react';
 import { LayoutGrid, ChevronDown, Link as LinkIcon } from 'lucide-react';
 
@@ -148,12 +149,18 @@ export default function WeddingCardPreview({
 
       // 1. Update Text values inside iframe (only if user is not currently typing into that element)
       const updateTextIfNotActive = (selector, value) => {
-        const el = doc.querySelector(selector);
-        if (el && doc.activeElement !== el) {
-          el.innerText = value;
-        }
+        if (!value) return;
+        const els = doc.querySelectorAll(selector);
+        els.forEach(el => {
+          if (doc.activeElement !== el) {
+            el.innerText = value;
+          }
+        });
       };
 
+      syncPassportTemplate(doc, cardData, setCardData);
+
+      // Template 01 & Standard Selectors
       updateTextIfNotActive('#HEADLINE3 .ladi-headline', cardData.title);
       updateTextIfNotActive('#PARAGRAPH2 .ladi-paragraph', cardData.weddingDate);
       updateTextIfNotActive('#PARAGRAPH3 .ladi-paragraph', cardData.groomName);
@@ -161,6 +168,38 @@ export default function WeddingCardPreview({
       updateTextIfNotActive('#PARAGRAPH6 .ladi-paragraph', cardData.groomAddress);
       if (cardData.groomParents) updateTextIfNotActive('#PARAGRAPH8 .ladi-paragraph', cardData.groomParents);
       if (cardData.brideParents) updateTextIfNotActive('#PARAGRAPH9 .ladi-paragraph', cardData.brideParents);
+
+      // Template Pearl (VIP) Selectors
+      updateTextIfNotActive('#HEADLINE261 .ladi-headline, #HEADLINE198 .ladi-headline, #HEADLINE238 .ladi-headline', cardData.title);
+      updateTextIfNotActive('#HEADLINE199 .ladi-headline', cardData.weddingDate);
+      updateTextIfNotActive('#HEADLINE202 .ladi-headline, #HEADLINE242 .ladi-headline, #HEADLINE321 .ladi-headline, #HEADLINE367 .ladi-headline', cardData.groomName);
+      updateTextIfNotActive('#HEADLINE203 .ladi-headline, #HEADLINE245 .ladi-headline, #HEADLINE322 .ladi-headline, #HEADLINE368 .ladi-headline', cardData.brideName);
+      updateTextIfNotActive('#HEADLINE325 .ladi-headline, #HEADLINE339 .ladi-headline', cardData.groomAddress);
+      if (cardData.groomParents) updateTextIfNotActive('#PARAGRAPH352 .ladi-paragraph, #PARAGRAPH367 .ladi-paragraph', cardData.groomParents);
+      if (cardData.brideParents) updateTextIfNotActive('#PARAGRAPH354 .ladi-paragraph, #PARAGRAPH365 .ladi-paragraph', cardData.brideParents);
+
+      // Template Minimalism Red Selectors
+      if (cardData.groomName) {
+        doc.querySelectorAll('h3, p').forEach(el => {
+          if (el.innerText && (el.innerText.trim() === 'Hoàng Đức Long' || el.innerText.trim() === 'Đức Long')) {
+            if (doc.activeElement !== el) el.innerText = cardData.groomName;
+          }
+        });
+      }
+      if (cardData.brideName) {
+        doc.querySelectorAll('h3, p').forEach(el => {
+          if (el.innerText && (el.innerText.trim() === 'Phan Hương Châu' || el.innerText.trim() === 'Hương Châu')) {
+            if (doc.activeElement !== el) el.innerText = cardData.brideName;
+          }
+        });
+      }
+      if (cardData.groomAddress) {
+        doc.querySelectorAll('p, div, span').forEach(el => {
+          if (el.innerText && el.innerText.includes('The Adora Center')) {
+            if (doc.activeElement !== el) el.innerText = cardData.groomAddress;
+          }
+        });
+      }
 
       // Sync Google Maps Link on #BUTTON10 ("Xem chỉ đường")
       const button10 = doc.querySelector('#BUTTON10');
@@ -679,7 +718,7 @@ export default function WeddingCardPreview({
   };
 
   const isMobile = viewMode === 'mobile';
-  const targetFileUrl = selectedTemplate?.fileUrl || '/template.html';
+  const targetFileUrl = selectedTemplate?.fileUrl || '/templates/mau-thiep-1/mau-thiep-1.html';
 
   return (
     <main className="editor-preview" style={{

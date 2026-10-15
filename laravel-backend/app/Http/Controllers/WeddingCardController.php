@@ -42,6 +42,7 @@ class WeddingCardController extends Controller
      */
     public function saveCard(Request $request)
     {
+        abort_if(\App\Services\TemplateAvailability::demoOnly() && $request->user()?->role !== 'admin', 403, 'Hiện chỉ mở xem demo mẫu thiệp. Tính năng tạo và chỉnh sửa sẽ được mở sau.');
         $validated = $request->validate([
             'slug' => 'required|string|max:191',
             'template_id' => 'required|string',

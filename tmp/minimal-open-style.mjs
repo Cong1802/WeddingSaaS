@@ -1,0 +1,1 @@
+﻿import {readFileSync} from 'node:fs';const s=readFileSync('public/templates/minimalism_red/minimalism_red_files/0mvaljo3agtnt.js','utf8');let i=s.indexOf('Mở thiệp');console.log(s.slice(i-3300,i-400));console.log('handlers',s.match(/.{0,160}onClick:.{0,280}/g)?.slice(0,5));

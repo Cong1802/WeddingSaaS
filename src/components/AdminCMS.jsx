@@ -1,3 +1,4 @@
+import TemplateAdminModal from './TemplateAdminModal';
 import React, { useState, useEffect } from 'react';
 import PlanFeaturesEditor from './PlanFeaturesEditor';
 import FeatureText from './FeatureText';
@@ -161,6 +162,8 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
     recent_orders: []
   });
   const [users, setUsers] = useState([]);
+  const [catalogDemoOnly, setCatalogDemoOnly] = useState(true);
+  const [catalogModeBusy, setCatalogModeBusy] = useState(false);
   const [templateDesigns, setTemplateDesigns] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [plans, setPlans] = useState([]);
@@ -218,7 +221,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
     category: 'Sang Trọng',
     tag: 'HOT',
     thumbnail: '',
-    file_url: '/template.html',
+    file_url: '/templates/mau-thiep-1/mau-thiep-1.html',
     price: 99000,
     is_active: true,
     sort_order: 1
@@ -271,7 +274,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       } else if (activeModule === 'templates') {
         const res = await adminFetch('/api/admin/templates', { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        if (res.ok && data.success) { setTemplates(data.templates); setTemplateDesigns(data.designs || []); }
+        if (res.ok && data.success) { setTemplates(data.templates); setTemplateDesigns(data.designs || []); setCatalogDemoOnly(data.demo_only !== false); }
         else throw new Error(data.message);
       } else if (activeModule === 'plans') {
         const res = await adminFetch('/api/admin/plans', { headers: { 'Authorization': `Bearer ${token}` } });
@@ -514,22 +517,6 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
         fetchModuleData();
       } else {
         showNotification(data.message, true);
-      }
-    } catch (err) {
-      showNotification(err.message, true);
-    }
-  };
-
-  const handleToggleTemplate = async (id) => {
-    try {
-      const res = await adminFetch(`/api/admin/templates/${id}/toggle`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        showNotification(data.message);
-        fetchModuleData();
       }
     } catch (err) {
       showNotification(err.message, true);
@@ -1419,11 +1406,26 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
               {/* --- MODULE 2: TEMPLATE MANAGEMENT --- */}
               {activeModule === 'templates' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <div style={{ padding: 16, background: '#1e293b', borderRadius: 12, color: '#e2e8f0' }}>
+                    <label style={{ display: 'flex', gap: 10, alignItems: 'center', cursor: 'pointer' }}>
+                      <input type="checkbox" checked={catalogDemoOnly} disabled={catalogModeBusy} onChange={async event => {
+                        const demo_only = event.target.checked;
+                        setCatalogModeBusy(true);
+                        try {
+                          const response = await adminFetch('/api/admin/templates/catalog-mode', { method: 'PATCH', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ demo_only }) });
+                          if (!response.ok) throw new Error('Không lưu được chế độ kho mẫu.');
+                          window.location.reload();
+                        } catch (error) { alert(error.message); setCatalogModeBusy(false); }
+                      }} />
+                      <strong>Chỉ xem demo — tạm khóa tạo và chỉnh sửa cho khách</strong>
+                    </label>
+                    <p style={{ margin: '10px 0 0', fontSize: 13 }}>Mẫu đã lưu sẽ hiển thị ở trang chủ và kho mẫu. Khách bấm ảnh hoặc “Xem mẫu” để mở demo. Khi hoàn thành tính năng, bỏ chọn chế độ này để mở sử dụng.</p>
+                  </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', margin: 0 }}>Kho Mẫu Thiệp Cưới ({templates.length})</h3>
                     <button
                       onClick={() => {
-                        setTemplateForm({ id: null, code: '', name: '', category: 'Sang Trọng', tag: 'HOT', thumbnail: '', file_url: '/template.html', price: 99000, is_active: true, sort_order: templates.length + 1 });
+                        setTemplateForm({ id: null, code: '', name: templateDesigns.find(design => design.url === '/templates/mau-thiep-1/mau-thiep-1.html')?.name || '', category: 'Sang Trọng', tag: 'HOT', thumbnail: '', file_url: '/templates/mau-thiep-1/mau-thiep-1.html', price: 99000, is_active: true, sort_order: templates.length + 1 });
                         setEditingTemplate(true);
                       }}
                       style={{ padding: '10px 18px', borderRadius: '12px', background: 'linear-gradient(135deg, #a855f7 0%, #d946ef 100%)', color: '#fff', fontSize: '13px', fontWeight: '700', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
@@ -1435,7 +1437,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
                     {(templates || []).filter(t => (t?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) || (t?.code || '').toLowerCase().includes(searchQuery.toLowerCase())).map(t => (
                       <div key={t.id} style={{ backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <div style={{ position: 'relative', height: '180px', backgroundColor: '#030712' }}>
+                        <div style={{ position: 'relative', aspectRatio: '5 / 7', width: '100%', flexShrink: 0, overflow: 'hidden', backgroundColor: '#030712' }}>
                           <img src={t.thumbnail || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400'} alt={t.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           <span style={{ position: 'absolute', top: '12px', left: '12px', padding: '4px 10px', borderRadius: '12px', backgroundColor: t.is_active ? 'rgba(16, 185, 129, 0.9)' : 'rgba(239, 68, 68, 0.9)', color: '#fff', fontSize: '10px', fontWeight: '800' }}>
                             {t.is_active ? 'ACTIVE' : 'OFFLINE'}
@@ -1447,7 +1449,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
                             <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#fff', margin: '4px 0' }}>{t.name}</h4>
                           </div>
                           <div style={{ display: 'flex', gap: '8px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
-                            <button onClick={() => handleToggleTemplate(t.id)} style={{ flex: 1, padding: '8px', borderRadius: '10px', backgroundColor: '#1e293b', border: 'none', color: '#fff', fontSize: '12px', cursor: 'pointer' }}>{t.is_active ? 'Ẩn mẫu' : 'Bật mẫu'}</button>
+                            <a href={t.file_url || '/templates/mau-thiep-1/mau-thiep-1.html'} target="_blank" rel="noopener noreferrer" style={{ flex: 1, padding: '8px', borderRadius: '10px', backgroundColor: '#1e293b', color: '#fff', fontSize: '12px', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><Eye size={14} /> Xem mẫu</a>
                             <button onClick={() => { setTemplateForm(t); setEditingTemplate(true); }} style={{ padding: '8px 12px', borderRadius: '10px', backgroundColor: 'rgba(168,85,247,0.2)', border: 'none', color: '#c084fc', cursor: 'pointer' }}><Edit3 size={14} /></button>
                             <button onClick={() => handleDeleteTemplate(t.id)} style={{ padding: '8px 12px', borderRadius: '10px', backgroundColor: 'rgba(239,68,68,0.2)', border: 'none', color: '#f87171', cursor: 'pointer' }}><Trash2 size={14} /></button>
                           </div>
@@ -2287,56 +2289,7 @@ export default function AdminCMS({ user, token, onAuthSuccess, onBackToSite, onL
       </main>
 
       {/* --- MODAL EDIT TEMPLATE --- */}
-      {editingTemplate && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 100, backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '520px', maxHeight: 'calc(100dvh - 40px)', overflowY: 'auto', boxSizing: 'border-box', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.7)' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0' }}>{templateForm.id ? 'Sửa Mẫu Thiệp' : 'Thêm Mẫu Thiệp Mới'}</h3>
-            <form onSubmit={handleSaveTemplate} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '12px', color: '#94a3b8' }}>Thiết kế thiệp</label>
-                  <select required value={templateForm.file_url || '/template.html'} onChange={e => setTemplateForm({ ...templateForm, file_url: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }}>
-                    {templateDesigns.map(design => <option key={design.url} value={design.url}>{design.name}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label style={{ fontSize: '12px', color: '#94a3b8' }}>Tag (HOT/NEW/VIP)</label>
-                  <input type="text" value={templateForm.tag} onChange={(e) => setTemplateForm({ ...templateForm, tag: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ fontSize: '12px', color: '#94a3b8' }}>Tên Mẫu Thiệp</label>
-                <input type="text" value={templateForm.name} onChange={(e) => setTemplateForm({ ...templateForm, name: e.target.value })} required style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
-              </div>
-
-              <a href={templateForm.file_url || '/template.html'} target="_blank" rel="noopener noreferrer" style={{ color: '#c084fc', fontSize: '13px' }}>Xem trước thiết kế thiệp ↗</a>
-              <p style={{ color: '#94a3b8', fontSize: '12px', margin: 0 }}>Ảnh xem trước dùng để giới thiệu mẫu. Bố cục thiệp được lấy từ thiết kế bạn chọn.</p>
-              <ImageUploadField
-                label="Ảnh xem trước mẫu thiệp"
-                placeholder="Dán link ảnh hoặc Upload ảnh thumbnail mẫu thiệp"
-                value={templateForm.thumbnail || ''}
-                onChange={(val) => setTemplateForm(prev => ({ ...prev, thumbnail: val }))}
-                token={token}
-                showNotification={showNotification}
-              />
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div style={{ color: '#94a3b8', fontSize: '13px' }}>Giá được quản lý theo gói cước. Mã mẫu được tạo tự động.</div>
-                <div>
-                  <label style={{ fontSize: '12px', color: '#94a3b8' }}>Danh Mục</label>
-                  <input type="text" value={templateForm.category} onChange={(e) => setTemplateForm({ ...templateForm, category: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '10px', backgroundColor: '#090d16', border: '1px solid #1e293b', color: '#fff' }} />
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                <button type="button" onClick={() => setEditingTemplate(null)} style={{ flex: 1, padding: '12px', borderRadius: '12px', backgroundColor: '#1e293b', color: '#fff', border: 'none', cursor: 'pointer' }}>Hủy</button>
-                <button type="submit" style={{ flex: 1, padding: '12px', borderRadius: '12px', backgroundColor: '#a855f7', color: '#fff', border: 'none', fontWeight: '800', cursor: 'pointer' }}>Lưu Mẫu Thiệp</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {editingTemplate && <TemplateAdminModal form={templateForm} setForm={setTemplateForm} designs={templateDesigns} token={token} onClose={() => setEditingTemplate(null)} onSave={handleSaveTemplate} notify={showNotification} />}
 
       {/* --- MODAL EDIT PLAN --- */}
       {editingPlan && (

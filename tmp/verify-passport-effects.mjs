@@ -1,0 +1,14 @@
+import {readFileSync,existsSync} from 'node:fs';import {parseHTML} from 'linkedom';import assert from 'node:assert/strict';import vm from 'node:vm';
+const root='public/templates/passport';const html=readFileSync(root+'/index.html','utf8');const {document,window}=parseHTML(html);window.innerWidth=420; window.matchMedia = () => ({matches:true});
+const imagesBefore=[...document.querySelectorAll('[id]')].filter(e=>/^(passport-IMAGE|IMAGE3$)/.test(e.id)).map(e=>e.id);
+vm.runInNewContext(readFileSync(root+'/assets/passport.js','utf8'),{document,window,Date,Math,String,setInterval:()=>0,setTimeout:()=>0});
+for(const id of imagesBefore) assert(document.getElementById(id),`Lost ${id}`);
+assert.equal(document.querySelectorAll('.passport-particle').length,8);
+assert(document.querySelector('#passport-IMAGE6'));
+assert(document.querySelector('#passport-IMAGE10'));
+assert(document.querySelector('#passport-restored-effects').textContent.includes('passport-globe-spin'));
+for(const match of html.matchAll(/url\(["']?(\.\/assets\/[^\s"'()]+)["']?\)/g))assert(existsSync(root+'/'+match[1].slice(2)),match[1]);
+const animations=JSON.parse(readFileSync(root+'/assets/animations.json','utf8'));
+assert(animations.length>=50);
+assert.equal(readFileSync(root+'/assets/passport.js','utf8'),readFileSync('laravel-backend/public/templates/passport/assets/passport.js','utf8'));
+console.log(`PASS: ${imagesBefore.length} image nodes retained after runtime; 8 particles; globe rotation; calendar decorations; ${animations.length} original animation definitions; local CSS assets and backend copies.`);
