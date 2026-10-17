@@ -1,0 +1,4 @@
+﻿Mode: built-in image_gen; depth correction using existing transparent component references.
+Rear bouquet: preserve exact silhouette, relight upper-left, foreground roses softly luminous, rear foliage and filler flowers darker, deep warm crevices, baked self-shading and contact occlusion, transparent RGBA.
+Front right spray: preserve arrangement, model cream petals, upper leaves lit and overlapping lower leaves darker, restrained gold highlights and amber undersides, baked close translucent contact shadows, transparent RGBA.
+Photo: extend lower portrait naturally to 4:7, preserve faces and existing upper portion, continue suit/dress/bouquet without stretching, ivory frame and baked paper shadow, tight transparent margins. Lower photo will enter envelope pocket.

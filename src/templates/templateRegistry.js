@@ -1,5 +1,21 @@
 export const TEMPLATES = [
   {
+    id: 'template_06_burgundy',
+    name: 'Đỏ Đô & Lời Hẹn',
+    category: 'Cổ Điển',
+    tag: 'NEW',
+    thumbnail: '/templates/mau-thiep-6/assets/thumbnail.webp',
+    fileUrl: '/templates/mau-thiep-6/mau-thiep-6.html'
+  },
+  {
+    id: 'template_lilywedding_m2',
+    name: 'Sắc Lily – Chiến Công & Thùy Tiên',
+    category: 'Hoa Cưới',
+    tag: 'NEW',
+    thumbnail: '/templates/mau-thiep-7/assets/thumbnail.webp',
+    fileUrl: '/templates/mau-thiep-7/mau-thiep-7.html'
+  },
+  {
     id: 'template_01',
     name: 'Thanh lịch Hiện đại',
     category: 'Hiện Đại',

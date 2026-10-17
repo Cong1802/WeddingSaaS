@@ -1,0 +1,1193 @@
+/* Template 6: warm Vietnamese wedding invitation, with lotus and betel-leaf accents. */
+:root {
+  --wine: #a23b47;
+  --deep: #792832;
+  --cream: #fff9f0;
+  --gold: #b59054;
+  --muted: #927468;
+  --line: #d8bda0;
+  --ink: #514039;
+  --blush: #f4e7de;
+  --leaf: #78805e;
+}
+
+body {
+  background: radial-gradient(ellipse at 50% 9%, #fffaf2 0, #eee3d5 64%, #e6dacb 100%);
+  color: var(--ink);
+}
+
+main {
+  max-width: 560px;
+  border-inline: 1px solid #ead9c3;
+  background-color: var(--cream);
+  background-image: linear-gradient(145deg, #fffaf0c7, #f8eddf52), url('./paper.webp');
+  background-blend-mode: soft-light, multiply;
+  box-shadow: 0 9px 38px #60392b16;
+}
+
+section {
+  padding: 51px clamp(25px, 7vw, 43px);
+}
+
+.eyebrow,
+.section-index {
+  letter-spacing: 1.55px;
+}
+
+.section-index {
+  margin-bottom: 11px;
+  color: #a3434c;
+  font-size: 7px;
+}
+
+.script {
+  color: var(--wine);
+  font-size: clamp(37px, 9vw, 46px);
+}
+
+.section-intro {
+  color: #8d7568;
+}
+
+.divider {
+  margin-block: 12px 20px;
+  color: var(--gold);
+}
+
+.divider > span {
+  background: linear-gradient(90deg, transparent, #c7a66f 35%, #c7a66f 65%, transparent);
+}
+
+.divider svg {
+  fill: var(--wine);
+  stroke: none;
+}
+
+.button {
+  border-color: var(--wine);
+  border-radius: 24px;
+  background: var(--wine);
+  box-shadow: 0 4px 10px #8b30351f;
+}
+
+.button-outline {
+  color: var(--wine);
+  background: #fff9f0;
+  box-shadow: none;
+}
+
+.hero {
+  overflow: hidden;
+  padding: 27px 30px 39px;
+  background:
+    radial-gradient(ellipse at 50% 48%, #fffaf1 0, #fff8eea8 64%, transparent 100%);
+}
+
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  width: 105px;
+  height: 105px;
+  border: 1px solid #c99e675c;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero::before {
+  top: 83px;
+  left: -76px;
+  box-shadow: 0 0 0 8px #fff7eb88, 0 0 0 17px #cfaa6d24;
+}
+
+.hero::after {
+  right: -78px;
+  bottom: 190px;
+  box-shadow: 0 0 0 8px #fff7eb88, 0 0 0 17px #cfaa6d24;
+}
+
+.hero-top {
+  position: relative;
+  z-index: 2;
+  justify-content: center;
+  gap: 23px;
+  margin: 0 0 27px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #c8a77678;
+  color: #8c6e55;
+  font-size: 7px;
+  letter-spacing: 1.6px;
+}
+
+.hero > .eyebrow {
+  position: relative;
+  z-index: 2;
+  color: #9b7a5c;
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+
+.hero > h1 {
+  position: relative;
+  z-index: 2;
+  margin: 9px 0 19px;
+  color: var(--wine);
+  font-family: LoveScript, cursive;
+  font-size: clamp(43px, 12vw, 66px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.hero > h1 i {
+  color: #b88d4d;
+  font-family: LoveScript, cursive;
+  font-size: 1.04em;
+  letter-spacing: 0;
+}
+
+.hero-photo {
+  position: relative;
+  z-index: 1;
+  width: 87%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  max-height: 510px;
+  margin: 0 auto;
+  padding: 8px 8px 0;
+  rotate: 0deg;
+  border: 1px solid #d9bd9a;
+  border-radius: 3px;
+  outline: 0;
+  background: #fffdf7;
+  box-shadow: 0 7px 20px #65472e1a;
+}
+
+.hero-photo::before {
+  position: absolute;
+  z-index: -1;
+  inset: -7px 6px 4px -7px;
+  border: 1px solid #d5b996;
+  border-radius: 4px;
+  background: #f5e6d5;
+  content: '';
+  rotate: 2deg;
+}
+
+.hero-photo::after {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #fffaf1b8;
+  content: '';
+  pointer-events: none;
+}
+
+.hero-photo > img {
+  height: calc(100% - 30px);
+  border-radius: 1px;
+  object-position: center 32%;
+}
+
+.hero-photo figcaption {
+  position: static;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  padding-right: 8px;
+  color: #9c775d;
+  font-family: Pinyon, cursive;
+  font-size: 18px;
+  line-height: 29px;
+  text-align: right;
+  text-shadow: none;
+  white-space: nowrap;
+  background: none;
+}
+
+.hero-floral {
+  position: absolute;
+  z-index: 0;
+  bottom: 208px;
+  left: -74px;
+  width: 235px;
+  height: 188px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.hero-bottom {
+  position: relative;
+  z-index: 2;
+  padding-top: 22px;
+}
+
+.hero-bottom > .eyebrow {
+  color: #9b7a5c;
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+
+.hero-names {
+  display: flex;
+  justify-content: center;
+  gap: clamp(5px, 2vw, 12px);
+  margin: 7px 0 4px;
+  color: var(--wine);
+  font-size: clamp(30px, 8vw, 41px);
+  line-height: 1.35;
+  text-align: center;
+}
+
+.hero-names > span:last-child {
+  text-align: inherit;
+}
+
+.hero-names > i {
+  color: var(--gold);
+  font-size: .8em;
+}
+
+.hero-date {
+  color: #886d56;
+  font-family: Editorial, Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.down-link {
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+  color: #9e5052;
+}
+
+.invitation-section {
+  margin: 6px 23px 0;
+  padding: 43px clamp(19px, 6vw, 34px) 42px;
+  border: 1px solid #d4b68e;
+  border-radius: 5px;
+  outline: 1px solid #ead9bc;
+  outline-offset: -6px;
+  background: linear-gradient(145deg, #fffaf1f2, #f9ecdfd9);
+  box-shadow: 0 5px 16px #67422b0c;
+  text-align: center;
+}
+
+.invitation-section::before,
+.invitation-section::after {
+  position: absolute;
+  z-index: -1;
+  width: 125px;
+  height: 115px;
+  background: url('./lotus-betel.webp') center / contain no-repeat;
+  content: '';
+  opacity: .44;
+  pointer-events: none;
+}
+
+.invitation-section::before {
+  top: -45px;
+  left: -68px;
+}
+
+.invitation-section::after {
+  right: -65px;
+  bottom: -48px;
+  rotate: 180deg;
+}
+
+.invitation-section .section-index {
+  text-align: center;
+}
+
+.invitation-section > h2 {
+  color: var(--wine);
+  font-size: clamp(36px, 9vw, 44px);
+  text-align: center;
+}
+
+.invitation-section .divider {
+  justify-content: center;
+  margin: 9px auto 17px;
+}
+
+.invitation-section > .eyebrow {
+  color: #8d7160;
+  font-size: 7px;
+  letter-spacing: 1.35px;
+  text-align: center;
+}
+
+.event-spread {
+  display: block;
+  margin: 24px 0 13px;
+}
+
+.date-ticket {
+  display: grid;
+  grid-template-columns: 1fr 86px 1fr;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  max-width: 340px;
+  min-height: 102px;
+  margin: 0 auto;
+  padding: 9px 12px;
+  border-block: 1px solid #c9aa77;
+  border-radius: 0;
+  background: linear-gradient(90deg, transparent, #f6ead9a8 50%, transparent);
+  color: var(--wine);
+  text-align: center;
+}
+
+.date-ticket > .eyebrow {
+  grid-column: 1 / -1;
+  border: 0;
+  padding: 0;
+  color: #917451;
+  font-size: 7px;
+  letter-spacing: 1.8px;
+}
+
+.date-ticket > strong {
+  grid-column: 2;
+  grid-row: 2 / 4;
+  color: var(--wine);
+  font-family: Editorial, Georgia, serif;
+  font-size: 69px;
+  line-height: 1;
+}
+
+.date-ticket > span:last-child {
+  grid-column: 1 / -1;
+  color: #93734e;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.event-copy {
+  margin: 20px auto 0;
+  text-align: center;
+}
+
+.full-names {
+  margin: 18px 0 12px;
+}
+
+.full-names > p {
+  color: #8f3743;
+  font-size: clamp(27px, 7vw, 35px);
+  line-height: 1.45;
+  text-align: center;
+}
+
+.full-names > span {
+  display: block;
+  margin: 0;
+  color: var(--gold);
+  font-family: Pinyon, cursive;
+  font-size: 22px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.date-time {
+  margin: 0 0 12px;
+  color: #95745c;
+  font-size: 7px;
+  letter-spacing: 1.7px;
+}
+
+.date-time > b {
+  margin-left: 7px;
+  color: var(--wine);
+  font-family: Editorial, Georgia, serif;
+  font-size: 15px;
+}
+
+.event-copy > h3 {
+  margin: 0 0 4px;
+  color: #805b3e;
+  font-family: Editorial, Georgia, serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.event-copy > .address,
+.invitation-note {
+  color: #887163;
+}
+
+.invitation-note {
+  max-width: 330px;
+  margin: 17px auto 0;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 11px;
+  text-align: center;
+}
+
+.family-section {
+  padding-block: 40px;
+  background: linear-gradient(145deg, #f5e7ddc9, #fcf4e9ad);
+}
+
+.family-section::before,
+.family-section::after,
+.family-section::after {
+  content: none;
+}
+
+.family-heading {
+  margin-bottom: 19px;
+  text-align: center;
+}
+
+.family-heading > .script {
+  font-size: clamp(34px, 8vw, 41px);
+  text-align: center;
+}
+
+.family {
+  gap: 13px;
+  text-align: center;
+}
+
+.family > article:first-child,
+.family > article:last-child {
+  margin: 0;
+  padding: 15px 11px 13px;
+  border: 1px solid #d8c1a4;
+  border-radius: 5px;
+  background: #fffaf4a8;
+}
+
+.family > article:first-child {
+  border-right: 1px solid #d8c1a4;
+}
+
+.family > article:last-child {
+  padding-left: 11px;
+}
+
+.family h3 {
+  margin: 8px 0 6px;
+  color: #933e47;
+  font-size: clamp(22px, 6vw, 28px);
+  text-align: center;
+}
+
+.family p {
+  color: #796658;
+  font-size: 9px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.family .eyebrow {
+  color: #a34a4c;
+  font-size: 7px;
+}
+
+.family-heart {
+  top: 36px;
+  left: calc(50% - 12px);
+  width: 24px;
+  background: #fcf6ed;
+  color: var(--wine);
+  text-align: center;
+}
+
+.interlude {
+  height: 345px;
+  margin: 10px 14px 0;
+  padding: 7px;
+  border: 1px solid #cba976;
+  background: #fffaf2;
+}
+
+.interlude > img {
+  height: 100%;
+  border-radius: 2px;
+  object-position: center 36%;
+}
+
+.interlude::after {
+  background: linear-gradient(transparent 20%, #492a2387);
+}
+
+.interlude::before {
+  inset: 15px;
+  border: 1px solid #fff7eaa8;
+}
+
+.interlude figcaption {
+  bottom: 28px;
+  color: #fffaf1;
+  font-size: 34px;
+  text-shadow: 0 1px 9px #2a151663;
+}
+
+.interlude small {
+  color: #f5e3ce;
+  font-size: 7px;
+  letter-spacing: 1.8px;
+}
+
+.story-section {
+  background: #fff9ef9c;
+}
+
+.story-section::after,
+.guest-note::after {
+  position: absolute;
+  top: auto;
+  right: -52px;
+  bottom: -29px;
+  width: 170px;
+  height: 140px;
+  background: url('./lotus-betel.webp') center / contain no-repeat;
+  content: '';
+  opacity: .2;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.story-section > .section-index {
+  margin-bottom: 7px;
+}
+
+.story-list {
+  max-width: 410px;
+  margin: 29px auto 0;
+}
+
+.story-list article {
+  gap: 16px;
+  padding-bottom: 25px;
+}
+
+.story-list article::before {
+  left: 15px;
+  border-left: 1px dashed #c6a36c;
+}
+
+.story-list article > span {
+  flex-basis: 32px;
+  height: 32px;
+  border-color: #c09959;
+  background: #fff8ec;
+  color: #9d4246;
+  box-shadow: 0 0 0 4px #d2b47a1f;
+}
+
+.story-list small {
+  color: #a17a52;
+  font-size: 7px;
+  letter-spacing: 1.2px;
+}
+
+.story-list h3 {
+  color: #895d3e;
+  font-size: 20px;
+}
+
+.story-list p {
+  color: #867061;
+}
+
+.countdown-section {
+  border-block: 1px solid #d6ba91;
+  background: linear-gradient(145deg, #f8eee2, #fffaf1 56%, #f4e6d8);
+  box-shadow: none;
+  color: var(--ink);
+  text-align: center;
+}
+
+.countdown-section::before,
+.countdown-section::after {
+  width: 35px;
+  height: 35px;
+  border-color: #cba76c88;
+}
+
+.countdown-section > .eyebrow {
+  color: #9a7656;
+}
+
+.countdown-section .script {
+  margin: 8px 0 22px;
+  color: var(--wine);
+}
+
+.countdown {
+  gap: clamp(7px, 2.6vw, 13px);
+}
+
+.countdown > div {
+  width: clamp(58px, 17vw, 76px);
+  padding: 9px 2px 8px;
+  border: 1px solid #d5bd9c;
+  border-radius: 7px;
+  background: #fffaf1c9;
+  box-shadow: 0 3px 9px #77502a0d;
+}
+
+.countdown b {
+  color: #a13d47;
+  font-size: 30px;
+}
+
+.countdown span {
+  color: #8c725c;
+  font-size: 7px;
+}
+
+.countdown-note {
+  color: #906e54;
+}
+
+.schedule-section {
+  padding-top: 44px;
+  text-align: center;
+}
+
+.schedule-section > .script {
+  font-size: clamp(35px, 8vw, 42px);
+}
+
+.schedule-section::before {
+  position: absolute;
+  top: -15px;
+  left: -48px;
+  width: 134px;
+  height: 124px;
+  background: url('./lotus-betel.webp') center / contain no-repeat;
+  content: '';
+  opacity: .2;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.schedule {
+  align-items: center;
+  gap: 9px;
+  margin: 29px -7px 32px;
+}
+
+.schedule > article {
+  position: relative;
+  z-index: 1;
+}
+
+.schedule svg {
+  width: 37px;
+  height: 37px;
+  margin-bottom: 11px;
+  color: #a3484d;
+}
+
+.schedule b {
+  color: #78573e;
+}
+
+.schedule article > span {
+  color: #8e7564;
+}
+
+.schedule > i {
+  align-self: center;
+  width: clamp(12px, 4vw, 30px);
+  height: 1px;
+  flex: 0 0 auto;
+  padding: 0;
+  margin-top: -34px;
+  overflow: hidden;
+  background: #c6a777;
+  font-size: 0;
+}
+
+.venue {
+  padding: 23px 15px 27px;
+  border-block: 1px solid #cfb48f;
+  background: #f7ecdf94;
+}
+
+.venue .eyebrow {
+  color: #9b4747;
+}
+
+.venue h3 {
+  color: #865c3c;
+}
+
+.venue p {
+  color: #806c5e;
+}
+
+.album-section {
+  padding-top: 42px;
+  background: linear-gradient(180deg, #f4e8dc90, #fffaf1c9);
+}
+
+.album-section::after {
+  content: none;
+}
+
+.album {
+  gap: 19px 14px;
+  margin: 26px 0 0;
+}
+
+.album-photo,
+.album-photo:nth-child(even),
+.album-photo:nth-child(5) {
+  position: relative;
+  margin: 0;
+  padding: 6px 6px 10px;
+  rotate: 0deg;
+  translate: 0 0;
+  border: 1px solid #dbc8a9;
+  border-radius: 5px;
+  background: #fffdf8;
+  box-shadow: 0 4px 12px #67452a13;
+}
+
+.album-photo:nth-child(5) {
+  grid-column: span 2;
+  margin-inline: 20px;
+}
+
+.album-photo::before {
+  content: none;
+}
+
+.album-photo > img,
+.album-photo:first-child > img,
+.album-photo:nth-child(5) > img {
+  height: clamp(150px, 44vw, 225px);
+  border-radius: 2px;
+}
+
+.album-photo:nth-child(5) > img {
+  height: clamp(190px, 60vw, 300px);
+}
+
+.album-photo > span {
+  margin-top: 5px;
+  color: #8e3f45;
+  font-family: Pinyon, cursive;
+  font-size: 20px;
+}
+
+.album-hint {
+  color: #9b7b5e;
+  letter-spacing: 1px;
+}
+
+.guest-note {
+  border-top: 1px solid #d5bc98;
+  background: #fff8ee9c;
+  text-align: center;
+}
+
+.guest-note::after {
+  top: auto;
+  right: auto;
+  bottom: -17px;
+  left: -63px;
+  rotate: 180deg;
+  opacity: .28;
+}
+
+.guest-note h2 {
+  color: #8e3d45;
+  font-family: LoveScript, cursive;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.guest-note h2 > i {
+  color: #b38c58;
+  font-size: 39px;
+}
+
+.guest-note p {
+  color: #887265;
+}
+
+.swatches > span {
+  outline-color: #c7a87799;
+}
+
+.swatches > span:first-child {
+  background: var(--wine);
+}
+
+.swatches > span:nth-child(2) {
+  background: #f5e5d6;
+}
+
+.swatches > span:nth-child(3) {
+  background: #b79559;
+}
+
+.guest-note > small {
+  color: #9b7755;
+}
+
+.rsvp-section {
+  padding-top: 36px;
+}
+
+.rsvp-section form {
+  margin-top: 23px;
+  padding: 20px 17px 18px;
+  border: 1px solid #d2b38c;
+  border-radius: 5px;
+  outline: 1px solid #ead9bc;
+  outline-offset: -6px;
+  background: #fffaf1bd;
+  box-shadow: 0 4px 14px #63422e0d;
+}
+
+.rsvp-section label {
+  color: #806a58;
+}
+
+input,
+select,
+textarea {
+  border-color: #d0b695;
+  border-radius: 4px;
+  background: #fffdf8;
+  color: #684e3e;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline-color: var(--wine);
+}
+
+.rsvp-section form > .button {
+  border-radius: 24px;
+  background: var(--wine);
+}
+
+footer {
+  position: relative;
+  overflow: hidden;
+  padding: 26px 30px 42px;
+  border-top: 1px solid #d3b893;
+  background: linear-gradient(180deg, #f7ecdfba, #fdf8ef 80%);
+}
+
+footer > img.footer-ornament {
+  width: 196px;
+  height: 115px;
+  object-fit: contain;
+  opacity: .72;
+}
+
+footer .eyebrow,
+footer > small {
+  color: #9e7654;
+}
+
+footer h2 {
+  color: var(--wine);
+  font-family: LoveScript, cursive;
+  font-size: 51px;
+}
+
+footer p {
+  color: #887265;
+}
+
+.footer-names {
+  color: #8f3b45;
+}
+
+.footer-names > i {
+  color: var(--gold);
+}
+
+.effects-toggle,
+.reopen-button {
+  border-color: #c5a16a;
+  color: var(--wine);
+}
+
+body.locked .effects-toggle,
+body.locked .reopen-button {
+  display: none;
+}
+
+.ambient-heart {
+  color: #c84355a6;
+}
+
+#opening {
+  background: radial-gradient(ellipse at 50% 40%, #fffaf2 0, #f4e8dc 63%, #e8d9c8 100%);
+}
+
+#opening::before {
+  position: absolute;
+  right: -100px;
+  bottom: -86px;
+  width: min(420px, 86vw);
+  height: 310px;
+  background: url('./lotus-betel.webp') center / contain no-repeat;
+  content: '';
+  opacity: .2;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#opening > * {
+  position: relative;
+  z-index: 1;
+}
+
+.gate-eyebrow {
+  margin-bottom: 23px;
+  color: #9c7652;
+}
+
+.gate-envelope {
+  width: min(390px, 89vw);
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+
+.gate-paper {
+  top: 63%;
+  right: 15%;
+  bottom: 4%;
+  left: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 2px 4px 0;
+  border: 1px solid #c9a36e60;
+  border-radius: 6px;
+  outline: 0;
+  background: #fffaf0e8;
+  box-shadow: 0 2px 7px #5a35200a;
+  text-align: center;
+  z-index: 2;
+}
+
+.gate-paper > .eyebrow {
+  color: #936f4c;
+  font-size: 6px;
+  letter-spacing: 1.5px;
+}
+
+.gate-paper h1 {
+  margin: 2px -8px 0;
+  color: #983b45;
+  font-family: LoveScript, cursive;
+  font-size: clamp(18px, 5.7vw, 27px);
+  line-height: 1.1;
+}
+
+.gate-paper h1 > em {
+  display: inline;
+  margin: 0 4px;
+  color: var(--gold);
+  font-size: .75em;
+  vertical-align: 1px;
+}
+
+.gate-paper > p {
+  margin-top: 3px;
+  color: #8e7153;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+}
+
+.gate-paper .divider {
+  display: none;
+}
+
+.gate-envelope-cover {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: drop-shadow(0 8px 13px #51372324);
+  z-index: 1;
+}
+
+.gate-flower {
+  top: -33px;
+  right: -41px;
+  left: auto;
+  width: 194px;
+  height: 133px;
+  rotate: 4deg;
+  filter: drop-shadow(0 3px 4px #49332315);
+  z-index: 3;
+}
+
+#open-invitation {
+  min-width: 192px;
+  margin-top: 23px;
+}
+
+.gate-note {
+  color: #90745c;
+}
+
+#opening.is-opening .gate-envelope-cover {
+  translate: 0 36px;
+}
+
+@media (min-width: 480px) {
+  .hero {
+    padding-inline: 40px;
+  }
+
+  .hero-floral {
+    bottom: 220px;
+    left: -83px;
+    width: 270px;
+    height: 210px;
+  }
+
+  .hero-photo {
+    width: 85%;
+  }
+
+  .family {
+    gap: 19px;
+  }
+
+  .album-photo > img,
+  .album-photo:first-child > img {
+    height: 225px;
+  }
+
+  .album-photo:nth-child(5) > img {
+    height: 300px;
+  }
+}
+
+@media (max-width: 370px) {
+  section {
+    padding-inline: 22px;
+  }
+
+  .hero {
+    padding-inline: 22px;
+  }
+
+  .hero-top {
+    gap: 12px;
+  }
+
+  .hero-photo {
+    width: 88%;
+  }
+
+  .hero-floral {
+    bottom: 210px;
+    left: -77px;
+    width: 205px;
+    height: 170px;
+  }
+
+  .invitation-section {
+    margin-inline: 17px;
+    padding-inline: 18px;
+  }
+
+  .date-ticket {
+    grid-template-columns: 1fr 73px 1fr;
+    padding-inline: 7px;
+  }
+
+  .date-ticket > strong {
+    font-size: 62px;
+  }
+
+  .family-section {
+    padding-inline: 19px;
+  }
+
+  .family {
+    gap: 9px;
+  }
+
+  .family > article:first-child,
+  .family > article:last-child {
+    padding-inline: 8px;
+  }
+
+  .schedule {
+    gap: 5px;
+  }
+
+  .schedule > i {
+    width: 12px;
+  }
+
+  .album-photo > img,
+  .album-photo:first-child > img {
+    height: 152px;
+  }
+
+  .album-photo:nth-child(5) {
+    margin-inline: 10px;
+  }
+
+  .album-photo:nth-child(5) > img {
+    height: 205px;
+  }
+
+  .gate-paper {
+    left: 12%;
+    right: 12%;
+  }
+
+  .gate-flower {
+    right: -32px;
+    width: 160px;
+  }
+}
+
+@media (max-height: 690px) {
+  .gate-envelope {
+    width: min(340px, 83vw);
+  }
+
+  .gate-eyebrow {
+    margin-bottom: 14px;
+  }
+
+  #open-invitation {
+    margin-top: 15px;
+  }
+
+  .gate-note {
+    margin-top: 8px;
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #opening,
+  .gate-paper,
+  .gate-envelope-cover {
+    transition: none;
+  }
+}

@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import {parseHTML} from 'linkedom';
+const base='public/templates/mau-thiep-8';
+const {document}=parseHTML(fs.readFileSync(`${base}/mau-thiep-8.html`,'utf8'));
+const style=document.createElement('link');style.rel='stylesheet';style.href='./assets/mobile-layers.css?v=20261017-v2';document.head.appendChild(style);
+const flower=document.querySelector('.royal-flowers-left img');flower.src='./assets/royal-flowers-cutout.png';
+document.querySelector('.royal-flowers-right img').src='./assets/royal-flowers-cutout.png';
+const pocket=document.createElement('img');pocket.src='./assets/royal-pocket-cutout.png';pocket.className='royal-pocket-art';pocket.dataset.layer='envelope-art';pocket.alt='';pocket.setAttribute('aria-hidden','true');
+const seal=document.querySelector('.royal-wax-seal');seal.before(pocket);seal.innerHTML='<img src="./assets/royal-seal-cutout.png" alt="" aria-hidden="true">';
+fs.writeFileSync(`${base}/mau-thiep-8.html`,'<!DOCTYPE html>\n'+document.documentElement.outerHTML);

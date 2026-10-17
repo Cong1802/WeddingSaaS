@@ -1,4 +1,5 @@
 import { syncPassportTemplate } from '../templates/passportTemplate';
+import { syncEditorialTemplate } from '../templates/editorialTemplate';
 import React, { useState, useEffect, useRef } from 'react';
 import { Music, Disc, Volume2, VolumeX } from 'lucide-react';
 import { getCardBySlug } from '../services/cardApi';
@@ -93,6 +94,7 @@ export default function GuestCardViewer({ slug }) {
 
       doc.documentElement.dataset.cardSlug = slug;
       syncPassportTemplate(doc, card_data);
+      syncEditorialTemplate(doc, card_data);
 
       // Template 01 & Standard Selectors
       updateText('#HEADLINE3 .ladi-headline', card_data.title);

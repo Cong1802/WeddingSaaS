@@ -1,4 +1,5 @@
 import { syncPassportTemplate } from '../templates/passportTemplate';
+import { syncEditorialTemplate } from '../templates/editorialTemplate';
 import React, { useRef, useEffect, useState } from 'react';
 import { LayoutGrid, ChevronDown, Link as LinkIcon } from 'lucide-react';
 
@@ -159,6 +160,7 @@ export default function WeddingCardPreview({
       };
 
       syncPassportTemplate(doc, cardData, setCardData);
+      syncEditorialTemplate(doc, cardData, setCardData);
 
       // Template 01 & Standard Selectors
       updateTextIfNotActive('#HEADLINE3 .ladi-headline', cardData.title);

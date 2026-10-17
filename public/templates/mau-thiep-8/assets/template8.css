@@ -1,0 +1,67 @@
+html{background:#e7ded3;scroll-behavior:smooth}
+body{margin:0;background:#e7ded3!important;overflow-x:hidden}
+[data-testid="minimalism-darkred-template"]{background:#e7ded3!important}
+.royal-invitation{position:relative;width:100%;max-width:430px!important;margin-inline:auto!important;container-type:inline-size;background:#f3e9dc!important;border:0!important;color:#650e17;isolation:isolate;padding-bottom:28px;box-shadow:0 0 45px #4c2b1720}
+.royal-invitation:after{content:"";position:absolute;inset:14px 13px 12px;border:1px solid #aa7c45;outline:1px solid #b48c5780;outline-offset:-4px;z-index:30;pointer-events:none}
+.minimalism-do-theme main>.fixed{right:max(16px,calc((100vw - 430px)/2 + 16px));bottom:24px}
+.royal-hero{position:relative;text-align:center;padding:64px 0 25px;overflow:hidden;z-index:1}
+.royal-eyebrow{font:600 4.65cqw/1.2 'Times New Roman',serif;letter-spacing:.12em;color:#650e17;margin:0}
+.royal-divider{display:flex;align-items:center;justify-content:center;gap:5px;width:36%;margin:9px auto 0;color:#ac793e}
+.royal-divider:before,.royal-divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,#a77537)}
+.royal-divider:after{transform:rotate(180deg)}
+.royal-divider span{font-size:23px;line-height:1}
+.royal-divider-bottom{width:39%;margin-top:22px}
+.royal-corner{position:absolute;top:17px;width:44px;height:44px;color:#a4773e;pointer-events:none}
+.royal-corner svg{display:block;width:100%;height:100%}.corner-left{left:16px}.corner-right{right:16px;transform:scaleX(-1)}
+.royal-scene{position:relative;isolation:isolate;width:100%;aspect-ratio:4/5;margin:12px 0 0;perspective:1000px}
+.royal-scene *{box-sizing:border-box}
+
+.royal-photo{position:absolute;z-index:2;left:33%;top:6%;width:54%;height:65%;transform:rotate(12deg);transform-origin:50% 85%;transition:transform 1.2s cubic-bezier(.2,.75,.25,1)}
+.royal-photo img{display:block;width:100%;height:100%;object-fit:contain;clip-path:inset(6.5% 0 0 5.5%)}
+.royal-flowers{position:absolute;left:-4%;top:0;z-index:4;width:96%;height:96%;transform-origin:30% 80%;pointer-events:none;filter:saturate(.72) brightness(.91) contrast(.98) drop-shadow(3px 6px 5px #49332145);animation:royal-flower-sway 8s ease-in-out infinite}
+.royal-flowers img{display:block;width:100%;height:100%;object-fit:contain}
+.royal-pocket-art{filter:saturate(.7) brightness(.9);position:absolute;z-index:5;left:3.7%;bottom:5.5%;width:92.6%;height:54%;object-fit:fill;pointer-events:none;transform-origin:center bottom;transition:transform 1.2s ease}
+.royal-pocket-left-flap{position:absolute;z-index:6;left:3.7%;bottom:5.5%;width:92.6%;height:54%;object-fit:fill;pointer-events:none;transform-origin:center bottom;transition:transform 1.2s ease;filter:saturate(.7) brightness(.9);clip-path:polygon(4.2% 7.2%,5.1% 7.4%,6.1% 8.2%,7.6% 9.7%,9.2% 11.7%,10.7% 14%,12.1% 17.1%,11.6% 17.7%,9.1% 15.5%,6.7% 13.2%,4.4% 10.8%)}
+.royal-wax-seal{position:absolute;z-index:7;left:41.5%;top:64%;width:18%;aspect-ratio:1;background:none;border:0;border-radius:50%;padding:0;cursor:pointer;transform:rotate(-8deg);transition:transform 1s ease,top 1s ease}
+.royal-wax-seal img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:contain}
+.royal-wax-seal:focus-visible{outline:2px solid #a97935;outline-offset:4px}
+.royal-petal{position:absolute;z-index:7;width:10%;height:auto;pointer-events:none;object-fit:contain}
+.royal-petal-one{top:1%;left:12%;width:12%;transform:rotate(0deg);animation:royal-petal-sway 9s ease-in-out infinite}
+.royal-petal-two{bottom:4%;left:18%;width:11%;transform:rotate(-10deg)}
+.royal-petal-three{right:1%;top:51%;width:10%;transform:rotate(-75deg)}
+
+.royal-names{position:relative;display:flex;flex-direction:column;align-items:center;margin:0;padding:0 22px;font:400 13.1cqw/1.03 var(--font-viaoda-libre),'Times New Roman',serif;letter-spacing:-.055em;color:#650a13}
+.royal-names>span{white-space:nowrap}.royal-names em{font:400 1em/.75 'The Nautigal','Times New Roman',serif;letter-spacing:0;color:#a17134;margin:5px 0 10px}
+.royal-invitation>.royal-ceremony{width:89%!important;max-width:none!important;margin:0 auto 35px}
+.royal-ceremony>div{background:radial-gradient(ellipse at 50% 20%,#711e25,#501018 90%);border:2px solid #b58a49;border-radius:20px 20px 13px 13px;outline:1px solid #b58a49;outline-offset:-6px;padding:44px 18px 30px;box-shadow:0 2px 2px #4c2a1933,1px 7px 12px #5d2a1526}
+.royal-ceremony>div:before{content:'✥';position:absolute;left:0;right:0;top:12px;color:#d4b06c;font-size:20px;z-index:2}
+.royal-ceremony h2{width:100%;font-weight:400!important;letter-spacing:.035em!important}.royal-ceremony h2 span{font-size:4.65cqw!important}
+.royal-ceremony h2:after{content:'─── ✥ ───';display:block;color:#bd9458;font-size:18px;margin-top:8px;font-weight:400}
+.royal-ceremony h3{font-size:27px!important;line-height:1.3!important;min-height:55px!important}
+.royal-invitation>section:not(.royal-ceremony){max-width:380px!important}
+.royal-gift-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:saturate(.7) brightness(.9) drop-shadow(2px 6px 6px #3c0d163b)}
+.royal-gift-art:last-child{transform:translate(7%,5%) rotate(-8deg)}
+.royal-invitation .md\:text-\[24px\]{font-size:20px}.royal-invitation .md\:text-\[18px\]{font-size:16px}
+.royal-invitation .md\:pt-\[120px\]{padding-top:74px}.royal-invitation .md\:max-w-\[560px\]{max-width:380px}
+.royal-invitation form{max-width:300px!important}
+.royal-scene[data-animation="opened"] .royal-photo{transform:translateY(-8%) rotate(3deg)}
+.royal-scene[data-animation="opened"] .royal-pocket-art{transform:rotateX(-16deg)}
+.royal-scene[data-animation="opened"] .royal-pocket-left-flap{transform:rotateX(-16deg)}
+.royal-scene[data-animation="opened"] .royal-wax-seal{top:76%;transform:rotate(8deg) scale(.9)}
+@keyframes royal-flower-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(-1deg) translateY(-.3%)}}
+@keyframes royal-petal-sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(5px) rotate(7deg)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.royal-invitation *{animation:none!important;transition:none!important}}
+
+.royal-invitation:before{content:"";position:absolute;left:0;top:0;width:100%;aspect-ratio:1/2;background:linear-gradient(to bottom,transparent 65%,#f3e9dc 100%),url("./royal-paper-background.png") center top/100% 100% no-repeat;pointer-events:none;z-index:0}
+
+
+.royal-right-spray{position:absolute;z-index:6;right:7%;top:55%;width:40%;height:31%;object-fit:contain;pointer-events:none;transform:rotate(4deg);filter:drop-shadow(.5px 1px .8px #34180d80) drop-shadow(2px 4px 2.5px #35190f66)}
+.royal-petal-three{z-index:0;right:0%;top:49%}
+
+
+
+
+
+
+/* Both envelope sheets share the same outside edges and lower baseline. */
+.royal-envelope-rear{position:absolute;z-index:1;left:5.5%;top:9.5%;width:89.5%;height:84%;object-fit:fill;pointer-events:none;filter:saturate(.7) brightness(.9) contrast(1.03)}

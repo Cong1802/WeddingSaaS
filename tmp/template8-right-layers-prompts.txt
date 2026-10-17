@@ -1,0 +1,4 @@
+﻿Mode: built-in image_gen; transparent RGBA assets with photographic baked shadows.
+Photo: preserve source portrait identity, pose and clothing; upright ivory-bordered printed photograph, paper thickness, upper-left lighting, natural lower-right cast shadow, transparent surroundings, no extra props. Saved photo-print-shadow-v4.png.
+Right floral spray: match right front spray of reference, airy ivory baby's breath, berries, muted eucalyptus and antique gold leaves, diagonal cascade upper-left to lower-right, natural baked shadow, no backdrop. Saved right-floral-spray-v4.png.
+Right rear envelope flap: isolated small dark burgundy embossed curved triangular corner with thin gold piping, upper-left light and natural fold shadow. Saved envelope-right-flap-v4.png.

@@ -1,0 +1,13 @@
+import fs from 'node:fs';import{parseHTML}from'linkedom';
+const base='public/templates/mau-thiep-8';const{document:d}=parseHTML(fs.readFileSync(`${base}/mau-thiep-8.html`,'utf8'));
+const photo=d.querySelector('.royal-photo img');photo.src='./assets/photo-print-shadow-v4.png';photo.removeAttribute('width');photo.removeAttribute('height');
+const flap=d.createElement('img');flap.src='./assets/envelope-right-flap-v4.png';flap.className='royal-right-flap';flap.dataset.layer='envelope-right-rear';flap.alt='';flap.setAttribute('aria-hidden','true');d.querySelector('.royal-photo').before(flap);
+const sprig=d.createElement('img');sprig.src='./assets/right-floral-spray-v4.png';sprig.className='royal-right-spray';sprig.dataset.layer='flowers-right-front';sprig.alt='';sprig.setAttribute('aria-hidden','true');d.querySelector('.royal-wax-seal').before(sprig);
+d.querySelector('link[href*="template8.css"]').href='./assets/template8.css?v=right-layers-20261017-13';
+fs.writeFileSync(`${base}/mau-thiep-8.html`,'<!DOCTYPE html>\n'+d.documentElement.outerHTML);
+const p=`${base}/assets/template8.css`;let css=fs.readFileSync(p,'utf8');
+css=css.replace(/\.royal-photo\{[^}]+\}/,`.royal-photo{position:absolute;z-index:2;left:34%;top:0%;width:54%;height:65%;transform:rotate(12deg);transform-origin:50% 85%;transition:transform 1.2s cubic-bezier(.2,.75,.25,1)}`);
+css=css.replace(/\.royal-photo img\{[^}]+\}/,`.royal-photo img{display:block;width:100%;height:100%;object-fit:contain}`);
+css=css.replace('.royal-wax-seal{position:absolute;z-index:6;', '.royal-wax-seal{position:absolute;z-index:7;');
+css+='\n.royal-right-flap{position:absolute;z-index:1;right:9%;top:33%;width:22%;height:30%;object-fit:fill;pointer-events:none;filter:saturate(.75) brightness(.88)}\n.royal-right-spray{position:absolute;z-index:6;right:7%;top:46%;width:40%;height:31%;object-fit:contain;pointer-events:none;transform:rotate(4deg)}\n.royal-petal-three{z-index:0;right:0%;top:49%}\n';
+fs.writeFileSync(p,css);

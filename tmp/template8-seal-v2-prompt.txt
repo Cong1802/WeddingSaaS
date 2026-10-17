@@ -1,0 +1,4 @@
+﻿Seal bright v2
+Mode: built-in image_gen edit of royal-seal-cutout.png.
+Prompt: Preserve irregular round silhouette, recessed center and double heart. Make photorealistic luminous warm gold wax: bright polished rim, creamy upper-left specular highlights, satin champagne-gold center, rich amber midtones, dark warm-brown recessed engraving, subtle natural dimples. No gray, green, olive or muddy finish. Transparent background, tightly framed, soft contact shadow, no other objects or text.
+Destination: public/templates/mau-thiep-8/assets/royal-seal-bright-v2.png

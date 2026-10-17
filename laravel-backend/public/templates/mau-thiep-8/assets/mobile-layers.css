@@ -1,0 +1,38 @@
+/* A single mobile composition, on phones and desktop alike. */
+body{background:#e9e1d8!important}
+[data-testid="minimalism-darkred-template"]{background:#e9e1d8!important}
+.royal-invitation{max-width:430px!important;container-type:inline-size;margin-inline:auto!important;background:#f5eada!important}
+.minimalism-do-theme main>.fixed{right:max(16px,calc((100vw - 430px)/2 + 16px));bottom:24px}
+.royal-invitation:after{inset:14px 13px 12px;outline-offset:-4px}
+.royal-hero{padding:63px 0 22px}
+.royal-eyebrow{font-size:20px;font-size:4.65cqw;letter-spacing:.12em}
+.royal-divider{margin-top:8px;gap:5px}.royal-divider span{font-size:23px}
+.royal-corner{font-size:36px;top:18px}.corner-left{left:17px}.corner-right{right:17px}
+.royal-scene{margin:12px 0 0;aspect-ratio:4/5}
+.royal-palace{top:0;right:-13%;width:88%;height:77%;opacity:.2}
+.royal-envelope-back{left:9%;top:25%;width:82%;height:65%;background:none;clip-path:none;object-fit:fill}
+.royal-photo{left:38%;top:14%;width:47%;height:54%;padding:2%;transform:rotate(12deg);box-shadow:0 3px 9px #4b1d1d33}
+.royal-flowers-left{left:-4%;top:0;width:97%;height:96%;z-index:4;transform:rotate(-4deg);animation:mobile-flowers 8s ease-in-out infinite}
+.royal-flowers-left img{object-fit:fill}
+.royal-flowers-right{display:none}
+.royal-envelope-pocket,.royal-envelope-wing,.royal-envelope-front{display:none}
+.royal-pocket-art{position:absolute;z-index:5;left:9%;bottom:10%;width:82%;height:43%;object-fit:fill;pointer-events:none;filter:drop-shadow(0 5px 4px #38130d30);transform-origin:center bottom;transition:transform 1.2s ease}
+.royal-wax-seal{left:42%;top:64%;width:17%;border:0;padding:0;box-shadow:none;background:none;transform:rotate(-8deg);border-radius:50%}
+.royal-wax-seal>img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(1px 3px 2px #29080470)}
+.royal-names{font-size:55px;font-size:13.1cqw;line-height:1.03;padding:0 22px}
+.royal-names em{font-size:1em;margin:5px 0 10px}
+.royal-divider-bottom{margin-top:22px}
+.royal-ceremony>div{padding:44px 18px 30px;border-radius:20px 20px 13px 13px;outline-offset:-6px}
+.royal-ceremony>div:before{top:12px;font-size:20px}
+.royal-ceremony h2 span{font-size:20px!important;font-size:4.65cqw!important}
+.royal-ceremony h2:after{font-size:18px;margin-top:8px}
+.royal-ceremony h3{font-size:27px!important;line-height:1.3!important;min-height:55px!important}
+.royal-scene[data-animation="opened"] .royal-pocket-art{transform:rotateX(-16deg)}
+.royal-scene[data-animation="opened"] .royal-photo{transform:translateY(-8%) rotate(5deg)}
+/* Keep utility breakpoint styles from enlarging the mobile card on desktop. */
+.royal-invitation .md\:text-\[24px\]{font-size:20px}
+.royal-invitation .md\:text-\[18px\]{font-size:16px}
+.royal-invitation .md\:pt-\[120px\]{padding-top:74px}
+.royal-invitation .md\:max-w-\[560px\]{max-width:380px}
+@keyframes mobile-flowers{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(-3deg) translateY(-.3%)}}
+@media(prefers-reduced-motion:reduce){.royal-invitation *{animation:none!important;transition:none!important}}

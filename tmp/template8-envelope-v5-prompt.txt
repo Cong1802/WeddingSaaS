@@ -1,0 +1,5 @@
+﻿Envelope replacement v5; mode built-in image_gen.
+Prompt: one single continuous complete front pocket of reference open wedding envelope, coherent left and right folds and bottom triangular fold, no gaps/doubled edges. Deep muted burgundy subtly embossed paper, thin gold piping. Transparent above V opening, solid pocket below. No rear triangle, extra corner, photo, flowers, seal or text. Upper-left light, baked close bottom contact and soft lower-right shadow. Transparent RGBA, 4 percent margin, landscape 3:2.
+Destination: public/templates/mau-thiep-8/assets/envelope-continuous-v5.png
+
+Final refinement: remove haze above V opening; keep material and bottom contact shadow. Final asset: envelope-continuous-clean-v5.png. Verified opening alpha is 0.

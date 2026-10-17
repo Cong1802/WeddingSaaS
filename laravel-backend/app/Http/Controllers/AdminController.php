@@ -587,7 +587,7 @@ class AdminController extends Controller
                 $designs[] = ['url' => '/templates/'.$relative, 'name' => $relative];
             }
         }
-        $preferred = ['/templates/mau-thiep-1/mau-thiep-1.html', '/templates/mau-thiep-2/mau-thiep-2.html', '/templates/mau-thiep-3/mau-thiep-3.html', '/templates/mau-thiep-4/mau-thiep-4.html', '/templates/mau-thiep-5/mau-thiep-5.html'];
+        $preferred = ['/templates/mau-thiep-1/mau-thiep-1.html', '/templates/mau-thiep-2/mau-thiep-2.html', '/templates/mau-thiep-3/mau-thiep-3.html', '/templates/mau-thiep-4/mau-thiep-4.html', '/templates/mau-thiep-5/mau-thiep-5.html', '/templates/mau-thiep-6/mau-thiep-6.html', '/templates/mau-thiep-7/mau-thiep-7.html'];
         usort($designs, function ($a, $b) use ($preferred) {
             $aIndex = array_search($a['url'], $preferred, true);
             $bIndex = array_search($b['url'], $preferred, true);

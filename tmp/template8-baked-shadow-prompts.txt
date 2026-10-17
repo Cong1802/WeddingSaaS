@@ -1,0 +1,4 @@
+﻿Image mode: built-in image_gen. Reference assets: royal-envelope.png, royal-pocket-cutout.png, royal-seal-cutout.png.
+Petal: isolated realistic folded burgundy rose petal, velvety curled edge. Upper-left lighting, dark close contact shadow and soft translucent lower-right shadow rendered into RGBA. Transparent background, 20 percent margin, no backdrop or text.
+Pocket: preserve burgundy embossed envelope, gold piping and V opening. Bake narrow bottom contact shadow and restrained soft lower-right penumbra into RGBA. Transparent background, 8 percent padding, no other objects.
+Seal: preserve heart and irregular rim; moderately aged warm gold with dark creases and lightly worn highlights. Bake contour-following contact shadow and small soft lower-right cast shadow into RGBA. Transparent background, 12 percent padding.

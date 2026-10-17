@@ -1,0 +1,3 @@
+﻿Asset: public/templates/mau-thiep-8/assets/royal-envelope.png
+Mode: built-in image_gen tool, using the user's reference image.
+Prompt: Recreate the central reference artwork: luxurious burgundy open envelope with thin gold edges, antique gold heart wax seal, burgundy and ivory roses, tiny cream flowers, eucalyptus and gold leaves. Tilted white-bordered portrait of a Vietnamese bride and groom. Warm ivory textured paper, faint sepia palace, realistic tactile paper collage, warm natural light. Portrait 4:5. No text, lettering, title, names or outer frame; all text is HTML.

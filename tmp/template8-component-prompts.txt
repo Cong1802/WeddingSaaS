@@ -1,0 +1,8 @@
+﻿Template 8 component assets
+Mode: built-in image_gen, referenced royal-envelope.png.
+Flowers: isolated photorealistic burgundy and ivory roses, tiny cream flowers, gold leaves and eucalyptus, sweeping tall arrangement matching reference, transparent background.
+Envelope: isolated front pocket, burgundy embossed floral paper, overlapping triangular folds, thin antique gold piping, open upper V, no seal, photograph or flowers, transparent background.
+Seal: isolated antique gold wax seal, irregular melted edge, embossed double-line heart, recessed inner ring, transparent background.
+
+Background (built-in image_gen): empty ivory textured paper, faint sepia palace, botanical edges and upper-right tree shadow; no subjects, envelope, text or frame. Saved assets/royal-paper-background.png.
+Envelope back (built-in image_gen): isolated burgundy embossed rear envelope panel, triangular open flap, thin gold piping, no lace or seal; transparent. Saved assets/royal-back-cutout.png.
