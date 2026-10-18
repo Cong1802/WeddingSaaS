@@ -174,7 +174,7 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 .royal-album__card--four{--album-tilt:-1.8deg;margin-top:14px}
 .royal-album__card--five{grid-column:1/-1;justify-self:center;width:min(72%,340px);--album-tilt:-1.5deg;margin-top:7px}
 
-@media(min-width:700px){.royal-album{padding:58px 25px 88px}.royal-album__heading{margin-bottom:20px}.royal-album__grid{gap:38px 34px}.royal-album__photo{aspect-ratio:.82}.royal-album__card figcaption{min-height:44px}.royal-album__flowers--top{width:40%}}
+@media(min-width:700px){.royal-album{padding:58px 25px 20px}.royal-album__heading{margin-bottom:20px}.royal-album__grid{gap:38px 34px}.royal-album__photo{aspect-ratio:.82}.royal-album__card figcaption{min-height:44px}.royal-album__flowers--top{width:40%}}
 @media(max-width:360px){.royal-album{padding:34px 14px 54px}.royal-album__heading{margin-bottom:22px}.royal-album__grid{gap:20px 10px}.royal-album__card{padding:6px 6px 0}.royal-album__card--wine .royal-album__photo{padding:3px}.royal-album__card figcaption{min-height:31px;font-size:14px}.royal-album__card--five{width:78%}}
 @media(prefers-reduced-motion:reduce){.royal-album__card,.royal-album__photo img{transition:none}}
 /* Gentle overlap for the scrapbook album. */
