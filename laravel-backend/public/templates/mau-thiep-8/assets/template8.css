@@ -1,4 +1,4 @@
-html{background:#e7ded3;scroll-behavior:smooth}
+﻿html{background:#e7ded3;scroll-behavior:smooth}
 body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 [data-testid="minimalism-darkred-template"]{background:#e7ded3!important}
 .royal-invitation{position:relative;width:100%;max-width:430px!important;margin-inline:auto!important;container-type:inline-size;background:#f5ecdf!important;border:0!important;color:#650e17;isolation:isolate;padding-bottom:28px;box-shadow:0 0 45px #4c2b1720}
@@ -68,7 +68,7 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 
 /* Ceremony panel: textured burgundy stationery with a double gold frame. */
 .royal-invitation>.royal-ceremony{position:relative;width:100%!important;max-width:none!important;margin:0 auto!important;padding:0!important;container-type:inline-size;background-color:transparent!important;background-image:none!important;isolation:isolate}
-.royal-ceremony__panel{position:relative!important;width:90%!important;margin:0 auto;padding:0!important;overflow:visible!important;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.royal-ceremony__panel{position:relative!important;width:90%!important;margin:0 auto;padding:clamp(38px,10cqw,58px) 25px clamp(34px,8.5cqw,50px)!important;overflow:visible!important;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 .royal-ceremony__content{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;gap:clamp(17px,4.3cqw,26px)!important}
 .royal-ceremony__title{width:100%;margin:0!important;color:#f5e8d5!important;font-size:clamp(23px,7cqw,34px)!important;line-height:1.1!important;letter-spacing:.075em!important}
 .royal-ceremony__title::before{content:none!important;display:none!important}
@@ -106,18 +106,18 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 .royal-ceremony__petal--right{right:-10px;top:15%;width:15%;transform:rotate(-45deg)}
 .royal-ceremony__petal--left{left:-8.5%;bottom:13%;width:20%;transform:rotate(27deg)}
 @keyframes royal-ceremony-sway{0%,100%{transform:rotate(1deg) translateY(0)}50%{transform:rotate(2deg) translateY(-4px)}}
-@media(max-width:360px){.royal-ceremony__panel{width:90%!important;padding:0!important}.royal-ceremony__parents{gap:0 9px!important}.royal-ceremony__parents>div>span:nth-child(2),.royal-ceremony__parents>div>span:nth-child(3){font-size:12px!important}.royal-ceremony__parents>div>div{font-size:9px!important}}
+@media(max-width:360px){.royal-ceremony__panel{width:90%!important;padding-right:25px!important;padding-left:25px!important}.royal-ceremony__parents{gap:0 9px!important}.royal-ceremony__parents>div>span:nth-child(2),.royal-ceremony__parents>div>span:nth-child(3){font-size:12px!important}.royal-ceremony__parents>div>div{font-size:9px!important}}
 
 /* Keep each stationery background at its natural portrait ratio within its section. */
 
 .royal-invitation>.royal-ceremony{background:transparent!important;background-image:none!important}
-.royal-ceremony__panel{position:relative!important;width:90%!important;aspect-ratio:.48;min-height:200cqw;margin:0 auto!important;padding:0!important;overflow:visible!important;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.royal-ceremony__panel{position:relative!important;width:90%!important;aspect-ratio:.48;min-height:200cqw;margin:0 auto!important;padding:clamp(58px,13.5cqw,75px) 25px clamp(48px,11cqw,65px)!important;overflow:visible!important;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 .royal-invitation .royal-ceremony__panel::before,.royal-invitation .royal-ceremony__panel::after{content:none!important;display:none!important;filter:none!important}
 .royal-ceremony__board-art{position:absolute!important;left:-12.5%!important;top:0!important;width:125%!important;height:100%!important;object-fit:fill!important;z-index:0!important;pointer-events:none!important}
 .royal-ceremony__content{position:relative!important;z-index:2!important;width:100%;max-width:100%;margin-inline:auto;gap:clamp(12px,3cqw,18px)!important}
 .royal-ceremony__date{gap:clamp(12px,3.4cqw,18px)!important}
 .royal-ceremony__spray{display:none!important}
-@media(max-width:360px){.royal-ceremony__panel{padding:0!important;width:90%!important}.royal-ceremony__content{gap:8px!important}.royal-ceremony__parents>div:nth-child(2){height:84px!important}.royal-ceremony__couple h3{font-size:clamp(22px,6.5cqw,26px)!important}.royal-ceremony__couple>div:nth-child(3){font-size:clamp(32px,8cqw,40px)!important}.royal-ceremony__date{gap:10px!important}.royal-ceremony__venue{font-size:13px;line-height:1.3}.royal-ceremony__calendar{padding:10px 12px}.royal-ceremony__date-number{font-size:42px}.royal-ceremony__lunar{margin:8px 0 7px;font-size:10px}}
+@media(max-width:360px){.royal-ceremony__panel{padding:33px 25px 26px!important}.royal-ceremony__content{gap:8px!important}.royal-ceremony__parents>div:nth-child(2){height:84px!important}.royal-ceremony__couple h3{font-size:clamp(22px,6.5cqw,26px)!important}.royal-ceremony__couple>div:nth-child(3){font-size:clamp(32px,8cqw,40px)!important}.royal-ceremony__date{gap:10px!important}.royal-ceremony__venue{font-size:13px;line-height:1.3}.royal-ceremony__calendar{padding:10px 12px}.royal-ceremony__date-number{font-size:42px}.royal-ceremony__lunar{margin:8px 0 7px;font-size:10px}}
 
 .royal-hero{background-image:url(./royal-paper-background.png)!important;background-position:center top!important;background-size:100% auto!important;background-repeat:no-repeat!important}
 .royal-invitation>.royal-ceremony{background:#f5ecdf url(./royal-ceremony-paper-v1.png?v=paper-20261018-2) center top/100% 100% no-repeat!important}
@@ -129,11 +129,11 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 
 .royal-ceremony__board-art{left:-7.75%!important;top:-2%!important;width:115.5%!important;height:104%!important;max-width:none!important}
 .royal-ceremony__couple h3{width:110%!important;max-width:none!important;min-height:0!important;white-space:nowrap!important;font-size:clamp(31px,9.2cqw,40px)!important;line-height:1.04!important;letter-spacing:-.045em!important;color:#fff5e8!important;-webkit-text-stroke:.25px rgba(255,229,190,.42);text-shadow:0 2px 3px rgba(34,5,9,.7),0 0 12px rgba(221,174,103,.2)}
-.royal-ceremony__panel{width:90%!important;padding:0!important;z-index:31!important;}
+.royal-ceremony__panel{width:90%!important;padding:clamp(58px,13.5cqw,75px) 25px clamp(48px,11cqw,65px)!important;z-index:31!important;}
 .royal-ceremony__edge-florals{position:absolute!important;z-index:1!important;top:20%!important;right:-11.75%!important;left:auto!important;width:50%!important;height:auto!important;max-width:none!important;object-fit:contain!important;clip-path:none!important;opacity:1;pointer-events:none!important;filter:none!important}
 .royal-ceremony__spray{display:none!important}
 
-@media(max-width:480px){.royal-ceremony__panel{padding:0!important;width:90%!important}}
+@media(max-width:480px){.royal-ceremony__panel{padding-left:25px!important;padding-right:25px!important}}
 /* Royal scrapbook album section */
 .royal-album{position:relative;isolation:auto;overflow:hidden;padding:42px clamp(18px,5vw,34px) 68px;background-color:#f3e8d6;background-image:url('./royal-album-paper-v5.png?v=church-20261018-4');background-size:100% 100%;background-position:left top;background-repeat:no-repeat;background-blend-mode:normal}
 .royal-album__decor{position:absolute;inset:0;z-index:auto;overflow:hidden;pointer-events:none}
@@ -265,7 +265,7 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 .royal-reception__panel{position:relative!important;isolation:isolate;container-type:inline-size;box-sizing:border-box;width:100%!important;height:auto;min-height:0;aspect-ratio:auto;overflow:hidden!important;margin:0 auto;padding:clamp(24px,6.8cqw,40px) 8.5% clamp(18px,4.5cqw,28px)!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;text-align:center}
 .royal-reception__board-art{position:absolute!important;z-index:0!important;top:-2.8%;left:-6.5%;width:113%!important;height:105.6%!important;max-width:none!important;object-fit:fill!important;pointer-events:none!important}
 .royal-reception__backdrop{display:none!important}
-.royal-reception__flowers{position:absolute!important;z-index:2!important;top:16%!important;left:-13%!important;width:53%!important;height:42%!important;max-width:none!important;object-fit:contain!important;transform:scaleX(-1);pointer-events:none!important;filter:drop-shadow(0 5px 8px rgba(40,9,12,.22))}
+.royal-reception__flowers{position:absolute!important;z-index:2!important;top:16%!important;left:-15%!important;width:53%!important;height:42%!important;max-width:none!important;object-fit:contain!important;transform:scaleX(-1);pointer-events:none!important;filter:drop-shadow(0 5px 8px rgba(40,9,12,.22))}
 .royal-reception__stack{position:relative!important;z-index:3!important;display:flex!important;width:100%;flex-direction:column!important;align-items:center!important;gap:clamp(9px,2.3cqw,14px)!important}
 .royal-reception__title{width:100%;margin:0!important;color:#fff0dc!important;font:700 clamp(22px,5.5cqw,39px)/1.12 "Times New Roman",serif!important;letter-spacing:.045em!important}
 .royal-reception__title:after{content:"";display:block;width:82%;height:clamp(20px,6.4cqw,36px);margin:8px auto 0;background-image:url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1");background-position:center;background-repeat:no-repeat;background-size:100% 100%}
@@ -283,7 +283,7 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 .royal-reception__lunar{margin:0!important;color:rgba(247,232,212,.88)!important;font:400 clamp(10px,2.8cqw,16px)/1.35 Baskerville,"Times New Roman",serif!important;letter-spacing:.09em!important;text-align:center}
 .royal-reception__times{position:relative;display:grid!important;width:100%;grid-template-columns:1fr 1fr;align-items:center;gap:0!important;margin:clamp(4px,1cqw,8px) 0 0!important;padding:clamp(10px,3cqw,18px) 0 clamp(18px,4.2cqw,24px);border-top:1px solid rgba(207,164,94,.78);border-bottom:0}
 .royal-reception__times:before{position:absolute;top:50%;left:50%;width:8px;height:8px;content:"";background:#ddb66d;transform:translate(-50%,-50%) rotate(45deg)}
-.royal-reception__times:after{position:absolute;right:0;bottom:0;left:0;height:clamp(18px,6.3cqw,38px);content:"";background-image:url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1");background-position:center;background-repeat:no-repeat;background-size:100% 100%;pointer-events:none}
+.royal-reception__times:after{position:absolute;right:0;bottom:0;left:0;height:clamp(18px,6.3cqw,38px);content:"";background-image:url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1");background-position:center;background-repeat:no-repeat;background-size:50% 100%;pointer-events:none}
 .royal-reception__times>div{align-items:center!important;min-width:0;padding:0 5px}
 .royal-reception__times>div+div{border-left:1px solid rgba(207,164,94,.72)}
 .royal-reception__times>div>span:first-child{color:#f3dfc2!important;font-size:clamp(11px,3cqw,18px)!important;letter-spacing:.1em!important;text-transform:uppercase}
