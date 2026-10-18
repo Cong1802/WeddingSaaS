@@ -310,3 +310,59 @@ body{overflow-x:hidden;}
 .lily-lightbox button{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid #fff8;border-radius:50%;background:#fff;color:#4b3628;font-size:24px;cursor:pointer;}
 @media(max-width:419px){.pageview{margin-inline:auto;}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+
+/* Pause exported entrance effects until their element scrolls into view. */
+@media (prefers-reduced-motion: no-preference) {
+  .animation:not(.is-inview) > .group-container,
+  .animation:not(.is-inview) .text-block-css,
+  .animation:not(.is-inview) .image-block-css,
+  .animation:not(.is-inview) .rectangle-css,
+  .animation:not(.is-inview) .button-css {
+    -webkit-animation-play-state: paused !important;
+    animation-play-state: paused !important;
+  }
+
+  .animation.is-inview > .group-container,
+  .animation.is-inview .text-block-css,
+  .animation.is-inview .image-block-css,
+  .animation.is-inview .rectangle-css,
+  .animation.is-inview .button-css {
+    -webkit-animation-play-state: running !important;
+    animation-play-state: running !important;
+  }
+}
+
+/* Keep a short opacity-only reveal when the device asks for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .animation:not(.is-inview) > .group-container,
+  .animation:not(.is-inview) .text-block-css,
+  .animation:not(.is-inview) .image-block-css,
+  .animation:not(.is-inview) .rectangle-css,
+  .animation:not(.is-inview) .button-css,
+  .animation.is-inview > .group-container,
+  .animation.is-inview .text-block-css,
+  .animation.is-inview .image-block-css,
+  .animation.is-inview .rectangle-css,
+  .animation.is-inview .button-css {
+    animation-name: fadeIn !important;
+    animation-duration: 360ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .animation:not(.is-inview) > .group-container,
+  .animation:not(.is-inview) .text-block-css,
+  .animation:not(.is-inview) .image-block-css,
+  .animation:not(.is-inview) .rectangle-css,
+  .animation:not(.is-inview) .button-css {
+    animation-play-state: paused !important;
+  }
+
+  .animation.is-inview > .group-container,
+  .animation.is-inview .text-block-css,
+  .animation.is-inview .image-block-css,
+  .animation.is-inview .rectangle-css,
+  .animation.is-inview .button-css {
+    animation-play-state: running !important;
+  }
+}

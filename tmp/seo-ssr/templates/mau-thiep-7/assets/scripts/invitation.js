@@ -10,6 +10,8 @@
     toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2600);
   };
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const viewport = document.querySelector('meta[name="viewport"]');
   if (viewport) {
     const scale = Math.min(1, window.innerWidth / 420);
@@ -29,6 +31,35 @@
     lazyElements.forEach((element) => imageObserver.observe(element));
   } else {
     lazyElements.forEach((element) => element.classList.remove('lazy'));
+  }
+
+  const entranceElements = document.querySelectorAll('.animation');
+  const animatedChildSelector = '.group-container, .text-block-css, .image-block-css, .rectangle-css, .button-css';
+  const restartEntrance = (element) => {
+    element.classList.remove('is-inview');
+    element.querySelectorAll(animatedChildSelector).forEach((target) => {
+      if (window.getComputedStyle(target).animationName === 'none') return;
+      target.style.setProperty('animation', 'none', 'important');
+      void target.offsetWidth;
+      target.style.removeProperty('animation');
+    });
+    element.classList.add('is-inview');
+  };
+
+  if (entranceElements.length) {
+    if ('IntersectionObserver' in window) {
+      const entranceObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          restartEntrance(entry.target);
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px 10% 0px', threshold: 0 });
+
+      entranceElements.forEach((element) => entranceObserver.observe(element));
+    } else {
+      entranceElements.forEach((element) => element.classList.add('is-inview'));
+    }
   }
 
   const music = document.getElementById('bgMusic');
@@ -134,7 +165,6 @@
 
   const canvas = document.getElementById('heartCanvas');
   const context = canvas?.getContext?.('2d');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (canvas && context && !reducedMotion) {
     const particles = [];
     const particleCount = window.innerWidth < 600 ? 13 : 22;
