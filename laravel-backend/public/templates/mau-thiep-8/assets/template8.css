@@ -135,19 +135,19 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 
 @media(max-width:480px){.royal-ceremony__panel{padding-left:24px!important;padding-right:24px!important}}
 /* Royal scrapbook album section */
-.royal-album{position:relative;isolation:isolate;overflow:hidden;padding:42px clamp(18px,5vw,34px) 68px;background-color:#f3e8d6;background-image:linear-gradient(rgba(243,232,214,.9),rgba(243,232,214,.9)),url('./paper.webp');background-size:100% 100%,cover;background-position:center;background-repeat:no-repeat;background-blend-mode:normal}
+.royal-album{position:relative;isolation:isolate;overflow:hidden;padding:42px clamp(18px,5vw,34px) 68px;background-color:#f3e8d6;background-image:url('./royal-album-paper-v5.png?v=church-20261018-4');background-size:100% 100%;background-position:left top;background-repeat:no-repeat;background-blend-mode:normal}
 .royal-album__decor{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.royal-album__castle{position:absolute;top:3%;left:-12%;width:48%;height:auto;opacity:.12;mix-blend-mode:multiply}
+
 .royal-album__flowers{position:absolute;height:auto;object-fit:contain}
-.royal-album__flowers--top{top:-2%;right:-7%;width:min(31vw,230px);opacity:.95}
+.royal-album__flowers--top{top:1%;right:-7%;width:36%;opacity:.93}
 .royal-album__flowers--bottom{bottom:-3%;left:-12%;width:min(39vw,285px);opacity:.98}
 .royal-album__seal{position:absolute;top:46%;right:-18px;display:grid;width:48px;height:48px;place-items:center;border:3px double #c79e58;border-radius:50%;background:radial-gradient(circle at 35% 28%,#8a2728,#541016 76%);color:#f1d18e;font:28px/1 Georgia,serif;text-shadow:0 1px 2px #351012;box-shadow:0 5px 12px rgba(62,20,16,.26);transform:rotate(12deg)}
 .royal-album__inner{position:relative;z-index:1;width:min(100%,740px);margin:0 auto}
-.royal-album__heading{position:relative;margin:0 auto 28px;text-align:center}
-.royal-album__top-rule{display:block;margin:0 auto 8px;color:#a77939;font:18px/1 Georgia,serif}
-.royal-album__title{margin:0;color:#74151b;font:700 clamp(31px,8vw,56px)/1.08 'Times New Roman',serif;letter-spacing:.075em;text-shadow:0 1px 0 rgba(255,248,229,.7)}
-.royal-album__ornament{display:block;width:min(68%,290px);height:auto;margin:2px auto 0;opacity:.9}
-.royal-album__subtitle{margin:2px 0 0;color:#8d2025;font:400 clamp(18px,5vw,27px)/1.16 'Ms Madi','Segoe Script',cursive}
+.royal-album__heading{position:relative;container-type:inline-size;margin:0 auto 28px;text-align:center}
+.royal-album__top-rule{position:relative;display:block;width:100%;height:clamp(22px,6cqw,42px);margin:0 auto 2px;overflow:hidden;pointer-events:none}.royal-album__top-rule img{position:absolute;top:50%;left:50%;display:block;width:100%;height:auto;max-width:none;transform:translate(-50%,-50%) rotate(15deg)}
+.royal-album__title{margin:0;color:#74151b;font:700 clamp(28px,12.4cqw,56px)/1.08 'Times New Roman',serif;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 0 rgba(255,248,229,.7)}
+.royal-album__ornament{display:block;width:min(72%,430px);height:clamp(22px,4.2cqw,34px);margin:2px auto 0;overflow:visible}.royal-album__heart-line{fill:none;stroke:#9a5a2b;stroke-width:1.3;stroke-linecap:round}.royal-album__heart{fill:#842c19;stroke:#9a5a2b;stroke-width:.7;stroke-linejoin:round}
+.royal-album__subtitle{margin:2px 0 0;color:#8d2025;font:400 clamp(20px,6.8cqw,40px)/1.16 'Ms Madi','Segoe Script',cursive;white-space:nowrap}
 .royal-album__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:25px clamp(14px,4vw,30px);width:100%;margin:0 auto}
 .royal-album__card{position:relative;z-index:1;min-width:0;margin:0;padding:8px 8px 0;border:1px solid rgba(153,111,58,.36);cursor:zoom-in;transform:rotate(var(--album-tilt,0deg));transition:transform .28s ease,box-shadow .28s ease}
 .royal-album__card--cream{background:linear-gradient(145deg,#fff9ec 0%,#f4e8d2 100%);box-shadow:0 10px 18px rgba(83,47,27,.2),5px 8px 0 -3px rgba(119,27,32,.88)}
@@ -173,7 +173,79 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 .royal-album__card--three{--album-tilt:1.7deg;margin-top:1px}
 .royal-album__card--four{--album-tilt:-1.8deg;margin-top:14px}
 .royal-album__card--five{grid-column:1/-1;justify-self:center;width:min(72%,340px);--album-tilt:-1.5deg;margin-top:7px}
-@media(hover:hover){.royal-album__card:hover{z-index:4;transform:translateY(-5px) rotate(0deg);box-shadow:0 18px 28px rgba(57,23,18,.3)}.royal-album__card:hover .royal-album__photo img{transform:scale(1.035)}}
-@media(min-width:700px){.royal-album{padding:58px 38px 88px}.royal-album__heading{margin-bottom:40px}.royal-album__grid{gap:38px 34px}.royal-album__photo{aspect-ratio:.82}.royal-album__card figcaption{min-height:44px}.royal-album__flowers--top{width:min(25vw,250px)}.royal-album__flowers--bottom{width:min(30vw,300px)}}
+
+@media(min-width:700px){.royal-album{padding:58px 25px 88px}.royal-album__heading{margin-bottom:40px}.royal-album__grid{gap:38px 34px}.royal-album__photo{aspect-ratio:.82}.royal-album__card figcaption{min-height:44px}.royal-album__flowers--top{width:34%}.royal-album__flowers--bottom{width:min(30vw,300px)}}
 @media(max-width:360px){.royal-album{padding:34px 14px 54px}.royal-album__heading{margin-bottom:22px}.royal-album__grid{gap:20px 10px}.royal-album__card{padding:6px 6px 0}.royal-album__card--wine .royal-album__photo{padding:3px}.royal-album__card figcaption{min-height:31px;font-size:14px}.royal-album__card--five{width:78%}.royal-album__seal{width:40px;height:40px;font-size:23px}}
 @media(prefers-reduced-motion:reduce){.royal-album__card,.royal-album__photo img{transition:none}}
+/* Gentle overlap for the scrapbook album. */
+.royal-album__grid{row-gap:14px}
+.royal-album__card{z-index:2;padding:0;border:0;background:transparent;box-shadow:none;overflow:visible;transform:translateY(var(--album-rise,0px)) rotate(var(--album-tilt,0deg))}
+
+
+
+.royal-album__sheet{position:relative;z-index:1;padding:8px 8px 0}
+.royal-album__card--cream .royal-album__sheet{border:1px solid rgba(153,111,58,.36);background:linear-gradient(145deg,#fff9ec 0%,#f4e8d2 100%);box-shadow:0 10px 18px rgba(83,47,27,.2)}
+.royal-album__card--wine .royal-album__sheet{border:1px solid #c8a15e;background:linear-gradient(145deg,#7d2023,#581016 82%);box-shadow:0 12px 20px rgba(57,20,17,.3)}
+.royal-album__card--cream .royal-album__tape{top:-9px}
+.royal-album__card--one{z-index:2;--album-rise:0px}
+.royal-album__card--two{z-index:3;--album-rise:10px}
+.royal-album__card--three{z-index:4;--album-rise:-18px}
+.royal-album__card--four{z-index:5;--album-rise:-8px}
+.royal-album__card--five{z-index:6;--album-rise:-24px}
+
+@media(min-width:700px){.royal-album__grid{row-gap:18px}.royal-album__card--three{--album-rise:-24px}.royal-album__card--four{--album-rise:-12px}.royal-album__card--five{--album-rise:-32px}}
+@media(max-width:360px){.royal-album__grid{row-gap:10px}.royal-album__card--three{--album-rise:-14px}.royal-album__card--four{--album-rise:-7px}.royal-album__card--five{--album-rise:-20px}}
+
+/* Use the supplied scrapbook art as the real frame overlay. Keep hover static. */
+.royal-album__tape,.royal-album__card--wine:before,.royal-album__card--wine:after{display:none}
+.royal-album__card,.royal-album__photo img{transition:none}
+.royal-album__sheet{position:relative;z-index:1;width:100%;aspect-ratio:103/135;padding:0;border:0;background:transparent;box-shadow:none}
+.royal-album__card--cream .royal-album__sheet,.royal-album__card--wine .royal-album__sheet{border:0;background:transparent;box-shadow:none}
+.royal-album__card--wine .royal-album__sheet{aspect-ratio:1070/1402}
+.royal-album__photo{position:absolute;z-index:1;left:9.57%;top:10.63%;width:80.87%;height:69.09%;aspect-ratio:auto;overflow:hidden;padding:0;border:0;background:transparent}
+.royal-album__card--wine .royal-album__photo{left:8.47%;top:12.02%;width:81.94%;height:66.53%;padding:0;border:0;background:transparent}
+.royal-album__frame-art{position:absolute;inset:0;z-index:2;display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;filter:drop-shadow(0 7px 9px rgba(68,34,20,.22))}
+.royal-album__card figcaption{position:absolute;z-index:3;right:10%;bottom:8%;left:10%;min-height:0;padding:3px 0;color:#842126;text-align:center}
+.royal-album__card--wine figcaption{color:#f3e3c6}
+.royal-album__card--five{grid-column:auto;justify-self:stretch;width:auto}
+.royal-album__card--six{--album-tilt:-1.4deg;margin-top:12px;z-index:7;--album-rise:-10px}
+.royal-album__card--seven{--album-tilt:1.8deg;margin-top:2px;z-index:8;--album-rise:-22px}
+.royal-album__card--eight{--album-tilt:-1.3deg;margin-top:14px;z-index:9;--album-rise:-12px}
+.royal-album__card--six .royal-album__photo img{object-position:50% 34%}
+.royal-album__card--seven .royal-album__photo img{object-position:50% 40%}
+.royal-album__card--eight .royal-album__photo img{object-position:50% 29%}
+@media(min-width:700px){.royal-album__card--six{--album-rise:-14px}.royal-album__card--seven{--album-rise:-26px}.royal-album__card--eight{--album-rise:-16px}}
+@media(max-width:360px){.royal-album__card--six{--album-rise:-8px}.royal-album__card--seven{--album-rise:-16px}.royal-album__card--eight{--album-rise:-7px}}
+.royal-album__side-floral{position:absolute;top:32%;z-index:4;display:block;height:auto;object-fit:contain;pointer-events:none;opacity:.98;filter:drop-shadow(0 5px 7px rgba(54,24,16,.28))}
+.royal-album__side-floral--left{left:-24%;right:auto;transform:rotate(-4deg);transform-origin:center}
+.royal-album__side-floral--right{right:-22%;left:auto;transform:rotate(4deg);transform-origin:center}
+.royal-album__side-floral--bouquet{width:min(43%,132px)}
+.royal-album__side-floral--sprig{width:min(38%,120px)}
+.royal-album__side-floral--spray{width:min(37%,116px)}
+.royal-album__side-floral--one{top:42%}
+.royal-album__side-floral--two{top:35%}
+.royal-album__side-floral--three{top:28%}
+.royal-album__side-floral--four{top:39%}
+.royal-album__side-floral--five{top:32%}
+.royal-album__side-floral--six{top:30%}
+.royal-album__side-floral--seven{top:27%}
+.royal-album__side-floral--eight{top:38%}
+
+/* User supplied torn-paper scraps sit behind the scrapbook frames. */
+.royal-album__paper-scrap{position:absolute;z-index:0;display:block;height:auto;max-width:none;object-fit:contain;pointer-events:none}
+.royal-album__paper-scrap--strip{top:0;left:-21%;width:54%;transform:rotate(-4deg)}
+.royal-album__paper-scrap--portrait{top:-3%;right:-5%;width:63%;transform:rotate(3deg)}
+.royal-album__paper-scrap--angle{top:22%;left:-28%;width:77%;transform:rotate(-2deg)}
+.royal-album__paper-scrap--wide{top:37%;right:-24%;width:82%;transform:rotate(-2deg)}
+.royal-album__paper-scrap--portrait-alt{top:-5%;left:-5%;width:61%;transform:rotate(-4deg)}
+.royal-album__paper-scrap--strip-alt{right:-18%;bottom:-4%;width:53%;transform:rotate(4deg)}
+.royal-album__paper-scrap--wide-alt{width:78%;transform:rotate(2deg)}
+.royal-album__paper-scrap--angle-alt{top:24%;right:-24%;width:77%;transform:rotate(2deg)}/* Deep-wine torn-paper art replaces the flat burgundy scraps on four frames. */
+.royal-album__paper-scrap--red-a{top:9%;left:-9%;width:86%;transform:rotate(-2deg)}
+.royal-album__paper-scrap--red-b{top:20%;left:-30%;width:110%;transform:rotate(-2deg)}
+.royal-album__paper-scrap--red-c{top:-10%;right:-8%;width:68%;transform:rotate(3deg)}
+.royal-album__paper-scrap--red-d{right:-25%;bottom:3%;width:105%;transform:rotate(-2deg)}/* Narrow only the horizontal space between scrapbook columns. */
+.royal-album__grid{column-gap:clamp(4px,1vw,0px);row-gap:14px}
+.royal-album__card{margin-bottom:0}
+@media(min-width:700px){.royal-album__grid{row-gap:18px}}
+@media(max-width:360px){.royal-album__grid{row-gap:10px}}
