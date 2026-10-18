@@ -233,7 +233,7 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 
 /* User supplied torn-paper scraps sit behind the scrapbook frames. */
 .royal-album__paper-scrap{position:absolute;z-index:0;display:block;height:auto;max-width:none;object-fit:contain;pointer-events:none}
-.royal-album__paper-scrap--strip{top:0;left:-21%;width:54%;transform:rotate(-4deg)}
+.royal-album__paper-scrap--strip{top:-5%;left:-5%;width:70%;transform:rotate(-4deg)}
 .royal-album__paper-scrap--portrait{top:-3%;right:-5%;width:63%;transform:rotate(3deg)}
 .royal-album__paper-scrap--angle{top:22%;left:-28%;width:77%;transform:rotate(-2deg)}
 .royal-album__paper-scrap--wide{top:37%;right:-24%;width:82%;transform:rotate(-2deg)}
