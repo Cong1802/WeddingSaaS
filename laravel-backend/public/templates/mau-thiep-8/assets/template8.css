@@ -129,7 +129,7 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 
 .royal-ceremony__board-art{left:-7.75%!important;top:-2%!important;width:115.5%!important;height:104%!important;max-width:none!important}
 .royal-ceremony__couple h3{width:110%!important;max-width:none!important;min-height:0!important;white-space:nowrap!important;font-size:clamp(31px,9.2cqw,40px)!important;line-height:1.04!important;letter-spacing:-.045em!important;color:#fff5e8!important;-webkit-text-stroke:.25px rgba(255,229,190,.42);text-shadow:0 2px 3px rgba(34,5,9,.7),0 0 12px rgba(221,174,103,.2)}
-.royal-ceremony__panel{width:86%!important;padding-left:clamp(32px,9cqw,40px)!important;padding-right:clamp(32px,9cqw,40px)!important;z-index:31!important;filter:drop-shadow(0 18px 24px rgba(48,14,12,.34)) drop-shadow(0 4px 8px rgba(35,8,12,.24))!important}
+.royal-ceremony__panel{width:86%!important;padding-left:clamp(32px,9cqw,40px)!important;padding-right:clamp(32px,9cqw,40px)!important;z-index:31!important;}
 .royal-ceremony__edge-florals{position:absolute!important;z-index:1!important;top:20%!important;right:-11.75%!important;left:auto!important;width:50%!important;height:auto!important;max-width:none!important;object-fit:contain!important;clip-path:none!important;opacity:1;pointer-events:none!important;filter:none!important}
 .royal-ceremony__spray{display:none!important}
 
@@ -255,5 +255,8 @@ body{margin:0;background:#e7ded3!important;overflow-x:hidden}
 .royal-album__accessory{position:absolute;z-index:12;display:block;height:auto;object-fit:contain;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(54,24,16,.22))}
 .royal-album__accessory--pin{top:2%;left:57%;width:15%;transform:translateX(-50%) rotate(-7deg)}
 .royal-album__accessory--bow{top:-2%;right:-13%;width:48%;transform:rotate(9deg)}
-.royal-album__accessory--enamel-heart{top:-7%;left:47%;width:25%;transform:translateX(-50%) rotate(7deg)}
+.royal-album__accessory--enamel-heart{bottom:-7%;left:47%;width:25%;transform:translateX(-50%) rotate(7deg)}
 .royal-album__accessory--heart-clip{top:1%;right:5%;width:22%;transform:rotate(8deg)}
+/* Make only the album photo opening behave as a gallery lightbox. */
+.royal-album__card{cursor:default}
+.royal-album__photo{display:block;cursor:zoom-in}
