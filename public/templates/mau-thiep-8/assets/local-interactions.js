@@ -26,26 +26,22 @@
   if(number===3||number===8){
     const opening=document.getElementById('minimal-opening');
     const countdownGrid=document.querySelector('.royal-reception__countdown-grid');
-    const datePanel=document.querySelector('.royal-reception__date-panel');
-    if(countdownGrid&&datePanel){
-      const day=Number(datePanel.querySelector('.royal-reception__date-day strong')?.textContent);
-      const month=Number(datePanel.querySelector('.royal-reception__date-month>span')?.textContent.match(/[0-9]+/)?.[0]);
-      const year=Number(datePanel.querySelector('.royal-reception__date-month strong')?.textContent);
+    if(countdownGrid){
       const cells=Array.from(countdownGrid.querySelectorAll(':scope > div'));
-      if(day&&month&&year&&cells.length>=4){
-        const target=new Date(year,month-1,day,18,0,0,0).getTime();
+      if(cells.length>=4){
+        const target=Date.now()+7*24*60*60*1000;
         let timer=null;
         const renderCountdown=()=>{
-          let seconds=Math.max(0,Math.floor((target-Date.now())/1000));
+          let seconds=Math.max(0,Math.ceil((target-Date.now())/1000));
           const values=[Math.floor(seconds/86400)];
           seconds%=86400;values.push(Math.floor(seconds/3600));
           seconds%=3600;values.push(Math.floor(seconds/60));
           values.push(seconds%60);
           values.forEach((value,index)=>{const node=cells[index].querySelector('strong');if(node)node.textContent=String(value);});
-          if(target<=Date.now()&&timer!==null){clearInterval(timer);timer=null;}
+          if(seconds===0&&target<=Date.now()&&timer!==null){clearInterval(timer);timer=null;}
         };
+        timer=window.setInterval(renderCountdown,1000);
         renderCountdown();
-        if(target>Date.now())timer=window.setInterval(renderCountdown,1000);
       }
     }
     const observer=typeof IntersectionObserver!=='undefined'?new IntersectionObserver(changes=>changes.forEach(change=>{if(change.isIntersecting&&document.documentElement.dataset.minimalOpened==='true'){change.target.style.opacity='1';change.target.style.transform='none';observer.unobserve(change.target);}}),{threshold:.05}):null;
