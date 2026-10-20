@@ -41,50 +41,48 @@
     }
   }
   if(number===8){
-    const sourceScene=document.querySelector('.royal-hero .royal-scene');
     const sourceNames=document.querySelector('.royal-hero .royal-names');
-    if(sourceScene&&sourceNames){
+    if(sourceNames){
       const screen=document.createElement('section');
       screen.className='royal-opening-screen';
       screen.setAttribute('role','dialog');
       screen.setAttribute('aria-modal','true');
       screen.setAttribute('aria-label','Thiệp mời cưới');
-      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-greeting">TRÂN TRỌNG KÍNH MỜI</p><div class="royal-opening-divider" aria-hidden="true"><span>♥</span></div><div class="royal-opening-scene-shell"></div><div class="royal-opening-caption"></div><button class="royal-opening-button" type="button"><span>MỞ THIỆP</span><span class="royal-opening-arrow" aria-hidden="true">›</span></button></div>';
-      const scene=sourceScene.cloneNode(true);
-      scene.classList.add('royal-opening-scene');
-      scene.dataset.animation='idle';
-      const seal=scene.querySelector('.royal-wax-seal');
-      if(seal){const ornament=document.createElement('div');ornament.className=seal.className;ornament.setAttribute('aria-hidden','true');ornament.innerHTML=seal.innerHTML;seal.replaceWith(ornament);}
+      screen.innerHTML='<div class="royal-opening-content"><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-envelope-art" src="./assets/envelope-tabs-removed-v6.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><svg viewBox="0 0 40 44"><path d="M20 39C21 29 20 19 15 8M20 29C25 27 29 23 31 18M19 23C14 22 11 19 9 15M22 33C17 32 14 30 12 27"/><path d="M15 8c4 1 6 4 6 7-4 0-6-3-6-7ZM31 18c-4 0-7 2-8 6 4 1 7-2 8-6ZM9 15c4 0 7 2 8 5-4 1-7-1-8-5Z"/></svg></span></button><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
       const names=sourceNames.cloneNode(true);
       names.classList.add('royal-opening-names');
-      screen.querySelector('.royal-opening-scene-shell').appendChild(scene);
       screen.querySelector('.royal-opening-caption').appendChild(names);
+      const dateGrid=document.querySelector('.royal-ceremony__date-grid');
+      const day=dateGrid?.querySelector('.royal-ceremony__date-number')?.textContent.trim();
+      const month=dateGrid?.querySelector('.royal-ceremony__month strong')?.textContent.match(/\d+/)?.[0];
+      const year=dateGrid?.querySelector('.royal-ceremony__month span:last-child')?.textContent.trim();
+      screen.querySelector('.royal-opening-date').textContent=day&&month&&year?`${day} tháng ${month}, ${year}`:'';
       const page=document.querySelector('main');
       const previousHtmlOverflow=document.documentElement.style.overflow;
       const previousBodyOverflow=document.body.style.overflow;
       document.documentElement.style.overflow='hidden';
       document.body.style.overflow='hidden';
       if(page)page.inert=true;
-      const openButton=screen.querySelector('.royal-opening-button');
+      const openButton=screen.querySelector('.royal-opening-envelope');
       const openInvitation=()=>{
-        if(screen.dataset.state==='opening')return;
-        screen.dataset.state='opening';
-        scene.dataset.animation='opened';
-        const originalSeal=sourceScene.querySelector('.royal-wax-seal');
-        if(originalSeal)originalSeal.click();
+        if(screen.dataset.opened==='true')return;
+        screen.dataset.opened='true';
+        const bloomFlower=document.querySelector('.royal-flowers.royal-flowers-left');
+        if(bloomFlower){
+          bloomFlower.classList.add('is-blooming');
+          void bloomFlower.offsetWidth;
+          window.setTimeout(()=>bloomFlower.classList.remove('is-blooming'),2600);
+        }
+        document.dispatchEvent(new Event('royal-opening-finished'));
         document.documentElement.dataset.minimalOpened='true';
+        if(page)page.inert=false;
+        document.documentElement.style.overflow=previousHtmlOverflow;
+        document.body.style.overflow=previousBodyOverflow;
+        screen.remove();
+        window.scrollTo({top:0,behavior:'instant'});
         document.dispatchEvent(new CustomEvent('invitation-opened'));
         const audio=document.getElementById('bg-music');
         audio?.play?.().catch(()=>{});
-        window.setTimeout(()=>{
-          document.dispatchEvent(new Event('royal-opening-finished'));
-          if(page)page.inert=false;
-          document.documentElement.style.overflow=previousHtmlOverflow;
-          document.body.style.overflow=previousBodyOverflow;
-          screen.remove();
-          window.scrollTo({top:0,behavior:'instant'});
-          originalSeal?.focus({preventScroll:true});
-        },850);
       };
       openButton.addEventListener('click',openInvitation);
       screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});
@@ -98,16 +96,20 @@
     hearts.setAttribute('aria-hidden','true');
     hearts.style.cssText='position:absolute;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:3;overflow:hidden;pointer-events:none';
     const style=document.createElement('style');
-    style.textContent='@keyframes royal-heart-fall{0%{top:-36px;transform:translateX(0) rotate(-12deg);opacity:0}8%{opacity:.72}88%{opacity:.72}100%{top:110vh;transform:translateX(var(--heart-sway)) rotate(300deg);opacity:0}}@media(prefers-reduced-motion:reduce){.royal-falling-hearts span{animation-duration:18s!important;opacity:.4}}';
+    style.textContent='@keyframes royal-heart-fall{0%{top:-36px;transform:translateX(0) rotate(var(--heart-rotation));opacity:0}8%{opacity:.72}50%{transform:translateX(var(--heart-sway)) rotate(var(--heart-opposite-rotation))}88%{opacity:.72}100%{top:110vh;transform:translateX(0) rotate(var(--heart-rotation));opacity:0}}@media(prefers-reduced-motion:reduce){.royal-falling-hearts span{animation-duration:18s!important;opacity:.4}}';
     document.head.appendChild(style);
-    const colors=['#76131d','#a32431','#681019','#a87532'];
     const count=14;
     for(let index=0;index<count;index++){
       const heart=document.createElement('span');
       const duration=8+Math.random()*3;
       heart.textContent='♥';
-      heart.style.cssText=`position:absolute;top:-36px;left:${Math.random()*100}%;font-size:${15+Math.random()*11}px;color:${colors[index%colors.length]};opacity:.72;animation:royal-heart-fall ${duration}s linear ${Math.random()*3.5}s infinite normal;filter:drop-shadow(0 1px 2px rgba(76,18,21,.22))`;
-      heart.style.setProperty('--heart-sway',`${Math.round(Math.random()*80-40)}px`);
+      const color=index%3?'#b12732':'#f8efe6';
+      const left=((index+Math.random()*.8)/count)*100;
+      heart.style.cssText=`position:absolute;top:-36px;left:${left}%;font-size:${15+Math.random()*11}px;color:${color};opacity:.82;animation:royal-heart-fall ${duration}s linear ${-Math.random()*duration}s infinite normal;filter:drop-shadow(0 1px 3px rgba(76,18,21,.48))`;
+      heart.style.setProperty('--heart-sway',`${Math.round(Math.random()*48-24)}px`);
+      const rotation=Math.round(Math.random()*16-8);
+      heart.style.setProperty('--heart-rotation',`${rotation}deg`);
+      heart.style.setProperty('--heart-opposite-rotation',`${-rotation}deg`);
       hearts.appendChild(heart);
     }
     const openingScreen=document.querySelector('.royal-opening-screen');
