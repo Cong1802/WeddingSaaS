@@ -1,5 +1,128 @@
 (() => {
   const number = Number(document.documentElement.dataset.designNumber);
+  if(number===8){
+    const invitation=document.querySelector('.royal-invitation');
+    const motionPreference=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if(invitation&&!motionPreference?.matches&&'IntersectionObserver'in window){
+      const groups=[
+        ['.royal-ceremony__content > *',64],
+        ['.royal-album__heading, .royal-album__card',72],
+        ['.royal-reception',0],
+        ['.royal-venue-board',0],
+        ['.royal-schedule-panel',0],
+        ['.royal-guestbook-panel',0],
+        ['.royal-dress-code__inner > *',64],
+        ['.royal-invitation__footer > *',64]
+      ];
+      const targets=[];
+      groups.forEach(([selector,stagger])=>{
+        invitation.querySelectorAll(selector).forEach((element,index)=>{
+          element.classList.add('royal-reveal');
+          element.style.setProperty('--royal-reveal-delay',`${Math.min(index*stagger,280)}ms`);
+          targets.push(element);
+        });
+      });
+      if(targets.length){
+        const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+          if(!entry.isIntersecting)return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }),{threshold:.08,rootMargin:'0px 0px -6% 0px'});
+        let started=false;
+        const startReveal=()=>{
+          if(started)return;
+          started=true;
+          invitation.classList.add('has-scroll-reveal');
+          targets.forEach(target=>observer.observe(target));
+        };
+        if(document.documentElement.dataset.minimalOpened==='true')startReveal();
+        else document.addEventListener('royal-envelope-toggle',event=>{if(event.detail?.opened)startReveal();});
+      }
+    }
+  }
+  if(number===8){
+    const sourceScene=document.querySelector('.royal-hero .royal-scene');
+    const sourceNames=document.querySelector('.royal-hero .royal-names');
+    if(sourceScene&&sourceNames){
+      const screen=document.createElement('section');
+      screen.className='royal-opening-screen';
+      screen.setAttribute('role','dialog');
+      screen.setAttribute('aria-modal','true');
+      screen.setAttribute('aria-label','Thiệp mời cưới');
+      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-greeting">TRÂN TRỌNG KÍNH MỜI</p><div class="royal-opening-divider" aria-hidden="true"><span>♥</span></div><div class="royal-opening-scene-shell"></div><div class="royal-opening-caption"></div><button class="royal-opening-button" type="button"><span>MỞ THIỆP</span><span class="royal-opening-arrow" aria-hidden="true">›</span></button></div>';
+      const scene=sourceScene.cloneNode(true);
+      scene.classList.add('royal-opening-scene');
+      scene.dataset.animation='idle';
+      const seal=scene.querySelector('.royal-wax-seal');
+      if(seal){const ornament=document.createElement('div');ornament.className=seal.className;ornament.setAttribute('aria-hidden','true');ornament.innerHTML=seal.innerHTML;seal.replaceWith(ornament);}
+      const names=sourceNames.cloneNode(true);
+      names.classList.add('royal-opening-names');
+      screen.querySelector('.royal-opening-scene-shell').appendChild(scene);
+      screen.querySelector('.royal-opening-caption').appendChild(names);
+      const page=document.querySelector('main');
+      const previousHtmlOverflow=document.documentElement.style.overflow;
+      const previousBodyOverflow=document.body.style.overflow;
+      document.documentElement.style.overflow='hidden';
+      document.body.style.overflow='hidden';
+      if(page)page.inert=true;
+      const openButton=screen.querySelector('.royal-opening-button');
+      const openInvitation=()=>{
+        if(screen.dataset.state==='opening')return;
+        screen.dataset.state='opening';
+        scene.dataset.animation='opened';
+        const originalSeal=sourceScene.querySelector('.royal-wax-seal');
+        if(originalSeal)originalSeal.click();
+        document.documentElement.dataset.minimalOpened='true';
+        document.dispatchEvent(new CustomEvent('invitation-opened'));
+        const audio=document.getElementById('bg-music');
+        audio?.play?.().catch(()=>{});
+        window.setTimeout(()=>{
+          document.dispatchEvent(new Event('royal-opening-finished'));
+          if(page)page.inert=false;
+          document.documentElement.style.overflow=previousHtmlOverflow;
+          document.body.style.overflow=previousBodyOverflow;
+          screen.remove();
+          window.scrollTo({top:0,behavior:'instant'});
+          originalSeal?.focus({preventScroll:true});
+        },850);
+      };
+      openButton.addEventListener('click',openInvitation);
+      screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});
+      document.body.appendChild(screen);
+      requestAnimationFrame(()=>openButton.focus({preventScroll:true}));
+    }
+  }
+  if(number===8){
+    const hearts=document.createElement('div');
+    hearts.className='royal-falling-hearts';
+    hearts.setAttribute('aria-hidden','true');
+    hearts.style.cssText='position:absolute;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:3;overflow:hidden;pointer-events:none';
+    const style=document.createElement('style');
+    style.textContent='@keyframes royal-heart-fall{0%{top:-36px;transform:translateX(0) rotate(-12deg);opacity:0}8%{opacity:.72}88%{opacity:.72}100%{top:110vh;transform:translateX(var(--heart-sway)) rotate(300deg);opacity:0}}@media(prefers-reduced-motion:reduce){.royal-falling-hearts span{animation-duration:18s!important;opacity:.4}}';
+    document.head.appendChild(style);
+    const colors=['#76131d','#a32431','#681019','#a87532'];
+    const count=14;
+    for(let index=0;index<count;index++){
+      const heart=document.createElement('span');
+      const duration=8+Math.random()*3;
+      heart.textContent='♥';
+      heart.style.cssText=`position:absolute;top:-36px;left:${Math.random()*100}%;font-size:${15+Math.random()*11}px;color:${colors[index%colors.length]};opacity:.72;animation:royal-heart-fall ${duration}s linear ${Math.random()*3.5}s infinite normal;filter:drop-shadow(0 1px 2px rgba(76,18,21,.22))`;
+      heart.style.setProperty('--heart-sway',`${Math.round(Math.random()*80-40)}px`);
+      hearts.appendChild(heart);
+    }
+    const openingScreen=document.querySelector('.royal-opening-screen');
+    if(openingScreen){
+      openingScreen.prepend(hearts);
+      document.addEventListener('royal-opening-finished',()=>{
+        hearts.remove();
+        hearts.style.cssText='position:fixed;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:35;overflow:hidden;pointer-events:none';
+        document.body.appendChild(hearts);
+      },{once:true});
+    }else{
+      hearts.style.cssText='position:fixed;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:35;overflow:hidden;pointer-events:none';
+      document.body.appendChild(hearts);
+    }
+  }
   const send = async (name, message, attendance = 'yes', guestCount = 1) => {
     const slug = document.documentElement.dataset.cardSlug;
     if (!slug) return 'Đây là bản xem mẫu. Phản hồi chỉ được gửi qua link thiệp đã xuất bản.';
@@ -50,7 +173,7 @@
     document.addEventListener('invitation-opened',update);
     const audio=document.getElementById('bg-music');document.querySelector('main button')?.addEventListener('click',()=>{if(audio)audio.paused?audio.play().catch(()=>{}):audio.pause();});
     document.querySelectorAll('button').forEach(button=>{if(button.textContent.trim()==='XÁC NHẬN THAM DỰ')button.onclick=()=>document.querySelector('form')?.scrollIntoView({behavior:'smooth',block:'center'});});
-    document.querySelectorAll('img').forEach(image=>{if(!image.closest('#minimal-opening, .royal-album'))image.addEventListener('click',()=>{if(/flower|background|envelope|paper|castle/.test(image.src))return;const dialog=document.createElement('dialog');dialog.style.cssText='padding:10px;border:0;border-radius:10px;background:#fff;max-width:90vw';const picture=document.createElement('img');picture.src=image.src;picture.style.cssText='max-width:85vw;max-height:85vh';dialog.appendChild(picture);dialog.onclick=()=>{dialog.close();dialog.remove();};document.body.appendChild(dialog);dialog.showModal();});});
+    document.querySelectorAll('img').forEach(image=>{if(!image.closest('#minimal-opening, .royal-opening-screen, .royal-album'))image.addEventListener('click',()=>{if(/flower|background|envelope|paper|castle/.test(image.src))return;const dialog=document.createElement('dialog');dialog.style.cssText='padding:10px;border:0;border-radius:10px;background:#fff;max-width:90vw';const picture=document.createElement('img');picture.src=image.src;picture.style.cssText='max-width:85vw;max-height:85vh';dialog.appendChild(picture);dialog.onclick=()=>{dialog.close();dialog.remove();};document.body.appendChild(dialog);dialog.showModal();});});
   }
   if(number===5){
     const attach=(id,callback)=>document.getElementById(id)?.addEventListener('click',async()=>{try{const message=await callback();if(message)alert(message);}catch(error){alert(error.message);}});
