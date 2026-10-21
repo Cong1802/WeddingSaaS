@@ -4,23 +4,21 @@
     const invitation=document.querySelector('.royal-invitation');
     if(invitation&&'IntersectionObserver'in window){
       const groups=[
-        ['.royal-ceremony__content > *',150,'bottom'],
-        ['.royal-album__heading',0,'bottom'],
-        ['.royal-album__card',160,'bottom'],
+        ['.royal-ceremony__content > *',180,'bottom'],
         ['.royal-reception__title',0,'bottom'],
-        ['.royal-reception__details > *',140,'bottom'],
-        ['.royal-reception__rsvp',160,'bottom'],
-        ['.royal-venue-board > div:first-child > *',140,'bottom'],
+        ['.royal-reception__details > *',180,'bottom'],
+        ['.royal-reception__rsvp',200,'bottom'],
+        ['.royal-venue-board > div:first-child > *',180,'bottom'],
         ['.royal-venue-address',0,'bottom'],
-        ['.royal-venue-directions',140,'bottom'],
+        ['.royal-venue-directions',180,'bottom'],
         ['.royal-schedule-panel h2',0,'bottom'],
-        ['.royal-schedule-panel__divider',140,'bottom'],
-        ['.royal-guestbook-panel .text-center > *',140,'bottom'],
-        ['.royal-guestbook-panel form',160,'bottom'],
-        ['.royal-dress-code__inner > *:not(.royal-dress-code__gallery)',140,'bottom'],
-        ['.royal-dress-code__card',180,'bottom'],
+        ['.royal-schedule-panel__divider',180,'bottom'],
+        ['.royal-guestbook-panel .text-center > *',180,'bottom'],
+        ['.royal-guestbook-panel form',200,'bottom'],
+        ['.royal-dress-code__inner > *:not(.royal-dress-code__gallery)',180,'bottom'],
+        ['.royal-dress-code__card',220,'bottom'],
         ['.royal-invitation__footer-copy',0,'bottom'],
-        ['.royal-invitation__footer-heart',140,'bottom']
+        ['.royal-invitation__footer-heart',180,'bottom']
       ];
       const revealOffsets={left:'0px 35px',right:'0px 35px',top:'0px 35px',bottom:'0px 35px'};
       const targets=[];
@@ -32,10 +30,48 @@
           targets.push(element);
         });
       });
+      // Dedicated sequence for Royal Album: Title -> Ornament -> Subtitle -> Cards
+      const albumTopRule=invitation.querySelector('.royal-album__top-rule');
+      const albumTitle=invitation.querySelector('.royal-album__title');
+      const albumOrnament=invitation.querySelector('.royal-album__ornament');
+      const albumSubtitle=invitation.querySelector('.royal-album__subtitle');
+      if(albumTopRule){
+        albumTopRule.classList.add('royal-reveal');
+        albumTopRule.style.setProperty('--royal-reveal-from','0px 35px');
+        albumTopRule.style.setProperty('--royal-reveal-delay','0ms');
+        targets.push(albumTopRule);
+      }
+      if(albumTitle){
+        albumTitle.classList.add('royal-reveal');
+        albumTitle.style.setProperty('--royal-reveal-from','0px 35px');
+        albumTitle.style.setProperty('--royal-reveal-delay','60ms');
+        targets.push(albumTitle);
+      }
+      if(albumOrnament){
+        albumOrnament.classList.add('royal-reveal');
+        albumOrnament.style.setProperty('--royal-reveal-from','0px 35px');
+        albumOrnament.style.setProperty('--royal-reveal-delay','260ms');
+        targets.push(albumOrnament);
+      }
+      if(albumSubtitle){
+        albumSubtitle.classList.add('royal-reveal');
+        albumSubtitle.style.setProperty('--royal-reveal-from','0px 35px');
+        albumSubtitle.style.setProperty('--royal-reveal-delay','460ms');
+        targets.push(albumSubtitle);
+      }
+      // Royal Album Cards: starting AFTER subtitle with wide, distinct 450ms stagger
+      const albumCards=invitation.querySelectorAll('.royal-album__card');
+      albumCards.forEach((card,index)=>{
+        card.classList.add('royal-reveal');
+        card.style.setProperty('--royal-reveal-from','0px 35px');
+        const cardDelay=index<4?(750+index*450):(150+(index%2)*450);
+        card.style.setProperty('--royal-reveal-delay',`${cardDelay}ms`);
+        targets.push(card);
+      });
       // Separate animation for each line in royal-schedule-section
       const scheduleRows=invitation.querySelectorAll('.royal-schedule-panel ol > li');
       scheduleRows.forEach((row,rowIndex)=>{
-        const rowDelay=280+rowIndex*180;
+        const rowDelay=300+rowIndex*200;
         Array.from(row.children).forEach(span=>{
           span.classList.add('royal-reveal');
           span.style.setProperty('--royal-reveal-from','0px 35px');

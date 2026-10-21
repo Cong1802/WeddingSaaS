@@ -4,23 +4,23 @@
     const invitation=document.querySelector('.royal-invitation');
     if(invitation&&'IntersectionObserver'in window){
       const groups=[
-        ['.royal-ceremony__content > *',150,'bottom'],
+        ['.royal-ceremony__content > *',180,'bottom'],
         ['.royal-album__heading',0,'bottom'],
-        ['.royal-album__card',160,'bottom'],
+        ['.royal-album__card',250,'bottom'],
         ['.royal-reception__title',0,'bottom'],
-        ['.royal-reception__details > *',140,'bottom'],
-        ['.royal-reception__rsvp',160,'bottom'],
-        ['.royal-venue-board > div:first-child > *',140,'bottom'],
+        ['.royal-reception__details > *',180,'bottom'],
+        ['.royal-reception__rsvp',200,'bottom'],
+        ['.royal-venue-board > div:first-child > *',180,'bottom'],
         ['.royal-venue-address',0,'bottom'],
-        ['.royal-venue-directions',140,'bottom'],
+        ['.royal-venue-directions',180,'bottom'],
         ['.royal-schedule-panel h2',0,'bottom'],
-        ['.royal-schedule-panel__divider',140,'bottom'],
-        ['.royal-guestbook-panel .text-center > *',140,'bottom'],
-        ['.royal-guestbook-panel form',160,'bottom'],
-        ['.royal-dress-code__inner > *:not(.royal-dress-code__gallery)',140,'bottom'],
-        ['.royal-dress-code__card',180,'bottom'],
+        ['.royal-schedule-panel__divider',180,'bottom'],
+        ['.royal-guestbook-panel .text-center > *',180,'bottom'],
+        ['.royal-guestbook-panel form',200,'bottom'],
+        ['.royal-dress-code__inner > *:not(.royal-dress-code__gallery)',180,'bottom'],
+        ['.royal-dress-code__card',220,'bottom'],
         ['.royal-invitation__footer-copy',0,'bottom'],
-        ['.royal-invitation__footer-heart',140,'bottom']
+        ['.royal-invitation__footer-heart',180,'bottom']
       ];
       const revealOffsets={left:'0px 35px',right:'0px 35px',top:'0px 35px',bottom:'0px 35px'};
       const targets=[];
@@ -35,7 +35,7 @@
       // Separate animation for each line in royal-schedule-section
       const scheduleRows=invitation.querySelectorAll('.royal-schedule-panel ol > li');
       scheduleRows.forEach((row,rowIndex)=>{
-        const rowDelay=280+rowIndex*180;
+        const rowDelay=300+rowIndex*200;
         Array.from(row.children).forEach(span=>{
           span.classList.add('royal-reveal');
           span.style.setProperty('--royal-reveal-from','0px 35px');
@@ -92,9 +92,12 @@
       const openInvitation=()=>{
         if(screen.dataset.opened==='true')return;
         screen.dataset.opened='true';
-        screen.style.transition='opacity .35s ease';
-        screen.style.opacity='0';
-        screen.style.pointerEvents='none';
+        openButton.disabled=true;
+        document.documentElement.dataset.minimalOpened='true';
+        if(page)page.inert=false;
+        document.documentElement.style.overflow=previousHtmlOverflow;
+        document.body.style.overflow=previousBodyOverflow;
+        window.scrollTo({top:0,left:0,behavior:'instant'});
         const bloomFlower=document.querySelector('.royal-flowers.royal-flowers-left');
         const royalPhoto=document.querySelector('.royal-photo');
         const royalSpray=document.querySelector('.royal-right-spray');
@@ -107,13 +110,9 @@
         if(royalNames)royalNames.classList.add('is-blooming');
         if(royalDivider)royalDivider.classList.add('is-blooming');
         if(scene)scene.dataset.animation='opened';
+        // Swap screens in this frame; crossfading exposes both envelopes at once.
+        screen.remove();
         document.dispatchEvent(new Event('royal-opening-finished'));
-        document.documentElement.dataset.minimalOpened='true';
-        if(page)page.inert=false;
-        document.documentElement.style.overflow=previousHtmlOverflow;
-        document.body.style.overflow=previousBodyOverflow;
-        setTimeout(()=>{screen.remove();},350);
-        window.scrollTo({top:0,behavior:'instant'});
         document.dispatchEvent(new CustomEvent('invitation-opened'));
         const audio=document.getElementById('bg-music');
         audio?.play?.().catch(()=>{});
