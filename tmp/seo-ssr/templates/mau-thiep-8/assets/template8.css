@@ -692,7 +692,7 @@ body {
 .royal-opening-caption {
   position: relative;
   z-index: 2;
-  margin-top: clamp(40px, 6vh, 108px);
+  margin-top: clamp(40px, 3vh, 108px);
 }
 .royal-opening-names {
   padding-inline: 8px;
