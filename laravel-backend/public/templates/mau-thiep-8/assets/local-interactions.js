@@ -47,27 +47,28 @@
       if(albumTitle){
         albumTitle.classList.add('royal-reveal');
         albumTitle.style.setProperty('--royal-reveal-from','0px 35px');
-        albumTitle.style.setProperty('--royal-reveal-delay','80ms');
+        albumTitle.style.setProperty('--royal-reveal-delay','60ms');
         albumSequenceItems.push(albumTitle);
       }
       if(albumOrnament){
         albumOrnament.classList.add('royal-reveal');
         albumOrnament.style.setProperty('--royal-reveal-from','0px 35px');
-        albumOrnament.style.setProperty('--royal-reveal-delay','280ms');
+        albumOrnament.style.setProperty('--royal-reveal-delay','180ms');
         albumSequenceItems.push(albumOrnament);
       }
       if(albumSubtitle){
         albumSubtitle.classList.add('royal-reveal');
         albumSubtitle.style.setProperty('--royal-reveal-from','0px 35px');
-        albumSubtitle.style.setProperty('--royal-reveal-delay','480ms');
+        albumSubtitle.style.setProperty('--royal-reveal-delay','300ms');
         albumSequenceItems.push(albumSubtitle);
       }
-      // Royal Album Cards: starting AFTER subtitle with wide, distinct 380ms stagger
+      // Royal Album Cards: strict top-to-bottom row-by-row cascade
+      const cardDelays=[500, 680, 960, 1140, 1420, 1700, 1880, 2160];
       albumCards.forEach((card,index)=>{
         card.classList.add('royal-reveal');
         card.style.setProperty('--royal-reveal-from','0px 35px');
-        const cardDelay=800+index*380;
-        card.style.setProperty('--royal-reveal-delay',`${cardDelay}ms`);
+        const cardDelay=cardDelays[index]||(2160+index*200);
+        card.style.setProperty('--royal-reveal-delay',${cardDelay}ms);
         albumSequenceItems.push(card);
       });
       // Separate animation for each line in royal-schedule-section
