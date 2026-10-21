@@ -48,7 +48,8 @@
       screen.setAttribute('role','dialog');
       screen.setAttribute('aria-modal','true');
       screen.setAttribute('aria-label','Thiệp mời cưới');
-      screen.innerHTML='<div class="royal-opening-content"><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-envelope-art" src="./assets/envelope-tabs-removed-v6.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><svg viewBox="0 0 40 44"><path d="M20 39C21 29 20 19 15 8M20 29C25 27 29 23 31 18M19 23C14 22 11 19 9 15M22 33C17 32 14 30 12 27"/><path d="M15 8c4 1 6 4 6 7-4 0-6-3-6-7ZM31 18c-4 0-7 2-8 6 4 1 7-2 8-6ZM9 15c4 0 7 2 8 5-4 1-7-1-8-5Z"/></svg></span></button><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
+      screen.tabIndex=-1;
+      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-envelope-art" src="./assets/envelope-tabs-removed-v6.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" src="./assets/seal-shadow-v3.webp" alt=""></span></button><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
       const names=sourceNames.cloneNode(true);
       names.classList.add('royal-opening-names');
       screen.querySelector('.royal-opening-caption').appendChild(names);
@@ -70,8 +71,6 @@
         const bloomFlower=document.querySelector('.royal-flowers.royal-flowers-left');
         if(bloomFlower){
           bloomFlower.classList.add('is-blooming');
-          void bloomFlower.offsetWidth;
-          window.setTimeout(()=>bloomFlower.classList.remove('is-blooming'),2600);
         }
         document.dispatchEvent(new Event('royal-opening-finished'));
         document.documentElement.dataset.minimalOpened='true';
@@ -87,7 +86,7 @@
       openButton.addEventListener('click',openInvitation);
       screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});
       document.body.appendChild(screen);
-      requestAnimationFrame(()=>openButton.focus({preventScroll:true}));
+      requestAnimationFrame(()=>screen.focus({preventScroll:true}));
     }
   }
   if(number===8){
