@@ -128,6 +128,15 @@ let socket;
       const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
       fs.writeFileSync(path.join(__dirname,'template8-open-transition-mobile.png'),Buffer.from(shot.data,'base64'));
     }
+    if(name==='desktop'){
+      for(let n=0;n<100;n++){
+        if(await evaluate("typeof window.Fancybox?.bind==='function'"))break;
+        await pause(100);
+      }
+      await evaluate("document.querySelector('[data-fancybox=royal-album]').click()");
+      await pause(400);
+      assert.equal(await evaluate("!!document.querySelector('.fancybox__container')"),true,'Album lightbox still opens with deferred gallery assets');
+    }
     reports.push({name,before,immediate,after:{cardX:after.cardX,cardWidth:after.cardWidth,frames:after.frames.length,photo:after.photo,flower:after.flower}});
   }
   assert.deepEqual(errors,[],'No browser script exceptions');
