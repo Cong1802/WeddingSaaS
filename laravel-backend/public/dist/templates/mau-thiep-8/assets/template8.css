@@ -494,7 +494,7 @@ body {
     transform: translateX(-50%);
     pointer-events: none;
     background: #f4e7d3
-        url("./royal-opening-paper-user.png?v=opening-paper-20261021-1")
+        url("./royal-opening-paper-screen-v1.webp")
         center/cover no-repeat;
     box-shadow: 0 0 34px rgba(77, 47, 30, 0.12);
 }
@@ -510,7 +510,7 @@ body {
     min-height: 0;
     max-height: 100svh;
     overflow: hidden;
-    padding: 11svh 0 36px;
+    padding: 9svh 0 36px;
     text-align: center;
     container-type: inline-size;
 }
@@ -3723,3 +3723,6 @@ body {
         translate: 0 0;
     }
 }
+
+/* Keep the covered invitation idle until the opening screen is dismissed. */
+html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{animation-play-state:paused!important}

@@ -2,6 +2,7 @@ const {spawn}=require('node:child_process');
 const fs=require('node:fs');
 const path=require('node:path');
 const assert=require('node:assert/strict');
+const profileLabel=process.argv.find(value=>value.startsWith('--profile-opening='))?.split('=')[1];
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const browser=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',[
   '--headless=new','--no-first-run','--remote-debugging-port=9259',
@@ -38,8 +39,9 @@ let socket;
   await send('Runtime.enable');
   await send('Network.enable');
   await send('Network.setCacheDisabled',{cacheDisabled:true});
+  await send('Performance.enable');
   const reports=[];
-  for(const [name,width,height] of [['mobile',393,852],['small',320,740],['desktop',1440,900]]){
+  for(const [name,width,height] of (profileLabel?[['mobile',393,852]]:[['mobile',393,852],['small',320,740],['desktop',1440,900]])){
     await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:name!=='desktop'});
     await send('Page.navigate',{url:'http://127.0.0.1:8000/templates/mau-thiep-8/mau-thiep-8.html'});
     let ready=false;
@@ -49,6 +51,29 @@ let socket;
       await pause(100);
     }
     assert.ok(ready,'Opening screen mounted');
+    if(profileLabel){
+      await pause(3500);
+      const opening=await evaluate(`(()=>{
+        const screen=document.querySelector('.royal-opening-screen');
+        const images=[...screen.querySelectorAll('img')].map(image=>({url:image.currentSrc,width:image.naturalWidth,height:image.naturalHeight,renderWidth:image.getBoundingClientRect().width}));
+        const background=getComputedStyle(screen,'::before').backgroundImage.match(/url\\(["']?(.*?)["']?\\)/)?.[1];
+        return {images,background};
+      })()`);
+      const metricMap=response=>Object.fromEntries(response.metrics.map(metric=>[metric.name,metric.value]));
+      const first=metricMap(await send('Performance.getMetrics'));
+      await pause(2000);
+      const last=metricMap(await send('Performance.getMetrics'));
+      const metrics=Object.fromEntries(['LayoutCount','RecalcStyleCount','LayoutDuration','TaskDuration','ScriptDuration'].map(key=>[key,last[key]-first[key]]));
+      const assets=[...opening.images.map(image=>image.url),opening.background].filter(Boolean).map(url=>{
+        const name=path.basename(new URL(url).pathname);
+        return {name,bytes:fs.statSync(path.resolve(__dirname,'../../laravel-backend/public/templates/mau-thiep-8/assets',name)).size};
+      });
+      const profile={opening,assets,bytes:assets.reduce((sum,asset)=>sum+asset.bytes,0),metrics};
+      fs.writeFileSync(path.join(__dirname,`template8-opening-${profileLabel}.json`),JSON.stringify(profile,null,2));
+      const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+      fs.writeFileSync(path.join(__dirname,`template8-opening-${profileLabel}.png`),Buffer.from(shot.data,'base64'));
+      console.log(JSON.stringify({profileLabel,...profile},null,2));
+    }
     const before=await evaluate(`(()=>{
       const card=document.querySelector('.royal-invitation').getBoundingClientRect();
       return {cardX:card.x,cardWidth:card.width,locked:getComputedStyle(document.documentElement).overflowY==='hidden'};

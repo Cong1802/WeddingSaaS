@@ -510,7 +510,7 @@ body {
     min-height: 0;
     max-height: 100svh;
     overflow: hidden;
-    padding: 11svh 0 36px;
+    padding: 9svh 0 36px;
     text-align: center;
     container-type: inline-size;
 }

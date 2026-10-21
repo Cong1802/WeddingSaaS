@@ -5,8 +5,6 @@
     if(invitation&&'IntersectionObserver'in window){
       const groups=[
         ['.royal-ceremony__content > *',180,'bottom'],
-        ['.royal-album__heading',0,'bottom'],
-        ['.royal-album__card',250,'bottom'],
         ['.royal-reception__title',0,'bottom'],
         ['.royal-reception__details > *',180,'bottom'],
         ['.royal-reception__rsvp',200,'bottom'],
@@ -32,6 +30,46 @@
           targets.push(element);
         });
       });
+      // Dedicated sequence for Royal Album: Title -> Ornament -> Subtitle -> Cards
+      const albumTopRule=invitation.querySelector('.royal-album__top-rule');
+      const albumTitle=invitation.querySelector('.royal-album__title');
+      const albumOrnament=invitation.querySelector('.royal-album__ornament');
+      const albumSubtitle=invitation.querySelector('.royal-album__subtitle');
+      const albumCards=invitation.querySelectorAll('.royal-album__card');
+      const albumSequenceItems=[];
+
+      if(albumTopRule){
+        albumTopRule.classList.add('royal-reveal');
+        albumTopRule.style.setProperty('--royal-reveal-from','0px 35px');
+        albumTopRule.style.setProperty('--royal-reveal-delay','0ms');
+        albumSequenceItems.push(albumTopRule);
+      }
+      if(albumTitle){
+        albumTitle.classList.add('royal-reveal');
+        albumTitle.style.setProperty('--royal-reveal-from','0px 35px');
+        albumTitle.style.setProperty('--royal-reveal-delay','80ms');
+        albumSequenceItems.push(albumTitle);
+      }
+      if(albumOrnament){
+        albumOrnament.classList.add('royal-reveal');
+        albumOrnament.style.setProperty('--royal-reveal-from','0px 35px');
+        albumOrnament.style.setProperty('--royal-reveal-delay','280ms');
+        albumSequenceItems.push(albumOrnament);
+      }
+      if(albumSubtitle){
+        albumSubtitle.classList.add('royal-reveal');
+        albumSubtitle.style.setProperty('--royal-reveal-from','0px 35px');
+        albumSubtitle.style.setProperty('--royal-reveal-delay','480ms');
+        albumSequenceItems.push(albumSubtitle);
+      }
+      // Royal Album Cards: starting AFTER subtitle with wide, distinct 380ms stagger
+      albumCards.forEach((card,index)=>{
+        card.classList.add('royal-reveal');
+        card.style.setProperty('--royal-reveal-from','0px 35px');
+        const cardDelay=800+index*380;
+        card.style.setProperty('--royal-reveal-delay',`${cardDelay}ms`);
+        albumSequenceItems.push(card);
+      });
       // Separate animation for each line in royal-schedule-section
       const scheduleRows=invitation.querySelectorAll('.royal-schedule-panel ol > li');
       scheduleRows.forEach((row,rowIndex)=>{
@@ -43,18 +81,30 @@
           targets.push(span);
         });
       });
-      if(targets.length){
+      let albumTriggered=false;
+      const triggerAlbumSequence=()=>{
+        if(albumTriggered)return;
+        albumTriggered=true;
+        albumSequenceItems.forEach(item=>item.classList.add('is-visible'));
+      };
+      const allTargets=[...targets,...albumSequenceItems];
+      if(allTargets.length){
         const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
           if(!entry.isIntersecting)return;
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
+          if(albumSequenceItems.includes(entry.target)){
+            triggerAlbumSequence();
+            albumSequenceItems.forEach(item=>observer.unobserve(item));
+          }else{
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
         }),{threshold:.08,rootMargin:'0px 0px -6% 0px'});
         let started=false;
         const startReveal=()=>{
           if(started)return;
           started=true;
           invitation.classList.add('has-scroll-reveal');
-          targets.forEach(target=>observer.observe(target));
+          allTargets.forEach(target=>observer.observe(target));
         };
         if(document.documentElement.dataset.minimalOpened==='true')startReveal();
         else{
@@ -73,7 +123,7 @@
       screen.setAttribute('aria-modal','true');
       screen.setAttribute('aria-label','Thiệp mời cưới');
       screen.tabIndex=-1;
-      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-flap" src="./assets/royal-opening-envelope-flap-user.webp?v=opening-flap-20261021-1" alt="" aria-hidden="true"><img class="royal-opening-envelope-art" src="./assets/envelope-tabs-removed-v6.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" src="./assets/seal-shadow-v3.webp" alt=""></span></button><img class="royal-opening-bouquet" src="./assets/album-floral-bouquet-v1.webp?v=userflorals-20261021-1" alt="" aria-hidden="true" loading="eager" decoding="async"><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
+      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-flap" width="720" height="360" decoding="async" src="./assets/royal-opening-envelope-flap-user.webp?v=opening-flap-20261021-1" alt="" aria-hidden="true"><img class="royal-opening-envelope-art" width="1120" height="747" decoding="async" fetchpriority="high" src="./assets/royal-envelope-display-v1.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" width="256" height="259" decoding="async" src="./assets/royal-seal-display-v1.webp" alt=""></span></button><img class="royal-opening-bouquet" width="450" height="675" src="./assets/royal-opening-bouquet-screen-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async"><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
       const names=sourceNames.cloneNode(true);
       names.classList.add('royal-opening-names');
       screen.querySelector('.royal-opening-caption').appendChild(names);
@@ -130,7 +180,7 @@
     hearts.setAttribute('aria-hidden','true');
     hearts.style.cssText='position:absolute;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:3;overflow:hidden;pointer-events:none';
     const style=document.createElement('style');
-    style.textContent='@keyframes royal-heart-fall{0%{top:-36px;transform:translateX(0) rotate(var(--heart-rotation));opacity:0}8%{opacity:.72}50%{transform:translateX(var(--heart-sway)) rotate(var(--heart-opposite-rotation))}88%{opacity:.72}100%{top:110vh;transform:translateX(0) rotate(var(--heart-rotation));opacity:0}}@media(prefers-reduced-motion:reduce){.royal-falling-hearts span{animation-duration:18s!important;opacity:.4}}';
+    style.textContent='.royal-falling-hearts{contain:layout paint}.royal-falling-hearts span{will-change:transform}@keyframes royal-heart-fall{0%{transform:translate3d(0,0,0) rotate(var(--heart-rotation));opacity:0}8%{opacity:.72}50%{transform:translate3d(var(--heart-sway),calc(55vh + 18px),0) rotate(var(--heart-opposite-rotation))}88%{opacity:.72}100%{transform:translate3d(0,calc(110vh + 36px),0) rotate(var(--heart-rotation));opacity:0}}@media(prefers-reduced-motion:reduce){.royal-falling-hearts span{animation-duration:18s!important;opacity:.4}}';
     document.head.appendChild(style);
     const count=14;
     for(let index=0;index<count;index++){
@@ -146,6 +196,11 @@
       heart.style.setProperty('--heart-opposite-rotation',`${-rotation}deg`);
       hearts.appendChild(heart);
     }
+    const syncHeartPlayback=()=>{
+      for(const heart of hearts.children)heart.style.animationPlayState=document.hidden?'paused':'running';
+    };
+    document.addEventListener('visibilitychange',syncHeartPlayback);
+    syncHeartPlayback();
     const openingScreen=document.querySelector('.royal-opening-screen');
     if(openingScreen){
       openingScreen.prepend(hearts);

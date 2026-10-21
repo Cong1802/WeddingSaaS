@@ -5,8 +5,6 @@
     if(invitation&&'IntersectionObserver'in window){
       const groups=[
         ['.royal-ceremony__content > *',180,'bottom'],
-        ['.royal-album__heading',0,'bottom'],
-        ['.royal-album__card',250,'bottom'],
         ['.royal-reception__title',0,'bottom'],
         ['.royal-reception__details > *',180,'bottom'],
         ['.royal-reception__rsvp',200,'bottom'],
@@ -32,6 +30,46 @@
           targets.push(element);
         });
       });
+      // Dedicated sequence for Royal Album: Title -> Ornament -> Subtitle -> Cards
+      const albumTopRule=invitation.querySelector('.royal-album__top-rule');
+      const albumTitle=invitation.querySelector('.royal-album__title');
+      const albumOrnament=invitation.querySelector('.royal-album__ornament');
+      const albumSubtitle=invitation.querySelector('.royal-album__subtitle');
+      const albumCards=invitation.querySelectorAll('.royal-album__card');
+      const albumSequenceItems=[];
+
+      if(albumTopRule){
+        albumTopRule.classList.add('royal-reveal');
+        albumTopRule.style.setProperty('--royal-reveal-from','0px 35px');
+        albumTopRule.style.setProperty('--royal-reveal-delay','0ms');
+        albumSequenceItems.push(albumTopRule);
+      }
+      if(albumTitle){
+        albumTitle.classList.add('royal-reveal');
+        albumTitle.style.setProperty('--royal-reveal-from','0px 35px');
+        albumTitle.style.setProperty('--royal-reveal-delay','80ms');
+        albumSequenceItems.push(albumTitle);
+      }
+      if(albumOrnament){
+        albumOrnament.classList.add('royal-reveal');
+        albumOrnament.style.setProperty('--royal-reveal-from','0px 35px');
+        albumOrnament.style.setProperty('--royal-reveal-delay','280ms');
+        albumSequenceItems.push(albumOrnament);
+      }
+      if(albumSubtitle){
+        albumSubtitle.classList.add('royal-reveal');
+        albumSubtitle.style.setProperty('--royal-reveal-from','0px 35px');
+        albumSubtitle.style.setProperty('--royal-reveal-delay','480ms');
+        albumSequenceItems.push(albumSubtitle);
+      }
+      // Royal Album Cards: starting AFTER subtitle with wide, distinct 380ms stagger
+      albumCards.forEach((card,index)=>{
+        card.classList.add('royal-reveal');
+        card.style.setProperty('--royal-reveal-from','0px 35px');
+        const cardDelay=800+index*380;
+        card.style.setProperty('--royal-reveal-delay',`${cardDelay}ms`);
+        albumSequenceItems.push(card);
+      });
       // Separate animation for each line in royal-schedule-section
       const scheduleRows=invitation.querySelectorAll('.royal-schedule-panel ol > li');
       scheduleRows.forEach((row,rowIndex)=>{
@@ -43,18 +81,30 @@
           targets.push(span);
         });
       });
-      if(targets.length){
+      let albumTriggered=false;
+      const triggerAlbumSequence=()=>{
+        if(albumTriggered)return;
+        albumTriggered=true;
+        albumSequenceItems.forEach(item=>item.classList.add('is-visible'));
+      };
+      const allTargets=[...targets,...albumSequenceItems];
+      if(allTargets.length){
         const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
           if(!entry.isIntersecting)return;
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
+          if(albumSequenceItems.includes(entry.target)){
+            triggerAlbumSequence();
+            albumSequenceItems.forEach(item=>observer.unobserve(item));
+          }else{
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
         }),{threshold:.08,rootMargin:'0px 0px -6% 0px'});
         let started=false;
         const startReveal=()=>{
           if(started)return;
           started=true;
           invitation.classList.add('has-scroll-reveal');
-          targets.forEach(target=>observer.observe(target));
+          allTargets.forEach(target=>observer.observe(target));
         };
         if(document.documentElement.dataset.minimalOpened==='true')startReveal();
         else{
