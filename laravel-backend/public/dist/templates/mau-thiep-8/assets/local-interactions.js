@@ -4,24 +4,43 @@
     const invitation=document.querySelector('.royal-invitation');
     if(invitation&&'IntersectionObserver'in window){
       const groups=[
-        ['.royal-ceremony__content',0,'bottom'],
+        ['.royal-ceremony__content > *',150,'bottom'],
         ['.royal-album__heading',0,'bottom'],
-        ['.royal-album__card',90,'bottom'],
-        ['.royal-reception',0,'bottom'],
-        ['.royal-venue-board',0,'bottom'],
-        ['.royal-schedule-panel',0,'bottom'],
-        ['.royal-guestbook-panel',0,'bottom'],
-        ['.royal-dress-code__inner',0,'bottom'],
-        ['.royal-invitation__footer',0,'bottom']
+        ['.royal-album__card',160,'bottom'],
+        ['.royal-reception__title',0,'bottom'],
+        ['.royal-reception__details > *',140,'bottom'],
+        ['.royal-reception__rsvp',160,'bottom'],
+        ['.royal-venue-board > div:first-child > *',140,'bottom'],
+        ['.royal-venue-address',0,'bottom'],
+        ['.royal-venue-directions',140,'bottom'],
+        ['.royal-schedule-panel h2',0,'bottom'],
+        ['.royal-schedule-panel__divider',140,'bottom'],
+        ['.royal-guestbook-panel .text-center > *',140,'bottom'],
+        ['.royal-guestbook-panel form',160,'bottom'],
+        ['.royal-dress-code__inner > *:not(.royal-dress-code__gallery)',140,'bottom'],
+        ['.royal-dress-code__card',180,'bottom'],
+        ['.royal-invitation__footer-copy',0,'bottom'],
+        ['.royal-invitation__footer-heart',140,'bottom']
       ];
-      const revealOffsets={left:'0px 18px',right:'0px 18px',top:'0px 18px',bottom:'0px 18px'};
+      const revealOffsets={left:'0px 35px',right:'0px 35px',top:'0px 35px',bottom:'0px 35px'};
       const targets=[];
       groups.forEach(([selector,stagger,direction])=>{
         invitation.querySelectorAll(selector).forEach((element,index)=>{
           element.classList.add('royal-reveal');
           element.style.setProperty('--royal-reveal-from',revealOffsets[direction]);
-          element.style.setProperty('--royal-reveal-delay',`${Math.min(index*stagger,240)}ms`);
+          element.style.setProperty('--royal-reveal-delay',`${Math.min(index*stagger,1600)}ms`);
           targets.push(element);
+        });
+      });
+      // Separate animation for each line in royal-schedule-section
+      const scheduleRows=invitation.querySelectorAll('.royal-schedule-panel ol > li');
+      scheduleRows.forEach((row,rowIndex)=>{
+        const rowDelay=280+rowIndex*180;
+        Array.from(row.children).forEach(span=>{
+          span.classList.add('royal-reveal');
+          span.style.setProperty('--royal-reveal-from','0px 35px');
+          span.style.setProperty('--royal-reveal-delay',`${rowDelay}ms`);
+          targets.push(span);
         });
       });
       if(targets.length){
@@ -38,7 +57,10 @@
           targets.forEach(target=>observer.observe(target));
         };
         if(document.documentElement.dataset.minimalOpened==='true')startReveal();
-        else document.addEventListener('royal-envelope-toggle',event=>{if(event.detail?.opened)startReveal();});
+        else{
+          document.addEventListener('royal-opening-finished',startReveal,{once:true});
+          document.addEventListener('royal-envelope-toggle',event=>{if(event.detail?.opened)startReveal();});
+        }
       }
     }
   }
@@ -76,10 +98,14 @@
         const bloomFlower=document.querySelector('.royal-flowers.royal-flowers-left');
         const royalPhoto=document.querySelector('.royal-photo');
         const royalSpray=document.querySelector('.royal-right-spray');
+        const royalNames=document.querySelector('.royal-hero .royal-names');
+        const royalDivider=document.querySelector('.royal-hero .royal-divider-bottom');
         const scene=document.querySelector('.royal-scene');
         if(bloomFlower)bloomFlower.classList.add('is-blooming');
         if(royalPhoto)royalPhoto.classList.add('is-blooming');
         if(royalSpray)royalSpray.classList.add('is-blooming');
+        if(royalNames)royalNames.classList.add('is-blooming');
+        if(royalDivider)royalDivider.classList.add('is-blooming');
         if(scene)scene.dataset.animation='opened';
         document.dispatchEvent(new Event('royal-opening-finished'));
         document.documentElement.dataset.minimalOpened='true';
@@ -95,6 +121,7 @@
       openButton.addEventListener('click',openInvitation);
       screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});
       document.body.appendChild(screen);
+      document.documentElement.dataset.openingReady='true';
       requestAnimationFrame(()=>screen.focus({preventScroll:true}));
     }
   }
