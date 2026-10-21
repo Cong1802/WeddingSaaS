@@ -1,0 +1,64 @@
+{
+  "opening": {
+    "images": [
+      {
+        "url": "http://127.0.0.1:8000/templates/mau-thiep-8/assets/royal-opening-envelope-flap-user.webp?v=opening-flap-20261021-1",
+        "width": 720,
+        "height": 360,
+        "renderWidth": 325.390625
+      },
+      {
+        "url": "http://127.0.0.1:8000/templates/mau-thiep-8/assets/royal-envelope-display-v1.webp",
+        "width": 1120,
+        "height": 747,
+        "renderWidth": 361.546875
+      },
+      {
+        "url": "http://127.0.0.1:8000/templates/mau-thiep-8/assets/royal-seal-display-v1.webp",
+        "width": 256,
+        "height": 259,
+        "renderWidth": 48
+      },
+      {
+        "url": "http://127.0.0.1:8000/templates/mau-thiep-8/assets/royal-opening-bouquet-screen-v1.webp",
+        "width": 450,
+        "height": 675,
+        "renderWidth": 172.6707305908203
+      }
+    ],
+    "background": "http://127.0.0.1:8000/templates/mau-thiep-8/assets/royal-opening-paper-screen-v1.webp",
+    "galleryAfterOpening": true,
+    "galleryCSSAsync": true,
+    "backgroundPreloaded": true
+  },
+  "assets": [
+    {
+      "name": "royal-opening-envelope-flap-user.webp",
+      "bytes": 48282
+    },
+    {
+      "name": "royal-envelope-display-v1.webp",
+      "bytes": 117406
+    },
+    {
+      "name": "royal-seal-display-v1.webp",
+      "bytes": 28880
+    },
+    {
+      "name": "royal-opening-bouquet-screen-v1.webp",
+      "bytes": 118464
+    },
+    {
+      "name": "royal-opening-paper-screen-v1.webp",
+      "bytes": 156590
+    }
+  ],
+  "bytes": 469622,
+  "metrics": {
+    "LayoutCount": 2,
+    "RecalcStyleCount": 11,
+    "LayoutDuration": 0.0008400000000000074,
+    "TaskDuration": 0.01596200000000003,
+    "ScriptDuration": 0.0002609999999999991
+  }
+}

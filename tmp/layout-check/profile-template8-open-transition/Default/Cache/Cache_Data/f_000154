@@ -1,0 +1,3728 @@
+﻿html {
+    background: #e7ded3;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable both-edges;
+}
+body {
+    margin: 0;
+    background: #e7ded3 !important;
+    overflow-x: hidden;
+}
+[data-testid="minimalism-darkred-template"] {
+    background: none !important;
+}
+.royal-invitation {
+    position: relative;
+    width: 100%;
+    max-width: 430px !important;
+    margin-inline: auto !important;
+    container-type: inline-size;
+    background: #f5ecdf !important;
+    border: 0 !important;
+    color: #650e17;
+    isolation: isolate;
+    box-shadow: 0 0 45px #4c2b1720;
+}
+.royal-invitation:after {
+    display: none !important;
+    content: none !important;
+}
+.minimalism-do-theme main > .fixed {
+    right: max(16px, calc((100vw - 430px) / 2 + 16px));
+    bottom: 24px;
+}
+.royal-hero {
+    position: relative;
+    text-align: center;
+    padding: 64px 0 25px;
+    overflow: hidden;
+    z-index: 1;
+}
+.royal-eyebrow {
+    font:
+        600 4.65cqw/1.2 "Times New Roman",
+        serif;
+    letter-spacing: 0.12em;
+    color: #650e17;
+    margin: 0;
+    animation: royal-hero-fade-down 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s
+        both;
+}
+.royal-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 36%;
+    margin: 9px auto 0;
+    color: #ac793e;
+    animation: royal-hero-fade-down 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s
+        both;
+}
+.royal-divider:before,
+.royal-divider:after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, #a77537);
+}
+.royal-divider:after {
+    transform: rotate(180deg);
+}
+.royal-divider span {
+    font-size: 23px;
+    line-height: 1;
+}
+.royal-divider-bottom {
+    width: 39%;
+    margin-top: 22px;
+    animation: royal-hero-fade-up 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+.royal-corner {
+    position: absolute;
+    top: 17px;
+    width: 44px;
+    height: 44px;
+    color: #a4773e;
+    pointer-events: none;
+}
+.royal-corner svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.corner-left {
+    left: 16px;
+}
+.corner-right {
+    right: 16px;
+    transform: scaleX(-1);
+}
+.royal-scene {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    aspect-ratio: 4/5;
+    margin: 12px 0 0;
+    perspective: 1000px;
+}
+.royal-scene * {
+    box-sizing: border-box;
+}
+
+.royal-photo {
+    position: absolute;
+    z-index: 2;
+    left: 33%;
+    top: 6%;
+    width: 54%;
+    height: 65%;
+    transform: translate3d(-15%, 36%, 0) rotate(15deg);
+    transform-origin: 50% 85%;
+    filter: drop-shadow(0 4px 6px rgba(45, 22, 14, 0.14));
+    animation: none;
+    transition:
+        transform 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 1.4s ease;
+}
+.royal-photo.is-blooming {
+    animation: royal-photo-emerge 1.4s linear 0s both;
+}
+.royal-scene[data-animation="opened"] .royal-photo {
+    transform: translate3d(7%, 2%, 0) rotate(13deg);
+    filter: drop-shadow(0 10px 10px rgba(45, 22, 14, 0.24));
+}
+.royal-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    clip-path: inset(6.5% 0 0 5.5%);
+}
+@keyframes royal-photo-emerge {
+    0% {
+        transform: translate3d(-15%, 36%, 0) rotate(15deg);
+        filter: drop-shadow(0 4px 6px rgba(45, 22, 14, 0.14));
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(7%, 2%, 0) rotate(13deg);
+        filter: drop-shadow(0 10px 10px rgba(45, 22, 14, 0.24));
+        opacity: 1;
+    }
+}
+.royal-flowers {
+    position: absolute;
+    left: -4%;
+    top: 0;
+    z-index: 4;
+    width: 96%;
+    height: 96%;
+    transform-origin: 30% 80%;
+    pointer-events: none;
+    filter: saturate(0.72) brightness(0.91) contrast(0.98)
+        drop-shadow(3px 6px 5px #49332145);
+}
+.royal-flowers img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.royal-flowers-left img {
+    transform: none !important;
+    animation: none !important;
+}
+.royal-flowers.royal-flowers-left {
+    transform: scale(0.4);
+}
+.royal-flowers.royal-flowers-left.is-blooming {
+    animation: royal-flowers-grow 1.4s linear 0s both;
+}
+@keyframes royal-flowers-grow {
+    0% {
+        transform: scale(0.4);
+    }
+    100% {
+        transform: scale(0.9);
+    }
+}
+.royal-pocket-art {
+    filter: saturate(0.7) brightness(0.9);
+    position: absolute;
+    z-index: 5;
+    left: 3.7%;
+    bottom: 5.5%;
+    width: 92.6%;
+    height: 54%;
+    object-fit: fill;
+    pointer-events: none;
+    transform-origin: center bottom;
+    transition: transform 1.2s ease;
+}
+.royal-pocket-left-flap {
+    position: absolute;
+    z-index: 6;
+    left: 3.7%;
+    bottom: 5.5%;
+    width: 92.6%;
+    height: 54%;
+    object-fit: fill;
+    pointer-events: none;
+    transform-origin: center bottom;
+    transition: transform 1.2s ease;
+    filter: saturate(0.7) brightness(0.9);
+    clip-path: polygon(
+        4.2% 7.2%,
+        5.1% 7.4%,
+        6.1% 8.2%,
+        7.6% 9.7%,
+        9.2% 11.7%,
+        10.7% 14%,
+        12.1% 17.1%,
+        11.6% 17.7%,
+        9.1% 15.5%,
+        6.7% 13.2%,
+        4.4% 10.8%
+    );
+}
+.royal-wax-seal {
+    position: absolute;
+    z-index: 7;
+    left: 41.5%;
+    top: 64%;
+    width: 18%;
+    aspect-ratio: 1;
+    background: none;
+    border: 0;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    transform: rotate(-8deg);
+    transition:
+        transform 1s ease,
+        top 1s ease;
+}
+.royal-wax-seal img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.royal-wax-seal:focus-visible {
+    outline: 2px solid #a97935;
+    outline-offset: 4px;
+}
+.royal-petal {
+    position: absolute;
+    z-index: 7;
+    width: 10%;
+    height: auto;
+    pointer-events: none;
+    object-fit: contain;
+}
+.royal-petal-one {
+    top: 1%;
+    left: 12%;
+    width: 12%;
+    transform: rotate(0deg);
+    animation: royal-petal-sway 8s ease-in-out infinite;
+}
+.royal-petal-two {
+    bottom: 4%;
+    left: 18%;
+    width: 11%;
+    transform: rotate(-10deg);
+    animation: royal-petal-sway 9s ease-in-out infinite 1.5s;
+}
+.royal-petal-three {
+    right: 1%;
+    top: 51%;
+    width: 10%;
+    transform: rotate(-75deg);
+    animation: royal-petal-sway 7.5s ease-in-out infinite 3s;
+}
+
+.royal-names {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0 22px;
+    font:
+        400 13.1cqw/1.03 var(--font-viaoda-libre),
+        "Times New Roman",
+        serif;
+    letter-spacing: -0.055em;
+    color: #650a13;
+}
+.royal-names > span {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform, opacity;
+}
+.royal-names em {
+    display: inline-block;
+    font:
+        400 1em/0.75 "The Nautigal",
+        "Times New Roman",
+        serif;
+    letter-spacing: 0;
+    color: #a17134;
+    margin: 5px 0 10px;
+    will-change: transform, opacity;
+}
+.royal-divider-bottom {
+    will-change: transform, opacity;
+}
+
+/* Entrance choreography when invitation opens */
+.royal-names.is-blooming > span:first-child {
+    animation: royal-bottom-to-top 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+}
+.royal-names.is-blooming em {
+    animation: royal-bottom-to-top 1.3s cubic-bezier(0.22, 1, 0.36, 1) 1.4s both;
+}
+.royal-names.is-blooming > span:last-child {
+    animation: royal-bottom-to-top 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.9s both;
+}
+.royal-divider-bottom.is-blooming {
+    animation: royal-bottom-to-top 1.3s cubic-bezier(0.22, 1, 0.36, 1) 2.4s both;
+}
+
+@keyframes royal-bottom-to-top {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 35px, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+@keyframes royal-hero-fade-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes royal-hero-fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.royal-invitation > .royal-ceremony {
+    width: 89% !important;
+    max-width: none !important;
+    margin: 0 auto 35px;
+}
+.royal-ceremony > div {
+    background: radial-gradient(ellipse at 50% 20%, #711e25, #501018 90%);
+    border: 2px solid #b58a49;
+    border-radius: 20px 20px 13px 13px;
+    outline: 1px solid #b58a49;
+    outline-offset: -6px;
+    padding: 44px 18px 30px;
+    box-shadow:
+        0 2px 2px #4c2a1933,
+        1px 7px 12px #5d2a1526;
+}
+.royal-ceremony > div:before {
+    content: "âœ¥";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 12px;
+    color: #d4b06c;
+    font-size: 20px;
+    z-index: 2;
+}
+.royal-ceremony h2 {
+    width: 100%;
+    font-weight: 400 !important;
+    letter-spacing: 0.035em !important;
+}
+.royal-ceremony h2 span {
+    font-size: 4.65cqw !important;
+}
+.royal-ceremony h2:after {
+    content: "â”€â”€â”€ âœ¥ â”€â”€â”€";
+    display: block;
+    color: #bd9458;
+    font-size: 18px;
+    margin-top: 8px;
+    font-weight: 400;
+}
+.royal-ceremony h3 {
+    font-size: 27px !important;
+    line-height: 1.3 !important;
+    min-height: 55px !important;
+}
+.royal-invitation > section:not(.royal-ceremony) {
+    max-width: 380px !important;
+}
+.royal-invitation .md\:text-\[24px\] {
+    font-size: 20px;
+}
+.royal-invitation .md\:text-\[18px\] {
+    font-size: 16px;
+}
+.royal-invitation .md\:pt-\[120px\] {
+    padding-top: 74px;
+}
+.royal-invitation .md\:max-w-\[560px\] {
+    max-width: 380px;
+}
+.royal-invitation form {
+    max-width: 300px !important;
+}
+.royal-scene[data-animation="opened"] .royal-photo {
+    transform: translate3d(7%, 2%, 0) rotate(13deg);
+    filter: drop-shadow(0 10px 10px rgba(45, 22, 14, 0.24));
+}
+.royal-scene[data-animation="opened"] .royal-right-spray {
+    transform: translate3d(0, 0, 0) rotate(4deg);
+}
+.royal-scene[data-animation="opened"] .royal-pocket-art {
+    transform: none;
+}
+.royal-scene[data-animation="opened"] .royal-pocket-left-flap {
+    transform: none;
+}
+.royal-scene[data-animation="opened"] .royal-wax-seal {
+    top: 64%;
+    transform: rotate(-8deg);
+}
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    .royal-invitation * {
+        animation: none !important;
+        transition: none !important;
+    }
+    .royal-invitation .royal-photo.is-blooming {
+        animation: royal-photo-emerge 1.4s linear 0s both !important;
+    }
+    .royal-invitation .royal-flowers.royal-flowers-left.is-blooming {
+        animation: royal-flowers-grow 1.4s linear 0s both !important;
+    }
+}
+
+.royal-invitation:before {
+    content: none !important;
+    display: none !important;
+}
+
+.royal-opening-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: grid;
+    place-items: safe center;
+    overflow: hidden;
+    overscroll-behavior: none;
+    box-sizing: border-box;
+    padding: 0;
+    background: #f3ece4;
+    color: #650e17;
+    isolation: isolate;
+}
+.royal-opening-screen:focus {
+    outline: none;
+}
+.royal-opening-screen * {
+    box-sizing: border-box;
+}
+.royal-opening-screen:before {
+    content: "";
+    position: fixed;
+    inset: 0 auto 0 50%;
+    width: min(100vw, 430px);
+    transform: translateX(-50%);
+    pointer-events: none;
+    background: #f4e7d3
+        url("./royal-opening-paper-screen-v1.webp")
+        center/cover no-repeat;
+    box-shadow: 0 0 34px rgba(77, 47, 30, 0.12);
+}
+.royal-opening-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: min(100vw, 430px);
+    height: 100svh;
+    min-height: 0;
+    max-height: 100svh;
+    overflow: hidden;
+    padding: 9svh 0 36px;
+    text-align: center;
+    container-type: inline-size;
+}
+.royal-opening-kicker {
+    margin: 0;
+    color: #74131a;
+    font:
+        600 clamp(12px, 3.5vw, 16px)/1.1 "Times New Roman",
+        serif;
+    letter-spacing: 0.24em;
+    text-indent: 0.24em;
+    text-shadow: 0 1px #fff8e9;
+}
+.royal-opening-kicker-rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: min(52%, 210px);
+    height: 16px;
+    margin: 12px 0 18px;
+    color: #b88743;
+}
+.royal-opening-kicker-rule:before,
+.royal-opening-kicker-rule:after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, #b88743);
+}
+.royal-opening-kicker-rule:after {
+    transform: rotate(180deg);
+}
+.royal-opening-kicker-rule span {
+    font-size: 16px;
+    line-height: 1;
+}
+.royal-opening-envelope {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    flex: none;
+    width: min(92%, 390px);
+    aspect-ratio: 1.48;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: drop-shadow(0 15px 14px rgba(62, 34, 19, 0.3));
+    cursor: pointer;
+}
+.royal-opening-envelope:before {
+    content: none;
+    display: none;
+}
+.royal-opening-flap {
+    position: absolute;
+    z-index: 0;
+    left: 5%;
+    top: 8%;
+    width: 90%;
+    height: 52.5%;
+    object-fit: fill;
+    pointer-events: none;
+    filter: saturate(0.7) brightness(0.9);
+}
+.royal-opening-envelope:focus-visible {
+    outline: 3px solid #a8793b;
+    outline-offset: 6px;
+}
+.royal-opening-envelope-art {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    filter: saturate(0.7) brightness(0.9);
+}
+.royal-opening-bouquet {
+    position: absolute;
+    z-index: 2;
+    top: clamp(210px, 28svh, 270px);
+    right: -3%;
+    display: block;
+    width: min(40%, 150px);
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    opacity: 0.98;
+    transform: rotate(6deg);
+    filter: drop-shadow(0 5px 8px rgba(62, 34, 19, 0.2));
+    animation: royal-opening-bouquet-bloom 3.2s cubic-bezier(0.22, 0.7, 0.2, 1)
+        0.25s both;
+}
+@keyframes royal-opening-bouquet-bloom {
+    0% {
+        opacity: 0;
+        transform: translate3d(20px, 24px, 0) rotate(14deg) scale(0.12);
+    }
+    100% {
+        opacity: 0.98;
+        transform: translate3d(0, 0, 0) rotate(6deg) scale(1);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .royal-opening-bouquet {
+        animation: none;
+    }
+}
+.royal-opening-wax-seal {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 59%;
+    display: block;
+    width: clamp(48px, 12cqw, 64px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.royal-opening-wax-seal-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 3px rgba(47, 20, 9, 0.24));
+}
+.royal-opening-greeting {
+    margin: 0;
+    color: #71151b;
+    font:
+        600 clamp(15px, 4.3vw, 22px)/1.2 "Times New Roman",
+        serif;
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+    text-shadow: 0 1px #fff8e9;
+}
+.royal-opening-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: min(50%, 250px);
+    margin: 12px 0 14px;
+    color: #a8793b;
+}
+.royal-opening-divider:before,
+.royal-opening-divider:after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, #b88743);
+}
+.royal-opening-divider:after {
+    transform: rotate(180deg);
+}
+.royal-opening-divider span {
+    font-size: 22px;
+    line-height: 1;
+    color: #a8793b;
+}
+.royal-opening-scene-shell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: min(86cqw, 390px, calc((100svh - 245px) * 0.8));
+    aspect-ratio: 4/5;
+    filter: drop-shadow(0 16px 18px rgba(75, 32, 18, 0.18));
+}
+.royal-opening-scene-shell > .royal-opening-scene {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4/5;
+    margin: 0;
+}
+.royal-opening-caption {
+    position: relative;
+    z-index: 2;
+    margin-top: clamp(40px, 3vh, 108px);
+}
+.royal-opening-names {
+    padding-inline: 8px;
+    font-size: clamp(43px, 12.4vw, 58px) !important;
+    line-height: 0.96 !important;
+    letter-spacing: -0.06em !important;
+    text-shadow: 0 1px 0 #fff5e5;
+}
+.royal-opening-names em {
+    margin: 1px 0 4px !important;
+    font-size: 0.82em !important;
+}
+.royal-opening-names > span:first-child {
+    animation: royal-bottom-to-top 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.25s
+        both;
+}
+.royal-opening-names em {
+    animation: royal-bottom-to-top 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.45s
+        both;
+}
+.royal-opening-names > span:last-child {
+    animation: royal-bottom-to-top 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.65s
+        both;
+}
+.royal-opening-divider {
+    width: min(48%, 240px);
+    margin: clamp(24px, 4vh, 38px) 0 0;
+    color: #71151b;
+    animation: royal-bottom-to-top 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.85s
+        both;
+}
+.royal-opening-divider:before,
+.royal-opening-divider:after {
+    background: linear-gradient(90deg, transparent, #71151b);
+}
+.royal-opening-divider span {
+    font-size: 32px;
+    color: #71151b;
+}
+.royal-opening-date {
+    margin: 12px 0 0;
+    color: #71151b;
+    font:
+        400 clamp(20px, 5.8vw, 29px)/1.2 "Times New Roman",
+        serif;
+    letter-spacing: 0.015em;
+    text-shadow: 0 1px #fff6e7;
+    animation: royal-bottom-to-top 1.2s cubic-bezier(0.22, 1, 0.36, 1) 1.05s
+        both;
+}
+.royal-opening-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-width: clamp(220px, 62vw, 300px);
+    min-height: 58px;
+    margin-top: clamp(16px, 2.8vh, 26px);
+    padding: 10px 28px;
+    border: 3px double #d5b36e;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #851b25, #4e0d14);
+    box-shadow:
+        0 5px 13px rgba(60, 18, 17, 0.22),
+        inset 0 0 0 1px rgba(255, 232, 181, 0.35);
+    color: #fff4df;
+    font:
+        600 clamp(17px, 4.8vw, 24px)/1.1 "Times New Roman",
+        serif;
+    letter-spacing: 0.16em;
+    text-indent: 0.16em;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+.royal-opening-button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 18px rgba(60, 18, 17, 0.26),
+        inset 0 0 0 1px rgba(255, 232, 181, 0.45);
+}
+.royal-opening-button:focus-visible {
+    outline: 3px solid #a8793b;
+    outline-offset: 4px;
+}
+.royal-opening-arrow {
+    font:
+        400 34px/0.7 Arial,
+        sans-serif;
+    text-indent: 0;
+    transform: translateY(-1px);
+}
+@media (max-height: 700px) {
+    .royal-opening-content {
+        padding: 7svh 0 16px;
+    }
+    .royal-opening-kicker-rule {
+        margin-bottom: 12px;
+    }
+    .royal-opening-envelope {
+        width: min(80%, 310px);
+    }
+    .royal-opening-names {
+        font-size: clamp(34px, 9.5vw, 48px) !important;
+    }
+    .royal-opening-caption {
+        margin-top: clamp(24px, 5vh, 40px);
+    }
+    .royal-opening-divider {
+        margin-top: 18px;
+    }
+    .royal-opening-date {
+        margin-top: 8px;
+    }
+}
+@media (max-height: 600px) {
+    .royal-opening-content {
+        padding: 18px 0 10px;
+    }
+    .royal-opening-envelope {
+        width: min(74%, 270px);
+    }
+    .royal-opening-caption {
+        margin-top: 22px;
+    }
+    .royal-opening-divider {
+        margin-top: 12px;
+    }
+    .royal-opening-date {
+        margin-top: 6px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .royal-opening-button {
+        transition: none;
+    }
+}
+
+.royal-right-spray {
+    position: absolute;
+    z-index: 0;
+    right: 7%;
+    top: 55%;
+    width: 40%;
+    height: 31%;
+    object-fit: contain;
+    pointer-events: none;
+    transform: translate3d(0, 0, 0) rotate(4deg);
+    filter: drop-shadow(0.5px 1px 0.8px #34180d80)
+        drop-shadow(2px 4px 2.5px #35190f66);
+    animation: royal-right-spray-emerge 2.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s
+        both;
+}
+.royal-right-spray.is-blooming,
+.royal-scene[data-animation="opened"] .royal-right-spray {
+    transform: translate3d(0, 0, 0) rotate(4deg);
+    animation: royal-right-spray-emerge 2.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s
+        both;
+}
+@keyframes royal-right-spray-emerge {
+    0% {
+        transform: translate3d(-69%, -36%, 0) rotate(-6deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) rotate(4deg);
+        opacity: 1;
+    }
+}
+
+/* Both envelope sheets share the same outside edges and lower baseline. */
+.royal-envelope-rear {
+    position: absolute;
+    z-index: 1;
+    left: 5.5%;
+    top: 9.5%;
+    width: 89.5%;
+    height: 84%;
+    object-fit: fill;
+    pointer-events: none;
+    filter: saturate(0.7) brightness(0.9) contrast(1.03);
+}
+
+/* Ceremony panel: textured burgundy stationery with a double gold frame. */
+.royal-invitation > .royal-ceremony {
+    position: relative;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    container-type: inline-size;
+    background-color: transparent !important;
+    background-image: none !important;
+    isolation: isolate;
+}
+.royal-ceremony__panel {
+    position: relative !important;
+    width: 90% !important;
+    margin: 0 auto;
+    padding: clamp(38px, 10cqw, 58px) 25px clamp(34px, 8.5cqw, 50px) !important;
+    overflow: visible !important;
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.royal-ceremony__content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(17px, 4.3cqw, 26px) !important;
+}
+.royal-ceremony__title {
+    width: 100%;
+    margin: 0 !important;
+    color: #f5e8d5 !important;
+    font-size: clamp(23px, 7cqw, 34px) !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.075em !important;
+}
+.royal-ceremony__title::before {
+    content: none !important;
+    display: none !important;
+}
+.royal-ceremony__title::after {
+    content: none !important;
+}
+.royal-ceremony__title span {
+    font-size: inherit !important;
+}
+.royal-ceremony__divider {
+    display: block;
+    width: 50%;
+    height: auto;
+    aspect-ratio: 249/32;
+    margin: -4px auto;
+    background: url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1")
+        center/100% auto no-repeat;
+    flex: none;
+}
+.royal-ceremony__divider::before,
+.royal-ceremony__divider::after {
+    content: none;
+    display: none;
+}
+
+.royal-ceremony__divider span {
+    display: none;
+}
+.royal-ceremony__parents {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) !important;
+    gap: 0 clamp(11px, 3cqw, 18px) !important;
+    margin: 1px 0 !important;
+    color: #f2e4d2 !important;
+}
+.royal-ceremony__parents > div:nth-child(1),
+.royal-ceremony__parents > div:nth-child(3) {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+}
+.royal-ceremony__parents > div:nth-child(2) {
+    position: relative;
+    height: 126px !important;
+    width: 1px !important;
+    align-self: center;
+    background: linear-gradient(
+        transparent,
+        #d1a261 18%,
+        #d1a261 82%,
+        transparent
+    ) !important;
+}
+.royal-ceremony__parents > div:nth-child(2)::after {
+    content: "â—†";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #e2b66f;
+    font-size: 9px;
+}
+.royal-ceremony__parents > div > span:first-child {
+    font-size: 14px !important;
+    color: #ead7bd !important;
+    font-style: italic;
+}
+.royal-ceremony__parents > div > span:nth-child(2),
+.royal-ceremony__parents > div > span:nth-child(3) {
+    font-size: clamp(13px, 3.8cqw, 16px) !important;
+    line-height: 1.2;
+    font-weight: 700 !important;
+    color: #fff0df !important;
+}
+.royal-ceremony__parents > div > div {
+    margin-top: 3px !important;
+    font-size: clamp(10px, 2.8cqw, 12px) !important;
+    line-height: 1.32 !important;
+    color: rgba(244, 229, 208, 0.82) !important;
+}
+.royal-ceremony__couple {
+    gap: 5px !important;
+}
+.royal-ceremony__couple h3 {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    white-space: normal !important;
+    font-size: clamp(28px, 8.1cqw, 40px) !important;
+    line-height: 1.08 !important;
+    color: #fff0df !important;
+}
+.royal-ceremony__couple > div:nth-child(2),
+.royal-ceremony__couple > div:nth-child(5) {
+    font-size: clamp(11px, 3.2cqw, 14px) !important;
+    line-height: 1.2;
+    letter-spacing: 0.18em !important;
+    color: rgba(245, 226, 198, 0.85) !important;
+}
+.royal-ceremony__couple > div:nth-child(3) {
+    font-size: clamp(44px, 12cqw, 58px) !important;
+    line-height: 0.9;
+    color: #d9ad6b !important;
+    margin: 2px 0 !important;
+}
+.royal-ceremony__date {
+    width: 100%;
+    gap: clamp(14px, 4cqw, 22px) !important;
+}
+.royal-ceremony__venue {
+    color: #f3e5d2;
+    font:
+        400 clamp(15px, 4.5cqw, 21px)/1.45 Baskerville,
+        "Times New Roman",
+        serif;
+    letter-spacing: 0.065em;
+    text-transform: uppercase;
+}
+.royal-ceremony__calendar {
+    position: relative;
+    width: 100%;
+    padding: clamp(18px, 5cqw, 28px) clamp(13px, 4cqw, 22px)
+        clamp(15px, 4cqw, 22px);
+    border: 0;
+    clip-path: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.royal-ceremony__date-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 0.72fr 1.15fr;
+    align-items: stretch;
+    color: #fff0df;
+}
+.royal-ceremony__time,
+.royal-ceremony__month {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-family: Baskerville, "Times New Roman", serif;
+}
+.royal-ceremony__time span,
+.royal-ceremony__month span {
+    font-size: clamp(11px, 3.1cqw, 14px);
+    letter-spacing: 0.12em;
+    color: #f0ddc1;
+}
+.royal-ceremony__time strong {
+    font:
+        400 clamp(24px, 7cqw, 34px)/1.05 "Times New Roman",
+        serif;
+}
+.royal-ceremony__date-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid rgba(223, 183, 121, 0.72);
+    border-right: 1px solid rgba(223, 183, 121, 0.72);
+    font:
+        400 clamp(54px, 15cqw, 76px)/1 "Times New Roman",
+        serif;
+    color: #fff0df;
+}
+.royal-ceremony__month strong {
+    font:
+        400 clamp(15px, 4.4cqw, 21px)/1.1 "Times New Roman",
+        serif;
+    letter-spacing: 0.04em;
+}
+.royal-ceremony__lunar {
+    position: relative;
+    margin: clamp(17px, 5cqw, 25px) 0 12px;
+    color: rgba(245, 228, 205, 0.86);
+    font:
+        400 clamp(10px, 2.9cqw, 13px)/1.4 Baskerville,
+        "Times New Roman",
+        serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.royal-ceremony__divider--calendar {
+    display: none !important;
+}
+.royal-ceremony__spray {
+    position: absolute;
+    z-index: 4;
+    right: -24%;
+    top: 32%;
+    width: 43%;
+    height: 48%;
+    object-fit: contain;
+    pointer-events: none;
+    filter: drop-shadow(3px 7px 7px rgba(48, 14, 12, 0.38));
+    animation: royal-ceremony-sway 9s ease-in-out infinite;
+}
+.royal-ceremony__petal {
+    position: absolute;
+    z-index: 40;
+    width: 10%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+.royal-ceremony__petal--right {
+    right: -10px;
+    top: 15%;
+    width: 15%;
+    transform: rotate(-45deg);
+}
+.royal-ceremony__petal--left {
+    left: -8.5%;
+    bottom: 13%;
+    width: 20%;
+    transform: rotate(27deg);
+}
+@keyframes royal-ceremony-sway {
+    0%,
+    100% {
+        transform: rotate(1deg) translateY(0);
+    }
+    50% {
+        transform: rotate(2deg) translateY(-4px);
+    }
+}
+@media (max-width: 360px) {
+    .royal-ceremony__panel {
+        width: 90% !important;
+        padding-right: 25px !important;
+        padding-left: 25px !important;
+    }
+    .royal-ceremony__parents {
+        gap: 0 9px !important;
+    }
+    .royal-ceremony__parents > div > span:nth-child(2),
+    .royal-ceremony__parents > div > span:nth-child(3) {
+        font-size: 12px !important;
+    }
+    .royal-ceremony__parents > div > div {
+        font-size: 9px !important;
+    }
+}
+
+/* Keep each stationery background at its natural portrait ratio within its section. */
+
+.royal-invitation > .royal-ceremony {
+    background: transparent !important;
+    background-image: none !important;
+}
+.royal-ceremony__panel {
+    position: relative !important;
+    width: 90% !important;
+    aspect-ratio: 0.48;
+    min-height: 200cqw;
+    margin: 0 auto !important;
+    padding: clamp(58px, 13.5cqw, 75px) 25px clamp(48px, 11cqw, 65px) !important;
+    overflow: visible !important;
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.royal-invitation .royal-ceremony__panel::before,
+.royal-invitation .royal-ceremony__panel::after {
+    content: none !important;
+    display: none !important;
+    filter: none !important;
+}
+.royal-ceremony__board-art {
+    position: absolute !important;
+    left: -12.5% !important;
+    top: 0 !important;
+    width: 125% !important;
+    height: 100% !important;
+    object-fit: fill !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+.royal-ceremony__content {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+    gap: clamp(12px, 3cqw, 18px) !important;
+}
+.royal-ceremony__date {
+    gap: clamp(12px, 3.4cqw, 18px) !important;
+}
+.royal-ceremony__spray {
+    display: none !important;
+}
+@media (max-width: 360px) {
+    .royal-ceremony__panel {
+        padding: 33px 25px 26px !important;
+    }
+    .royal-ceremony__content {
+        gap: 8px !important;
+    }
+    .royal-ceremony__parents > div:nth-child(2) {
+        height: 84px !important;
+    }
+    .royal-ceremony__couple h3 {
+        font-size: clamp(22px, 6.5cqw, 26px) !important;
+    }
+    .royal-ceremony__couple > div:nth-child(3) {
+        font-size: clamp(32px, 8cqw, 40px) !important;
+    }
+    .royal-ceremony__date {
+        gap: 10px !important;
+    }
+    .royal-ceremony__venue {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+    .royal-ceremony__calendar {
+        padding: 10px 12px;
+    }
+    .royal-ceremony__date-number {
+        font-size: 42px;
+    }
+    .royal-ceremony__lunar {
+        margin: 8px 0 7px;
+        font-size: 10px;
+    }
+}
+
+.royal-hero {
+    background-image: url(./royal-paper-background.webp) !important;
+    background-position: center top !important;
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+}
+.royal-invitation > .royal-ceremony {
+    background: #f5ecdf url(./royal-ceremony-paper-v1.webp?v=paper-20261018-2)
+        center top/100% 100% no-repeat !important;
+}
+
+/* Use a full natural section image and keep the bouquet as a separate foreground layer. */
+.royal-hero {
+    background-image: url(./royal-paper-background.webp) !important;
+    background-position: center top !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+}
+.royal-invitation > .royal-ceremony {
+    position: relative !important;
+    background-image: url(./royal-ceremony-paper-v1.webp?v=paper-20261018-2) !important;
+    background-position: center top !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    container-type: normal !important;
+    isolation: auto !important;
+}
+.royal-ceremony__spray {
+    display: block !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    right: -2% !important;
+    top: 14% !important;
+    width: 78% !important;
+    height: 80% !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    pointer-events: none !important;
+    filter: drop-shadow(3px 7px 7px rgba(48, 14, 12, 0.34)) !important;
+    animation: none !important;
+}
+
+.royal-ceremony__board-art {
+    left: -7.75% !important;
+    top: -2% !important;
+    width: 115.5% !important;
+    height: 104% !important;
+    max-width: none !important;
+}
+.royal-ceremony__couple h3 {
+    width: 110% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    white-space: nowrap !important;
+    font-size: clamp(31px, 9.2cqw, 40px) !important;
+    line-height: 1.04 !important;
+    color: #fff5e8 !important;
+    -webkit-text-stroke: 0.25px rgba(255, 229, 190, 0.42);
+    text-shadow:
+        0 2px 3px rgba(34, 5, 9, 0.7),
+        0 0 12px rgba(221, 174, 103, 0.2);
+}
+.royal-ceremony__panel {
+    width: 90% !important;
+    padding: clamp(58px, 13.5cqw, 75px) 25px clamp(48px, 11cqw, 65px) !important;
+    z-index: 31 !important;
+}
+.royal-ceremony__edge-florals {
+    display: none;
+    position: absolute !important;
+    z-index: 1 !important;
+    top: 20% !important;
+    right: -11.75% !important;
+    left: auto !important;
+    width: 50% !important;
+    height: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    clip-path: none !important;
+    opacity: 1;
+    pointer-events: none !important;
+    filter: none !important;
+}
+.royal-ceremony__spray {
+    display: none !important;
+}
+
+@media (max-width: 480px) {
+    .royal-ceremony__panel {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+}
+/* Royal scrapbook album section */
+.royal-album {
+    position: relative;
+    isolation: auto;
+    overflow: hidden;
+    padding: 42px clamp(18px, 5vw, 34px) 20px;
+    background-color: #f3e8d6;
+    background-image: url("./royal-album-paper-v5.webp?v=church-20261018-4");
+    background-size: 100% 100%;
+    background-position: left top;
+    background-repeat: no-repeat;
+    background-blend-mode: normal;
+}
+.royal-album__decor {
+    position: absolute;
+    inset: 0;
+    z-index: auto;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.royal-album__flowers {
+    position: absolute;
+    height: auto;
+    object-fit: contain;
+}
+.royal-album__flowers--top {
+    top: 2%;
+    right: 0%;
+    z-index: 31;
+    width: 40%;
+    opacity: 0.93;
+}
+
+.royal-album__inner {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 740px);
+    margin: 0 auto;
+}
+.royal-album__heading {
+    position: relative;
+    container-type: inline-size;
+    margin: 0 auto 28px;
+    text-align: center;
+}
+.royal-album__top-rule {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: clamp(22px, 6cqw, 42px);
+    margin: 0 auto 2px;
+    overflow: hidden;
+    pointer-events: none;
+}
+.royal-album__top-rule img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    transform: translate(-50%, -50%) rotate(15deg);
+}
+.royal-album__title {
+    margin: 0;
+    color: #74151b;
+    font:
+        700 clamp(28px, 9.4cqw, 56px)/1.08 "Times New Roman",
+        serif;
+    white-space: nowrap;
+    text-shadow: 0 1px 0 rgba(255, 248, 229, 0.7);
+}
+.royal-album__ornament {
+    display: block;
+    width: min(72%, 430px);
+    height: clamp(22px, 4.2cqw, 34px);
+    margin: 2px auto 0;
+    overflow: visible;
+}
+.royal-album__heart-line {
+    fill: none;
+    stroke: #9a5a2b;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+}
+.royal-album__heart {
+    fill: #842c19;
+    stroke: #9a5a2b;
+    stroke-width: 0.7;
+    stroke-linejoin: round;
+}
+.royal-album__subtitle {
+    margin: 2px 0 0;
+    color: #8d2025;
+    font:
+        400 clamp(20px, 5.8cqw, 40px)/1.16 "Ms Madi",
+        "Segoe Script",
+        cursive;
+    white-space: nowrap;
+}
+.royal-album__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 25px clamp(14px, 4vw, 30px);
+    width: 100%;
+    margin: 0 auto;
+}
+.royal-album__card {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 8px 8px 0;
+    border: 1px solid rgba(153, 111, 58, 0.36);
+    cursor: zoom-in;
+    transform: rotate(var(--album-tilt, 0deg));
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+}
+.royal-album__card--cream {
+    background: linear-gradient(145deg, #fff9ec 0%, #f4e8d2 100%);
+    box-shadow:
+        0 10px 18px rgba(83, 47, 27, 0.2),
+        5px 8px 0 -3px rgba(119, 27, 32, 0.88);
+}
+.royal-album__card--cream .royal-album__tape {
+    position: absolute;
+    z-index: 3;
+    top: -9px;
+    left: 50%;
+    width: 42px;
+    height: 17px;
+    background: linear-gradient(
+        105deg,
+        rgba(192, 145, 79, 0.47),
+        rgba(215, 179, 117, 0.62),
+        rgba(180, 126, 59, 0.42)
+    );
+    box-shadow: 0 1px 2px rgba(77, 46, 23, 0.14);
+    transform: translateX(-50%) rotate(-4deg);
+}
+.royal-album__card--wine {
+    border: 1px solid #c8a15e;
+    background: linear-gradient(145deg, #7d2023, #581016 82%);
+    box-shadow:
+        0 12px 20px rgba(57, 20, 17, 0.3),
+        -5px 8px 0 -3px rgba(210, 188, 148, 0.8);
+}
+.royal-album__card--wine:before,
+.royal-album__card--wine:after {
+    position: absolute;
+    z-index: 2;
+    top: 11px;
+    color: #e1bd79;
+    font:
+        15px/1 Georgia,
+        serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.38);
+}
+.royal-album__card--wine:before {
+    content: "âœ¦";
+    left: 13px;
+}
+.royal-album__card--wine:after {
+    content: "âœ¦";
+    right: 13px;
+}
+.royal-album__photo {
+    width: 100%;
+    aspect-ratio: 0.79;
+    overflow: hidden;
+    background: #eadcc5;
+}
+.royal-album__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.55s ease;
+}
+.royal-album__card--one .royal-album__photo img {
+    object-position: 50% 40%;
+}
+.royal-album__card--two .royal-album__photo img {
+    object-position: 50% 29%;
+}
+.royal-album__card--three .royal-album__photo img {
+    object-position: 50% 35%;
+}
+.royal-album__card--four .royal-album__photo img {
+    object-position: 50% 40%;
+}
+.royal-album__card--five .royal-album__photo img {
+    object-position: 50% 34%;
+}
+.royal-album__card--wine .royal-album__photo {
+    padding: 4px;
+    border: 1px solid rgba(232, 202, 139, 0.78);
+    background: #531116;
+}
+.royal-album__card figcaption {
+    display: flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 4px 2px 7px;
+    color: #8b2025;
+    text-align: center;
+    font:
+        400 clamp(15px, 4.5vw, 22px)/1.05 "Ms Madi",
+        "Segoe Script",
+        cursive;
+}
+.royal-album__card figcaption span:last-child {
+    color: #a84020;
+    font:
+        15px/1 Georgia,
+        serif;
+}
+.royal-album__card--wine figcaption {
+    color: #f3e3c6;
+}
+.royal-album__card--wine figcaption span:last-child {
+    color: #d9b36d;
+}
+.royal-album__card--one {
+    --album-tilt: -2deg;
+    margin-top: 7px;
+}
+.royal-album__card--two {
+    --album-tilt: 2.1deg;
+    margin-top: 23px;
+}
+.royal-album__card--three {
+    --album-tilt: 1.7deg;
+    margin-top: 1px;
+}
+.royal-album__card--four {
+    --album-tilt: -1.8deg;
+    margin-top: 14px;
+}
+.royal-album__card--five {
+    grid-column: 1/-1;
+    justify-self: center;
+    width: min(72%, 340px);
+    --album-tilt: -1.5deg;
+    margin-top: 7px;
+}
+
+@media (min-width: 700px) {
+    .royal-album {
+        padding: 58px 25px 20px;
+    }
+    .royal-album__heading {
+        margin-bottom: 20px;
+    }
+    .royal-album__grid {
+        gap: 38px 34px;
+    }
+    .royal-album__photo {
+        aspect-ratio: 0.82;
+    }
+    .royal-album__card figcaption {
+        min-height: 44px;
+    }
+    .royal-album__flowers--top {
+        width: 40%;
+    }
+}
+@media (max-width: 360px) {
+    .royal-album {
+        padding: 34px 14px 54px;
+    }
+    .royal-album__heading {
+        margin-bottom: 22px;
+    }
+    .royal-album__grid {
+        gap: 20px 10px;
+    }
+    .royal-album__card {
+        padding: 6px 6px 0;
+    }
+    .royal-album__card--wine .royal-album__photo {
+        padding: 3px;
+    }
+    .royal-album__card figcaption {
+        min-height: 31px;
+        font-size: 14px;
+    }
+    .royal-album__card--five {
+        width: 78%;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .royal-album__card,
+    .royal-album__photo img {
+        transition: none;
+    }
+}
+/* Gentle overlap for the scrapbook album. */
+.royal-album__grid {
+    row-gap: 14px;
+}
+.royal-album__card {
+    z-index: 2;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    transform: translateY(var(--album-rise, 0px))
+        rotate(var(--album-tilt, 0deg));
+}
+
+.royal-album__sheet {
+    position: relative;
+    z-index: 1;
+    padding: 8px 8px 0;
+}
+.royal-album__card--cream .royal-album__sheet {
+    border: 1px solid rgba(153, 111, 58, 0.36);
+    background: linear-gradient(145deg, #fff9ec 0%, #f4e8d2 100%);
+    box-shadow: 0 10px 18px rgba(83, 47, 27, 0.2);
+}
+.royal-album__card--wine .royal-album__sheet {
+    border: 1px solid #c8a15e;
+    background: linear-gradient(145deg, #7d2023, #581016 82%);
+    box-shadow: 0 12px 20px rgba(57, 20, 17, 0.3);
+}
+.royal-album__card--cream .royal-album__tape {
+    top: -9px;
+}
+.royal-album__card--one {
+    z-index: 2;
+    --album-rise: 0px;
+}
+.royal-album__card--two {
+    z-index: 3;
+    --album-rise: 10px;
+}
+.royal-album__card--three {
+    z-index: 4;
+    --album-rise: -18px;
+}
+.royal-album__card--four {
+    z-index: 5;
+    --album-rise: -8px;
+}
+.royal-album__card--five {
+    z-index: 6;
+    --album-rise: -24px;
+}
+
+@media (min-width: 700px) {
+    .royal-album__grid {
+        row-gap: 18px;
+    }
+    .royal-album__card--three {
+        --album-rise: -24px;
+    }
+    .royal-album__card--four {
+        --album-rise: -12px;
+    }
+    .royal-album__card--five {
+        --album-rise: -32px;
+    }
+}
+@media (max-width: 360px) {
+    .royal-album__grid {
+        row-gap: 10px;
+    }
+    .royal-album__card--three {
+        --album-rise: -14px;
+    }
+    .royal-album__card--four {
+        --album-rise: -7px;
+    }
+    .royal-album__card--five {
+        --album-rise: -20px;
+    }
+}
+
+/* Use the supplied scrapbook art as the real frame overlay. Keep hover static. */
+.royal-album__tape,
+.royal-album__card--wine:before,
+.royal-album__card--wine:after {
+    display: none;
+}
+.royal-album__card,
+.royal-album__photo img {
+    transition: none;
+}
+.royal-album__sheet {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 103/135;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+.royal-album__card--cream .royal-album__sheet,
+.royal-album__card--wine .royal-album__sheet {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+.royal-album__card--wine .royal-album__sheet {
+    aspect-ratio: 1070/1402;
+}
+.royal-album__photo {
+    position: absolute;
+    z-index: 1;
+    left: 9.57%;
+    top: 10.63%;
+    width: 80.87%;
+    height: 69.09%;
+    aspect-ratio: auto;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+.royal-album__card--wine .royal-album__photo {
+    left: 8.47%;
+    top: 12.02%;
+    width: 81.94%;
+    height: 66.53%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+.royal-album__frame-art {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+    filter: drop-shadow(0 7px 9px rgba(68, 34, 20, 0.22));
+}
+.royal-album__card figcaption {
+    position: absolute;
+    z-index: 3;
+    right: 10%;
+    bottom: 8%;
+    left: 10%;
+    min-height: 0;
+    padding: 3px 0;
+    color: #842126;
+    text-align: center;
+}
+.royal-album__card--wine figcaption {
+    color: #f3e3c6;
+}
+.royal-album__card--five {
+    grid-column: auto;
+    justify-self: stretch;
+    width: auto;
+}
+.royal-album__card--six {
+    --album-tilt: -1.4deg;
+    margin-top: 12px;
+    z-index: 7;
+    --album-rise: -10px;
+}
+.royal-album__card--seven {
+    --album-tilt: 1.8deg;
+    margin-top: 2px;
+    z-index: 8;
+    --album-rise: -22px;
+}
+.royal-album__card--eight {
+    --album-tilt: -1.3deg;
+    margin-top: 14px;
+    z-index: 9;
+    --album-rise: -12px;
+}
+.royal-album__card--six .royal-album__photo img {
+    object-position: 50% 34%;
+}
+.royal-album__card--seven .royal-album__photo img {
+    object-position: 50% 40%;
+}
+.royal-album__card--eight .royal-album__photo img {
+    object-position: 50% 29%;
+}
+@media (min-width: 700px) {
+    .royal-album__card--six {
+        --album-rise: -14px;
+    }
+    .royal-album__card--seven {
+        --album-rise: -26px;
+    }
+    .royal-album__card--eight {
+        --album-rise: -16px;
+    }
+}
+@media (max-width: 360px) {
+    .royal-album__card--six {
+        --album-rise: -8px;
+    }
+    .royal-album__card--seven {
+        --album-rise: -16px;
+    }
+    .royal-album__card--eight {
+        --album-rise: -7px;
+    }
+}
+.royal-album__side-floral {
+    position: absolute;
+    top: 32%;
+    z-index: 10;
+    display: block;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    opacity: 0.98;
+    filter: drop-shadow(0 5px 7px rgba(54, 24, 16, 0.28));
+}
+.royal-album__side-floral--left {
+    display: none;
+    left: -12%;
+    right: auto;
+    transform: rotate(-4deg);
+    transform-origin: center;
+}
+.royal-album__side-floral--right {
+    display: none;
+    right: -12%;
+    left: auto;
+    transform: rotate(4deg);
+    transform-origin: center;
+}
+.royal-album__side-floral--bouquet {
+    display: block;
+    width: min(43%, 132px);
+}
+.royal-album__side-floral--sprig {
+    width: min(38%, 120px);
+}
+.royal-album__side-floral--spray {
+    width: min(37%, 116px);
+}
+.royal-album__side-floral--one {
+    top: 42%;
+}
+.royal-album__side-floral--two {
+    top: 44%;
+    transform: scaleX(-1) rotate(4deg);
+}
+.royal-album__side-floral--three {
+    top: 50%;
+    transform: scaleX(-1) rotate(-4deg);
+}
+.royal-album__side-floral--four {
+    top: 39%;
+}
+.royal-album__side-floral--five {
+    top: 40%;
+}
+.royal-album__side-floral--six {
+    top: 50%;
+}
+.royal-album__side-floral--seven {
+    top: 44%;
+}
+.royal-album__side-floral--eight {
+    top: 45%;
+    transform: scaleX(-1) rotate(4deg);
+}
+
+/* User supplied torn-paper scraps sit behind the scrapbook frames. */
+.royal-album__paper-scrap {
+    position: absolute;
+    z-index: 0;
+    display: block;
+    height: auto;
+    max-width: none;
+    object-fit: contain;
+    pointer-events: none;
+}
+.royal-album__paper-scrap--strip {
+    top: -5%;
+    left: -5%;
+    width: 70%;
+    transform: rotate(-4deg);
+}
+.royal-album__paper-scrap--portrait {
+    top: -3%;
+    right: -5%;
+    width: 63%;
+    transform: rotate(3deg);
+}
+.royal-album__paper-scrap--angle {
+    top: 22%;
+    left: -28%;
+    width: 77%;
+    transform: rotate(-2deg);
+}
+.royal-album__paper-scrap--wide {
+    top: 14%;
+    right: -5%;
+    width: 106%;
+    transform: rotate(-2deg);
+}
+.royal-album__paper-scrap--portrait-alt {
+    top: -5%;
+    left: -5%;
+    width: 61%;
+    transform: rotate(-4deg);
+}
+.royal-album__paper-scrap--strip-alt {
+    right: -18%;
+    bottom: -4%;
+    width: 53%;
+    transform: rotate(4deg);
+}
+.royal-album__paper-scrap--wide-alt {
+    width: 78%;
+    transform: rotate(2deg);
+    left: -5%;
+}
+.royal-album__paper-scrap--angle-alt {
+    top: 24%;
+    right: -24%;
+    width: 77%;
+    transform: rotate(2deg);
+} /* Deep-wine torn-paper art replaces the flat burgundy scraps on four frames. */
+.royal-album__paper-scrap--red-a {
+    top: 9%;
+    left: -9%;
+    width: 86%;
+    transform: rotate(-2deg);
+}
+.royal-album__paper-scrap--red-b {
+    top: 20%;
+    left: -7%;
+    width: 110%;
+    transform: rotate(-2deg);
+}
+.royal-album__paper-scrap--red-c {
+    top: 0%;
+    right: -8%;
+    width: 68%;
+    transform: rotate(3deg);
+}
+.royal-album__paper-scrap--red-d {
+    right: -8%;
+    bottom: 13%;
+    width: 105%;
+    transform: rotate(-2deg);
+} /* Narrow only the horizontal space between scrapbook columns. */
+.royal-album__grid {
+    column-gap: clamp(4px, 1vw, 0px);
+    row-gap: 14px;
+}
+.royal-album__card {
+    margin-bottom: 0;
+}
+@media (min-width: 700px) {
+    .royal-album__grid {
+        row-gap: 18px;
+    }
+}
+@media (max-width: 360px) {
+    .royal-album__grid {
+        row-gap: 10px;
+    }
+}
+
+@media (min-width: 700px) {
+    .royal-album__grid {
+        row-gap: 5px;
+    }
+}
+/* One supplied keepsake ornament on album cards 3, 4, 6 and 8. */
+.royal-album__accessory {
+    position: absolute;
+    z-index: 12;
+    display: block;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    filter: drop-shadow(0 3px 4px rgba(54, 24, 16, 0.22));
+}
+.royal-album__accessory--pin {
+    top: 2%;
+    left: 57%;
+    width: 15%;
+    transform: translateX(-50%) rotate(-7deg);
+}
+.royal-album__accessory--bow {
+    top: -2%;
+    right: -13%;
+    width: 48%;
+    transform: rotate(9deg);
+}
+.royal-album__accessory--enamel-heart {
+    bottom: -7%;
+    left: 47%;
+    width: 25%;
+    transform: translateX(-50%) rotate(7deg);
+}
+.royal-album__accessory--heart-clip {
+    top: 1%;
+    right: 5%;
+    width: 22%;
+    transform: rotate(8deg);
+}
+/* Make only the album photo opening behave as a gallery lightbox. */
+.royal-album__card {
+    cursor: default;
+}
+.royal-album__photo {
+    display: block;
+    cursor: zoom-in;
+}
+/* Wedding reception panel: match the full-height burgundy invitation reference. */
+.royal-invitation > section.royal-reception {
+    z-index: 40 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: clamp(16px, 3vw, 24px) 18px !important;
+    container-type: normal;
+    background-color: #f3e8d6;
+    background-image: url("./royal-reception-paper-v1.webp?v=venue-card-reference-20261020-3");
+    background-position: center top;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-blend-mode: normal;
+}
+.royal-reception__panel {
+    position: relative !important;
+    isolation: isolate;
+    container-type: inline-size;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+    overflow: visible !important;
+    margin: 0 auto;
+    padding: clamp(38px, 9cqw, 52px) 8.5% clamp(34px, 11cqw, 46px) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-align: center;
+}
+.royal-reception__board-art {
+    position: absolute !important;
+    z-index: 0 !important;
+    top: -2.8%;
+    left: -6.5%;
+    width: 113% !important;
+    height: 105.6% !important;
+    max-width: none !important;
+    object-fit: fill !important;
+    clip-path: inset(2.65% 5.75% 2.65% 5.75%);
+    pointer-events: none !important;
+}
+.royal-reception__backdrop {
+    display: none !important;
+}
+.royal-reception__flowers {
+    display: none;
+    position: absolute !important;
+    z-index: 5 !important;
+    top: 16% !important;
+    left: -15% !important;
+    width: 53% !important;
+    height: 42% !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    transform: scaleX(-1);
+    pointer-events: none !important;
+    filter: drop-shadow(0 5px 8px rgba(40, 9, 12, 0.22));
+}
+.royal-reception__stack {
+    position: relative !important;
+    z-index: 3 !important;
+    display: flex !important;
+    width: 100%;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: clamp(16px, 4cqw, 24px) !important;
+}
+.royal-reception__title {
+    width: 100%;
+    margin: 0 !important;
+    color: #fff0dc !important;
+    font:
+        700 clamp(22px, 5.5cqw, 39px)/1.12 "Times New Roman",
+        serif !important;
+    letter-spacing: 0.045em !important;
+}
+.royal-reception__title:after {
+    content: "";
+    display: block;
+    width: 82%;
+    height: clamp(20px, 6.4cqw, 36px);
+    margin: 8px auto 0;
+    background-image: url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.royal-reception__details {
+    display: flex !important;
+    width: 100%;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: clamp(16px, 4cqw, 22px) !important;
+    color: #f7e8d4 !important;
+}
+.royal-reception__lead {
+    margin: 0 !important;
+    color: #fff0df !important;
+    font:
+        400 clamp(17px, 4.4cqw, 32px)/1.2 Baskerville,
+        "Times New Roman",
+        serif !important;
+    letter-spacing: 0.035em !important;
+    text-align: center;
+}
+.royal-reception__date-panel {
+    position: relative;
+    display: grid;
+    width: 84%;
+    min-height: clamp(120px, 31cqw, 180px);
+    grid-template-columns: 1fr 1px 1fr;
+    align-items: center;
+    padding: 12px 5%;
+    color: #fff0df;
+}
+.royal-reception__date-panel:before {
+    position: absolute;
+    inset: 0;
+    content: "";
+    border: 1px solid #d5ae69;
+    clip-path: polygon(
+        6% 0,
+        94% 0,
+        97% 8%,
+        100% 8%,
+        100% 92%,
+        97% 92%,
+        94% 100%,
+        6% 100%,
+        3% 92%,
+        0 92%,
+        0 8%,
+        3% 8%
+    );
+    pointer-events: none;
+}
+.royal-reception__date-day,
+.royal-reception__date-month {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-family: Baskerville, "Times New Roman", serif;
+}
+.royal-reception__date-day > span,
+.royal-reception__date-month > span {
+    color: #f3dfc2;
+    font-size: clamp(12px, 3.6cqw, 22px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.royal-reception__date-day > strong {
+    color: #fff1df;
+    font:
+        400 clamp(64px, 16cqw, 112px)/0.92 "Times New Roman",
+        serif;
+}
+.royal-reception__date-month > span {
+    padding: 0 8px 7px;
+    border-bottom: 1px solid rgba(218, 177, 108, 0.8);
+}
+.royal-reception__date-month > strong {
+    color: #fff1df;
+    font:
+        400 clamp(26px, 7.4cqw, 51px)/1.05 "Times New Roman",
+        serif;
+}
+.royal-reception__date-divider {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 68%;
+    background: rgba(218, 177, 108, 0.8);
+}
+.royal-reception__date-divider i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: #e4bd73;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.royal-reception__lunar {
+    margin: 0 !important;
+    color: rgba(247, 232, 212, 0.88) !important;
+    font:
+        400 clamp(10px, 2.8cqw, 16px)/1.35 Baskerville,
+        "Times New Roman",
+        serif !important;
+    letter-spacing: 0.09em !important;
+    text-align: center;
+}
+.royal-reception__times {
+    position: relative;
+    display: grid !important;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0 !important;
+    margin: clamp(6px, 1.5cqw, 10px) 0 0 !important;
+    padding: clamp(18px, 4.5cqw, 24px) 0 clamp(36px, 8cqw, 44px);
+    border-top: 1px solid rgba(207, 164, 94, 0.78);
+    border-bottom: 0;
+}
+.royal-reception__times:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    content: "";
+    background: #ddb66d;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.royal-reception__times:after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: clamp(18px, 6.3cqw, 38px);
+    content: "";
+    background-image: url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 50% 100%;
+    pointer-events: none;
+}
+.royal-reception__times > div {
+    align-items: center !important;
+    min-width: 0;
+    padding: 0 5px;
+}
+.royal-reception__times > div + div {
+    border-left: 1px solid rgba(207, 164, 94, 0.72);
+}
+.royal-reception__times > div > span:first-child {
+    color: #f3dfc2 !important;
+    font-size: clamp(11px, 3cqw, 18px) !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase;
+}
+.royal-reception__times > div > span:last-child {
+    margin-top: 3px !important;
+    color: #fff0df !important;
+    font:
+        400 clamp(25px, 7cqw, 46px)/1.05 Baskerville,
+        "Times New Roman",
+        serif !important;
+}
+.royal-reception__countdown {
+    width: 100%;
+    margin: 0 !important;
+}
+.royal-reception__countdown > div {
+    width: 100%;
+}
+.royal-reception__countdown-title {
+    margin: 0 !important;
+    color: #fff0df !important;
+    font:
+        400 clamp(17px, 4.5cqw, 31px)/1.15 "Times New Roman",
+        serif !important;
+    letter-spacing: 0.025em;
+}
+.royal-reception__countdown-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 12px;
+    padding: 16px 7px;
+    border: 1px solid #d9b371;
+    border-radius: 18px;
+    color: #fff0df;
+}
+.royal-reception__countdown-grid > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+.royal-reception__countdown-grid > div + div {
+    border-left: 1px solid rgba(220, 178, 107, 0.72);
+}
+.royal-reception__countdown-grid strong {
+    font:
+        600 clamp(22px, 6.3cqw, 43px)/1.05 "Times New Roman",
+        serif;
+}
+.royal-reception__countdown-grid span {
+    color: rgba(247, 232, 212, 0.8);
+    font:
+        400 clamp(12px, 3.5cqw, 23px)/1.1 Baskerville,
+        "Times New Roman",
+        serif;
+}
+.royal-reception__calendar {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: clamp(10px, 2.5cqw, 18px) !important;
+    border: 1px solid rgba(174, 129, 69, 0.6);
+    border-radius: 16px !important;
+    background: #f6ecda !important;
+    box-shadow: 0 5px 13px rgba(43, 13, 13, 0.18);
+}
+.royal-reception__calendar-inner {
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    color: #541419 !important;
+}
+.royal-reception__calendar-month {
+    padding: 0 0 7px !important;
+    color: #65181d !important;
+    font:
+        italic clamp(27px, 6.2cqw, 46px)/1.1 "The Nautigal",
+        cursive !important;
+    border-color: rgba(113, 31, 33, 0.35) !important;
+}
+.royal-reception__weekdays {
+    border-color: #65181d !important;
+}
+.royal-reception__weekdays > div {
+    padding: 5px 0 !important;
+    color: #6f2023 !important;
+    font:
+        400 clamp(10px, 2.4cqw, 16px)/1.1 Baskerville,
+        "Times New Roman",
+        serif !important;
+    opacity: 1 !important;
+}
+.royal-reception__days {
+    padding: 6px 0 0 !important;
+    row-gap: 0 !important;
+    color: #5c1a1e !important;
+}
+.royal-reception__days > div {
+    height: clamp(34px, 8cqw, 48px) !important;
+    color: #5c1a1e !important;
+}
+.royal-reception__days > div > span {
+    font:
+        400 clamp(11px, 2.8cqw, 18px)/1 Baskerville,
+        "Times New Roman",
+        serif !important;
+}
+.royal-reception__days svg {
+    filter: drop-shadow(0 2px 2px rgba(67, 17, 18, 0.16));
+}
+.royal-reception__add {
+    margin: 8px 0 0 !important;
+    color: #fff0df !important;
+    font:
+        400 clamp(16px, 4cqw, 26px)/1.2 "Times New Roman",
+        serif !important;
+    text-underline-offset: 5px !important;
+}
+.royal-reception__rsvp {
+    margin-top: 15px !important;
+}
+.royal-reception__rsvp-button {
+    border: 1px solid #d9b371 !important;
+    background: linear-gradient(140deg, #f3dfbd, #d9b779) !important;
+    color: #591419 !important;
+    font-family: Baskerville, "Times New Roman", serif !important;
+    box-shadow: 0 4px 10px rgba(37, 10, 12, 0.25);
+}
+@media (max-width: 380px) {
+    .royal-reception__panel {
+        padding-top: 34px !important;
+        padding-bottom: 30px !important;
+    }
+    .royal-reception__flowers {
+        left: -15% !important;
+        width: 53% !important;
+        top: 17% !important;
+    }
+    .royal-reception__date-panel {
+        width: 90%;
+    }
+    .royal-reception__calendar {
+        padding: 9px !important;
+    }
+}
+
+/* Use the same horizontal gutter for every invitation section. */
+.royal-invitation__closing {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    background-color: #f3e8d6;
+    background-image: url("./royal-album-paper-v5.webp?v=church-20261018-4");
+    background-position: center top;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.royal-invitation__closing > div:first-child > section {
+    padding-top: 28px !important;
+}
+.royal-guestbook-panel {
+    position: relative;
+    isolation: isolate;
+    box-sizing: border-box;
+    width: min(100%, 380px);
+    margin: 0 auto;
+    padding: 18px clamp(16px, 4vw, 24px) 20px;
+    background-color: rgba(255, 250, 242, 0.62) !important;
+    background-image: none !important;
+    background-position: initial;
+    background-size: auto;
+    background-repeat: initial;
+    border: 1px solid rgba(166, 126, 82, 0.38);
+    border-radius: 8px;
+    box-shadow: 0 2px 7px rgba(81, 20, 25, 0.07);
+}
+.royal-guestbook-panel h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    color: #7a171e !important;
+    font-size: clamp(18px, 4.8vw, 22px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+    text-align: center;
+}
+.royal-guestbook-panel__divider {
+    display: block;
+    width: 50%;
+    height: auto;
+    margin: 18px auto 12px;
+}
+.royal-guestbook-panel__petal {
+    position: absolute;
+    z-index: 0;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+.royal-guestbook-panel__petal--one {
+    top: 2%;
+    left: -1%;
+    width: 14%;
+    transform: rotate(-34deg);
+}
+.royal-guestbook-panel__petal--two {
+    top: 8%;
+    left: 8%;
+    width: 10%;
+    transform: rotate(54deg);
+}
+.royal-guestbook-panel__petal--three {
+    top: 1%;
+    left: 11%;
+    width: 9%;
+    transform: rotate(146deg);
+}
+.royal-guestbook-panel > .text-center,
+.royal-guestbook-panel > form {
+    position: relative;
+    z-index: 1;
+}
+.royal-guestbook-panel form {
+    max-width: min(100%, 320px) !important;
+    margin-top: 14px !important;
+}
+.royal-guestbook-panel label {
+    display: block;
+    margin: 0 0 5px;
+    color: #7a2025;
+    font:
+        400 14px/1.25 "Times New Roman",
+        serif;
+    text-align: left;
+}
+.royal-guestbook-panel input,
+.royal-guestbook-panel textarea {
+    border-color: rgba(130, 84, 54, 0.36) !important;
+    border-radius: 6px !important;
+    background-color: rgba(255, 252, 247, 0.78) !important;
+    color: #511419 !important;
+    font-size: 14px !important;
+}
+.royal-guestbook-panel input::placeholder,
+.royal-guestbook-panel textarea::placeholder {
+    color: rgba(81, 20, 25, 0.5);
+    opacity: 1;
+}
+.royal-guestbook-panel button[type="submit"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(100%, 290px) !important;
+    margin: 0 auto;
+    padding: 10px 24px !important;
+    border: 2px solid rgba(207, 164, 94, 0.9) !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, #7f1822 0%, #4c1016 100%) !important;
+    color: #fff4e5 !important;
+    box-shadow:
+        0 3px 8px rgba(52, 17, 14, 0.22),
+        inset 0 1px 0 rgba(255, 236, 200, 0.24) !important;
+    font:
+        700 15px/1.2 "Times New Roman",
+        serif !important;
+    letter-spacing: 0.01em;
+}
+.royal-guestbook-panel button[type="submit"]:hover {
+    filter: brightness(1.06);
+}
+.royal-invitation {
+    --royal-section-gutter: clamp(14px, 4.5vw, 20px);
+}
+.royal-invitation > section {
+    box-sizing: border-box;
+    padding-left: var(--royal-section-gutter) !important;
+    padding-right: var(--royal-section-gutter) !important;
+}
+.royal-invitation > .royal-ceremony,
+.royal-invitation > section.royal-album,
+.royal-invitation > section.royal-reception {
+    padding-left: var(--royal-section-gutter) !important;
+    padding-right: var(--royal-section-gutter) !important;
+}
+.royal-invitation > .royal-ceremony .royal-ceremony__panel {
+    width: 100% !important;
+}
+.royal-corner {
+    display: none !important;
+}
+
+/* Venue/location section reuses the album's parchment and keeps its map CTA prominent. */
+.royal-venue-schedule-wrap {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    background-color: #f3e8d6;
+    background-image: url("./royal-reception-paper-v1.webp?v=venue-old-bg-20261020-5");
+    background-position: center top;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.royal-venue-section {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    width: 88% !important;
+    max-width: 420px !important;
+    margin: 16px auto 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+@media (min-width: 768px) {
+    .royal-venue-section {
+        max-width: 560px !important;
+    }
+}
+.royal-venue-board {
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    max-width: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    padding: 22px clamp(16px, 4vw, 24px) 24px;
+    background-color: rgba(255, 250, 242, 0.72) !important;
+    background-image: none !important;
+    border: 1px solid rgba(166, 126, 82, 0.38);
+    border-radius: 8px;
+    box-shadow: 0 2px 7px rgba(81, 20, 25, 0.07) !important;
+    filter: none !important;
+}
+.royal-venue-scrap {
+    display: none !important;
+}
+.royal-venue-scrap--red-b {
+    top: -1%;
+    left: 4%;
+    width: 94%;
+    transform: rotate(173deg);
+}
+.royal-venue-scrap--parchment {
+    top: 36%;
+    right: 2%;
+    width: 94%;
+    transform: rotate(11deg);
+}
+.royal-venue-scrap--red-d {
+    right: 2%;
+    bottom: 2%;
+    width: 40%;
+    transform: rotate(2deg);
+}
+.royal-venue-section h3 {
+    margin: 0 !important;
+    font-size: clamp(18px, 4.8vw, 22px) !important;
+    line-height: 1.15 !important;
+    color: #7a171e !important;
+    letter-spacing: 0 !important;
+    white-space: normal !important;
+}
+.royal-venue-top-rule {
+    display: none !important;
+}
+.royal-venue__ornament {
+    width: min(80%, 220px);
+    height: 24px;
+    margin: 4px auto 6px;
+}
+.royal-venue-board > div:first-child > div {
+    max-width: 100% !important;
+    margin-top: 10px !important;
+    color: #74302c !important;
+    font-size: clamp(14px, 3.8cqw, 18px) !important;
+    line-height: 1.45 !important;
+}
+.royal-venue-map {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1.52/1;
+    overflow: hidden !important;
+    margin-top: 0 !important;
+    padding: 8px !important;
+    border: 1px solid rgba(166, 126, 82, 0.3) !important;
+    border-radius: 6px !important;
+    background: rgba(255, 250, 242, 0.86) !important;
+    box-shadow: 0 2px 7px rgba(81, 20, 25, 0.08) !important;
+    transform: none !important;
+}
+.royal-venue-map::before {
+    display: none !important;
+}
+.royal-venue-map > a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    height: 100%;
+    gap: 0;
+    padding: 0;
+    color: #74151b !important;
+    font:
+        400 clamp(15px, 4cqw, 20px)/1.5 Baskerville,
+        "Times New Roman",
+        serif;
+    text-decoration: none;
+}
+.royal-venue-map__art {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    border: 1px solid rgba(113, 91, 66, 0.16);
+    background-color: #e9e6df;
+    background-image:
+        linear-gradient(
+            34deg,
+            transparent 47%,
+            rgba(255, 255, 255, 0.96) 48% 51%,
+            transparent 52%
+        ),
+        linear-gradient(
+            145deg,
+            transparent 36%,
+            rgba(255, 255, 255, 0.96) 37% 40%,
+            transparent 41%
+        ),
+        linear-gradient(
+            78deg,
+            transparent 64%,
+            rgba(255, 255, 255, 0.94) 65% 68%,
+            transparent 69%
+        ),
+        linear-gradient(
+            135deg,
+            transparent 22%,
+            rgba(160, 194, 142, 0.68) 23% 30%,
+            transparent 31%
+        ),
+        linear-gradient(
+            135deg,
+            transparent 70%,
+            rgba(160, 194, 142, 0.58) 71% 78%,
+            transparent 79%
+        ),
+        radial-gradient(
+            ellipse at 68% 40%,
+            transparent 53%,
+            rgba(130, 194, 207, 0.84) 54% 58%,
+            transparent 59%
+        ),
+        linear-gradient(135deg, #e9e6df, #ede9e2);
+}
+.royal-venue-map__pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50% 50% 50% 0;
+    background: #861b23;
+    box-shadow: 0 5px 8px rgba(67, 20, 20, 0.24);
+    transform: translate(-50%, -70%) rotate(-45deg);
+}
+.royal-venue-map__pin::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: "♥";
+    color: #fff7eb;
+    font:
+        700 17px/1 "Times New Roman",
+        serif;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.royal-venue-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: min(92%, 440px);
+    margin: 0 auto 2px;
+    color: #8b252b;
+    font:
+        400 clamp(15px, 4vw, 19px)/1.45 Baskerville,
+        "Times New Roman",
+        serif;
+    text-align: left;
+    text-decoration: none;
+}
+.royal-venue-address__icon {
+    width: 22px;
+    height: 24px;
+    flex: 0 0 auto;
+    margin-top: 2px;
+}
+.royal-venue-directions {
+    display: flex !important;
+    width: min(82%, 320px);
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px !important;
+    border: 1px solid #d9b371;
+    background: linear-gradient(140deg, #761a20, #4f0d14) !important;
+    color: #fff0dc !important;
+    font:
+        600 clamp(18px, 4.5cqw, 26px)/1.2 "Times New Roman",
+        serif !important;
+    text-decoration: none;
+    box-shadow:
+        0 5px 12px rgba(50, 15, 15, 0.22),
+        inset 0 0 0 3px rgba(255, 240, 220, 0.12);
+}
+.royal-section-bow {
+    position: absolute;
+    z-index: 30;
+    bottom: -3%;
+    left: 50%;
+    display: block;
+    width: min(100%, 840px);
+    height: auto;
+    max-width: none;
+    margin: 0;
+    pointer-events: none;
+    clip-path: inset(14% 0 20%);
+    transform: translate(-50%, 50%);
+}
+
+/* Simple parchment styling for the wedding schedule. */
+.royal-schedule-section:not(.royal-ceremony) {
+    position: relative !important;
+    isolation: isolate !important;
+    z-index: 10 !important;
+    box-sizing: border-box !important;
+    width: 88% !important;
+    max-width: 420px !important;
+    margin: 16px auto 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+@media (min-width: 768px) {
+    .royal-schedule-section:not(.royal-ceremony) {
+        max-width: 560px !important;
+    }
+}
+.royal-schedule-panel {
+    position: relative !important;
+    z-index: 1 !important;
+    isolation: isolate;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: visible !important;
+    border: 1px solid rgba(166, 126, 82, 0.38) !important;
+    border-radius: 8px !important;
+    padding: 22px clamp(16px, 4vw, 24px) 24px !important;
+    background-color: rgba(255, 250, 242, 0.72) !important;
+    background-image: none !important;
+    box-shadow: 0 2px 7px rgba(81, 20, 25, 0.07) !important;
+}
+.royal-schedule-panel > div.relative.z-10 {
+    gap: 14px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.royal-schedule-panel__divider {
+    display: block;
+    width: min(50%, 220px);
+    height: auto;
+    margin: 0 auto;
+}
+.royal-schedule-panel__pin {
+    position: absolute;
+    top: -23px;
+    left: 50%;
+    z-index: 5;
+    width: 120px;
+    height: auto;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 2px 2px rgba(51, 15, 12, 0.16));
+    pointer-events: none;
+}
+.royal-schedule-panel__bouquet {
+    position: absolute;
+    right: -21px;
+    bottom: -30px;
+    z-index: 2;
+    width: 30%;
+    max-width: 92px;
+    height: auto;
+    transform: rotate(10deg);
+    pointer-events: none;
+}
+.royal-schedule-panel h2 {
+    color: #7a171e !important;
+    font-size: clamp(18px, 4.8vw, 22px) !important;
+    letter-spacing: 0 !important;
+    line-height: 1.15 !important;
+}
+.royal-schedule-panel ol {
+    grid-template-columns: minmax(64px, 0.72fr) 16px minmax(0, 1.28fr) !important;
+    column-gap: clamp(14px, 4vw, 24px) !important;
+}
+.royal-schedule-panel ol > li.contents > span:first-child {
+    color: #511419 !important;
+    font-size: clamp(16px, 4.3vw, 18px) !important;
+}
+.royal-schedule-panel ol > li.contents > span:last-child {
+    color: #7a2025 !important;
+    font-size: clamp(14px, 3.8vw, 16px) !important;
+}
+.royal-schedule-panel ol > li.contents > span:nth-child(2) > span:first-child {
+    background-color: rgba(166, 126, 82, 0.52) !important;
+}
+.royal-schedule-panel ol > li.contents > span:nth-child(2) > span:last-child {
+    background-color: #b9823e !important;
+    box-shadow: 0 0 0 2px rgba(255, 250, 242, 0.95) !important;
+}
+
+.royal-invitation__footer {
+    position: relative;
+    isolation: isolate;
+    overflow: visible !important;
+    padding-top: clamp(82px, 21cqw, 190px) !important;
+    padding-bottom: 1.5rem !important;
+}
+.royal-invitation__footer-decoration {
+    position: absolute;
+    z-index: 0;
+    top: clamp(-38px, -4.2cqw, -16px);
+    left: 50%;
+    display: block;
+    width: min(100%, 900px);
+    max-width: 900px;
+    height: auto;
+    transform: translateX(-50%);
+    object-fit: contain;
+    pointer-events: none;
+}
+.royal-invitation__footer-copy {
+    position: relative;
+    z-index: 1;
+    display: block;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 8px;
+    color: #7d2026;
+    font-family: "Ms Madi", cursive;
+    font-size: clamp(18px, 4.8cqw, 22px);
+    font-weight: 400;
+    line-height: 1.12;
+    text-align: center;
+    white-space: nowrap;
+}
+.royal-invitation__footer-heart {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 5px;
+    color: rgba(207, 164, 94, 0.92);
+    font: 400 13px/1 serif;
+}
+.royal-invitation__footer-heart:before,
+.royal-invitation__footer-heart:after {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(207, 164, 94, 0.78);
+}
+
+.royal-dress-code {
+    position: relative;
+    z-index: 20;
+    isolation: isolate;
+    container-type: inline-size;
+    overflow: visible;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 14px 16px clamp(42px, 9cqw, 54px);
+    background: transparent;
+}
+.royal-dress-code__floral {
+    position: absolute;
+    z-index: 3;
+    top: -10px;
+    right: 0px;
+    display: block;
+    width: 36%;
+    height: auto;
+    pointer-events: none;
+}
+.royal-dress-code__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+.royal-dress-code__top-rule {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: min(72%, 280px);
+    height: clamp(14px, 4cqw, 18px);
+    margin: 0 auto 4px;
+    pointer-events: none;
+}
+.royal-dress-code__top-rule img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    transform: translate(-50%, -50%) rotate(15deg);
+}
+.royal-dress-code__title {
+    margin: 0;
+    color: #74151b;
+    font:
+        700 clamp(23px, 6.1cqw, 28px)/1.08 "Times New Roman",
+        serif;
+    white-space: nowrap;
+    text-shadow: 0 1px 0 rgba(255, 248, 229, 0.7);
+}
+.royal-dress-code__ornament {
+    display: block;
+    width: min(56%, 220px);
+    height: 20px;
+    margin: 0 auto;
+}
+.royal-dress-code__subtitle {
+    margin: 0;
+    color: #8d2025;
+    font:
+        400 clamp(15px, 4.1cqw, 18px)/1.2 "Times New Roman",
+        serif;
+}
+.royal-dress-code__copy {
+    max-width: 300px;
+    margin: 4px auto 0;
+    color: #691c20;
+    font:
+        400 clamp(13px, 3.5cqw, 15px)/1.35 "Times New Roman",
+        serif;
+}
+.royal-dress-code__gallery {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(2px, 0.8cqw, 5px);
+    width: 100%;
+    margin: clamp(20px, 5cqw, 26px) auto 0;
+    isolation: isolate;
+}
+.royal-dress-code__card {
+    position: relative;
+    flex: 0 0 36%;
+    min-width: 0;
+    margin-inline: -8px;
+    padding: 6px 6px 12px;
+    background: linear-gradient(145deg, #fffaf0 0%, #f8ecd5 100%);
+    border: 1px solid rgba(151, 102, 50, 0.28);
+    border-radius: 2px;
+    box-shadow:
+        0 4px 9px rgba(58, 31, 17, 0.26),
+        0 1px 2px rgba(58, 31, 17, 0.18);
+}
+.royal-dress-code__card:before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: -8px;
+    left: 50%;
+    width: 38%;
+    height: 16px;
+    transform: translateX(-50%) rotate(-4deg);
+    background: rgba(207, 174, 123, 0.62);
+    box-shadow: 0 1px 2px rgba(78, 50, 24, 0.12);
+    pointer-events: none;
+}
+.royal-dress-code__card--left {
+    z-index: 1;
+    transform: rotate(350deg) translateY(4px);
+}
+.royal-dress-code__card--center {
+    z-index: 3;
+    transform: rotate(1deg) translateY(-3px);
+}
+.royal-dress-code__card--right {
+    z-index: 2;
+    transform: rotate(9deg) translateY(3px);
+}
+.royal-dress-code__photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid rgba(122, 86, 48, 0.16);
+}
+
+/* Shared paper backdrop and breathing room across reception, venue, and schedule. */
+.royal-reception-venue-wrap {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    background-color: #f3e8d6;
+    background-image: url("./royal-album-paper-v5.webp?v=church-20261018-4");
+    background-position: center top;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.royal-invitation > section.royal-reception {
+    background: transparent !important;
+}
+.royal-venue-schedule-wrap {
+    background-color: #f3e8d6 !important;
+    background-image: url("./royal-reception-paper-v1.webp?v=venue-old-bg-20261020-5") !important;
+    background-position: center top !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+}
+.royal-schedule-section:not(.royal-ceremony) {
+    margin-top: 32px !important;
+}
+
+/* Wine-and-gold schedule board, aligned with the ceremony card. */
+.royal-schedule-panel {
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 46px clamp(22px, 6vw, 30px) 32px !important;
+    background-color: transparent !important;
+    background-image: url("./royal-schedule-board-user-v2.webp?v=schedule-board-20261018-2") !important;
+    background-position: center !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    box-shadow: none !important;
+}
+.royal-schedule-panel::before {
+    display: none !important;
+}
+.royal-schedule-panel__bouquet {
+    display: none !important;
+}
+.royal-schedule-panel ol {
+    row-gap: 22px !important;
+}
+.royal-schedule-panel h2 {
+    color: #f3e4cc !important;
+}
+.royal-schedule-panel ol > li.contents > span:first-child {
+    color: #f5ead8 !important;
+}
+.royal-schedule-panel ol > li.contents > span:last-child {
+    color: rgba(248, 235, 216, 0.94) !important;
+}
+.royal-schedule-panel ol > li.contents > span:nth-child(2) > span:first-child {
+    background-color: rgba(236, 214, 164, 0.48) !important;
+}
+.royal-schedule-panel ol > li.contents > span:nth-child(2) > span:last-child {
+    background-color: #d4aa60 !important;
+    box-shadow: 0 0 0 2px rgba(255, 242, 219, 0.92) !important;
+}
+/* Venue card follows the cream paper and burgundy frame reference. */
+.royal-venue-board {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    gap: 16px !important;
+    padding: 30px clamp(20px, 5vw, 34px) 30px !important;
+    border: 8px solid #76181e !important;
+    border-radius: 0 !important;
+    background-color: #f7ead7 !important;
+    background-image: url("./royal-reception-paper-v1.webp?v=venue-card-reference-20261020-3") !important;
+    background-position: center !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    box-shadow:
+        inset 0 0 0 2px #d0a04e,
+        inset 0 0 0 5px rgba(247, 231, 202, 0.94),
+        0 5px 16px rgba(70, 23, 18, 0.22) !important;
+}
+.royal-venue-board::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 10px;
+    border: 1px solid rgba(185, 132, 54, 0.9);
+    pointer-events: none;
+}
+.royal-venue-board::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 8px;
+    right: 8px;
+    width: 104px;
+    height: 140px;
+    background-image: url("./royal-album-corner-flowers-user.webp?v=venue-card-reference-20261020-3");
+    background-position: top right;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+.royal-venue-board > div {
+    position: relative !important;
+    z-index: 1 !important;
+}
+.royal-venue-board > div:first-child {
+    z-index: 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding-top: 8px !important;
+}
+.royal-venue-board > div:first-child::before {
+    content: "ĐỊA ĐIỂM";
+    order: 0;
+    display: block;
+    margin: 0 auto;
+    color: #a87935;
+    font:
+        500 11px/1.3 Baskerville,
+        "Times New Roman",
+        serif;
+    letter-spacing: 0.34em;
+}
+.royal-venue-section h3 {
+    order: 2;
+    max-width: 96%;
+    margin: 0 auto !important;
+    color: #76171d !important;
+    font-size: clamp(20px, 5.5vw, 28px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+    text-shadow: none !important;
+}
+.royal-venue__ornament {
+    order: 1;
+    width: min(74%, 230px) !important;
+    height: 24px !important;
+    margin: 9px auto 8px !important;
+}
+.royal-venue__ornament .royal-album__heart-line {
+    stroke: #bb8b43 !important;
+}
+.royal-venue__ornament .royal-album__heart {
+    fill: #871b22 !important;
+    stroke: #bb8b43 !important;
+}
+.royal-venue-section h3::after {
+    content: "✥";
+    display: block;
+    width: min(78%, 260px);
+    height: 24px;
+    margin: 10px auto 0;
+    color: #b78642;
+    font:
+        400 16px/24px Baskerville,
+        "Times New Roman",
+        serif;
+    text-align: center;
+    background: linear-gradient(
+            90deg,
+            transparent 0,
+            #b78642 18%,
+            #b78642 42%,
+            transparent 42%,
+            transparent 58%,
+            #b78642 58%,
+            #b78642 82%,
+            transparent 82%
+        )
+        center 12px/100% 1px no-repeat;
+}
+.royal-venue-board > div:first-child > div {
+    order: 3;
+    max-width: none !important;
+    margin-top: 5px !important;
+    padding: 0 3px !important;
+    color: #74302c !important;
+    font-size: clamp(14px, 3.8vw, 17px) !important;
+    line-height: 1.4 !important;
+}
+.royal-venue-name {
+    display: block;
+    color: #74171d;
+    font-size: clamp(24px, 6.5vw, 32px);
+    line-height: 1.2;
+}
+.royal-venue-address-line {
+    display: block;
+    margin-top: 4px;
+    color: #74302c;
+    font-size: clamp(15px, 4vw, 18px);
+    line-height: 1.35;
+}
+.royal-venue-board > div:nth-child(2) {
+    gap: 16px !important;
+}
+.royal-venue-map {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    aspect-ratio: 1.68/1 !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    border: 2px solid #b88947 !important;
+    border-radius: 6px !important;
+    background: #fff3df !important;
+    box-shadow:
+        0 0 0 4px #f7e9cf,
+        0 0 0 6px #b88947,
+        0 4px 12px rgba(56, 24, 12, 0.2) !important;
+}
+.royal-venue-map__art {
+    border: 1px solid rgba(153, 111, 53, 0.5) !important;
+    border-radius: 3px !important;
+}
+.royal-venue-address {
+    display: none !important;
+}
+.royal-venue-directions {
+    width: min(82%, 340px) !important;
+    min-height: 54px !important;
+    margin-top: 2px !important;
+    border: 2px solid #d6ac62 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(140deg, #861b22, #5c1018) !important;
+    color: #fff0dc !important;
+    box-shadow:
+        0 4px 10px rgba(50, 15, 15, 0.22),
+        inset 0 0 0 2px rgba(255, 240, 220, 0.12) !important;
+}
+/* Venue section follows the user's cream-paper reference. */
+.royal-venue-section {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: clamp(150px, 40vw, 360px) 0 40px !important;
+    background-color: #f8eddd !important;
+    background-image: url("./royal-paper-background.webp?v=venue-reference-20261020-1") !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+.royal-venue-board {
+    width: 100% !important;
+    max-width: 900px !important;
+    gap: 22px !important;
+    padding: 34px clamp(22px, 6vw, 54px) 40px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.royal-venue-board::before {
+    display: none !important;
+}
+.royal-venue-board::after {
+    top: clamp(-360px, -40vw, -150px) !important;
+    right: auto !important;
+    left: -18px !important;
+    width: clamp(135px, 32vw, 300px) !important;
+    height: clamp(230px, 54vw, 480px) !important;
+    background-image: url("./royal-album-corner-flowers-user.webp?v=venue-reference-20261020-1") !important;
+    transform: scaleX(-1) !important;
+}
+.royal-venue-board > div:first-child {
+    padding-top: 10px !important;
+}
+.royal-venue-board > div:first-child::before {
+    color: #a87935 !important;
+    font-size: 11px !important;
+    letter-spacing: 0.3em !important;
+}
+.royal-venue-section h3 {
+    order: 1;
+    max-width: 100% !important;
+    font-size: clamp(30px, 8vw, 48px) !important;
+    line-height: 1.08 !important;
+    color: #74171d !important;
+    text-transform: none !important;
+}
+.royal-venue__ornament {
+    order: 2;
+    width: min(72%, 360px) !important;
+    margin: 14px auto 12px !important;
+}
+.royal-venue-section h3::after {
+    display: none !important;
+}
+.royal-venue-board > div:first-child > div {
+    margin-top: 8px !important;
+    color: #74171d !important;
+    font-size: clamp(16px, 4.2vw, 22px) !important;
+    line-height: 1.45 !important;
+}
+.royal-venue-name {
+    font-size: clamp(32px, 8vw, 48px) !important;
+    line-height: 1.15 !important;
+}
+.royal-venue-address-line {
+    margin-top: 8px !important;
+    font-size: clamp(17px, 4.5vw, 24px) !important;
+    line-height: 1.35 !important;
+}
+.royal-venue-board > div:nth-child(2) {
+    gap: 20px !important;
+}
+.royal-venue-map {
+    aspect-ratio: 1.78/1 !important;
+    padding: 10px !important;
+    border: 2px solid #7d2023 !important;
+    border-radius: 18px !important;
+    background: #fff8ed !important;
+    box-shadow: 0 3px 12px rgba(73, 32, 20, 0.12) !important;
+}
+.royal-venue-map__art {
+    border: 1px solid rgba(126, 95, 61, 0.42) !important;
+    border-radius: 8px !important;
+}
+.royal-venue-address {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    width: min(92%, 720px) !important;
+    margin: 12px auto 0 !important;
+    padding: 0 0 18px !important;
+    border-bottom: 1px solid rgba(183, 134, 66, 0.65);
+    color: #7b191f !important;
+    font-size: clamp(19px, 5.1vw, 30px) !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+}
+.royal-venue-address__icon {
+    width: 32px !important;
+    height: 36px !important;
+    color: #8a1b23 !important;
+}
+.royal-venue-address > span {
+    flex: 1;
+}
+.royal-venue-address::after {
+    content: "›";
+    flex: 0 0 auto;
+    color: #8a1b23;
+    font:
+        400 42px/0.8 "Times New Roman",
+        serif;
+}
+.royal-venue-directions {
+    width: min(76%, 520px) !important;
+    min-height: 64px !important;
+    margin-top: 6px !important;
+    padding: 14px 28px !important;
+    border: 2px solid #d6ac62 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(140deg, #861b22, #5c1018) !important;
+    color: #fff0dc !important;
+    font-size: clamp(21px, 5vw, 30px) !important;
+    box-shadow:
+        0 5px 12px rgba(50, 15, 15, 0.2),
+        inset 0 0 0 2px rgba(255, 240, 220, 0.12) !important;
+}
+.royal-venue-schedule-wrap {
+    background-color: #f8eddd !important;
+    background-image: url("./royal-paper-background.webp?v=venue-reference-20261020-2") !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+.royal-venue-section,
+.royal-schedule-section {
+    background: transparent !important;
+}
+.royal-venue-section {
+    background-color: #f5e8d8 !important;
+    background-image: url("./royal-venue-background-v2.webp?v=venue-art-20261020-2") !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+.royal-venue-board::after {
+    display: none !important;
+}
+.royal-venue-map {
+    display: none !important;
+}
+.royal-venue-board > div:nth-child(2) {
+    gap: 14px !important;
+}
+.royal-venue-address {
+    margin-top: 0 !important;
+}
+
+/* Keep venue and schedule on one quiet parchment surface; remove the large art behind the copy. */
+.royal-venue-schedule-wrap {
+    background-color: #f4e7d4 !important;
+    background-image: url("./royal-venue-background-v3.webp?v=venue-art-20261020-5") !important;
+    background-position: center top !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+}
+.royal-venue-section {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 30px 0 34px !important;
+    background: transparent !important;
+}
+.royal-venue-board {
+    width: min(88%, 420px) !important;
+    max-width: 420px !important;
+    gap: 12px !important;
+    padding: 8px 12px 10px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.royal-venue-board::after {
+    display: none !important;
+}
+.royal-venue-board > div:first-child {
+    padding-top: 0 !important;
+}
+.royal-venue-board > div:first-child::before {
+    margin: 0 auto 5px !important;
+    color: #a87935 !important;
+    font-size: 12px !important;
+    letter-spacing: 0.24em !important;
+}
+.royal-venue-section h3 {
+    order: 1;
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: clamp(21px, 5.4vw, 26px) !important;
+    line-height: 1.18 !important;
+    color: #74171d !important;
+    letter-spacing: 0 !important;
+}
+.royal-venue-section h3 {
+    text-transform: uppercase !important;
+}
+.royal-venue__ornament {
+    order: 2;
+    width: min(72%, 240px) !important;
+    height: 22px !important;
+    margin: 5px auto 4px !important;
+}
+.royal-venue-board > div:first-child > div {
+    order: 3;
+    margin-top: 0 !important;
+    color: #74171d !important;
+    font-size: clamp(15px, 3.9vw, 17px) !important;
+    line-height: 1.4 !important;
+}
+.royal-venue-name {
+    font-size: clamp(24px, 6vw, 30px) !important;
+    line-height: 1.2 !important;
+}
+.royal-venue-address-line {
+    margin-top: 4px !important;
+    font-size: clamp(15px, 3.9vw, 17px) !important;
+    line-height: 1.35 !important;
+}
+.royal-venue-address-line::after {
+    content: "";
+    display: block;
+    width: min(76%, 280px);
+    height: 32px;
+    margin: 5px auto 0;
+    background: url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1")
+        center/100% 100% no-repeat;
+}
+.royal-venue-board > div:nth-child(2) {
+    gap: 12px !important;
+}
+.royal-venue-address {
+    width: min(92%, 400px) !important;
+    margin: 0 auto !important;
+    padding: 0 0 8px !important;
+    gap: 10px !important;
+    border-bottom: 1px solid rgba(183, 134, 66, 0.52);
+    font-size: clamp(15px, 4vw, 18px) !important;
+    line-height: 1.35 !important;
+}
+.royal-venue-address {
+    width: max-content !important;
+    max-width: 100% !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+.royal-venue-address > span {
+    flex: 0 1 auto !important;
+}
+.royal-venue-address::after {
+    margin-left: 2px !important;
+    font-size: 26px !important;
+}
+.royal-venue-address__icon {
+    width: 22px !important;
+    height: 24px !important;
+}
+.royal-venue-directions {
+    width: min(82%, 320px) !important;
+    min-height: 48px !important;
+    margin: 3px auto 0 !important;
+    padding: 10px 20px !important;
+    font-size: clamp(18px, 4.6vw, 22px) !important;
+}
+@media (min-width: 768px) {
+    .royal-venue-board {
+        max-width: 560px !important;
+    }
+    .royal-venue-section h3 {
+        font-size: 24px !important;
+    }
+}
+.royal-ceremony__parents > div > div::after {
+    content: "";
+    display: block;
+    width: min(88%, 180px);
+    height: 24px;
+    margin: 4px auto 0;
+    background: url("./royal-ceremony-divider-user.png?v=divider-user-20261018-1")
+        center/100% 100% no-repeat;
+}
+.royal-ceremony__couple > div:nth-child(2),
+.royal-ceremony__couple > div:nth-child(5) {
+    display: none !important;
+}
+.royal-schedule-panel {
+    padding: 46px clamp(22px, 6vw, 30px) 50px !important;
+}
+.royal-schedule-panel ol {
+    row-gap: 18px !important;
+}
+.royal-schedule-panel__pin {
+    top: -15px !important;
+    width: 132px !important;
+}
+
+/* Reveal content softly as it enters view without replacing artwork transforms. */
+.royal-invitation.has-scroll-reveal .royal-reveal {
+    opacity: 0;
+    translate: var(--royal-reveal-from, 0 35px);
+    transition:
+        opacity 0.9s cubic-bezier(0.22, 0.68, 0.2, 1),
+        translate 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--royal-reveal-delay, 0ms);
+    will-change: opacity, translate;
+}
+.royal-invitation.has-scroll-reveal .royal-reveal.is-visible {
+    opacity: 1;
+    translate: 0 0;
+    will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+    .royal-invitation.has-scroll-reveal .royal-reveal {
+        opacity: 0;
+        translate: var(--royal-reveal-from, 0 35px);
+        transition:
+            opacity 0.8s cubic-bezier(0.22, 0.68, 0.2, 1)
+                var(--royal-reveal-delay, 0ms),
+            translate 0.9s cubic-bezier(0.22, 1, 0.36, 1)
+                var(--royal-reveal-delay, 0ms) !important;
+        will-change: opacity, translate;
+    }
+    .royal-invitation.has-scroll-reveal .royal-reveal.is-visible {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+/* Keep the covered invitation idle until the opening screen is dismissed. */
+html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{animation-play-state:paused!important}

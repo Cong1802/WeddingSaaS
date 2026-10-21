@@ -184,7 +184,7 @@ body {
         transform: scale(0.4);
     }
     100% {
-        transform: scale(1);
+        transform: scale(0.9);
     }
 }
 .royal-pocket-art {

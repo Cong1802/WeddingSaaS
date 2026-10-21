@@ -57,8 +57,15 @@ let socket;
         const screen=document.querySelector('.royal-opening-screen');
         const images=[...screen.querySelectorAll('img')].map(image=>({url:image.currentSrc,width:image.naturalWidth,height:image.naturalHeight,renderWidth:image.getBoundingClientRect().width}));
         const background=getComputedStyle(screen,'::before').backgroundImage.match(/url\\(["']?(.*?)["']?\\)/)?.[1];
-        return {images,background};
+        const scripts=[...document.scripts].map(script=>script.src);
+        return {images,background,galleryAfterOpening:scripts.findIndex(src=>src.includes('local-interactions.js'))<scripts.findIndex(src=>src.includes('fancybox.umd.js')),galleryCSSAsync:document.querySelector('link[href*="fancybox.css"]').hasAttribute('onload'),backgroundPreloaded:!!document.querySelector('link[rel="preload"][href*="royal-opening-paper-screen"]')};
       })()`);
+      assert.ok(opening.images.every(image=>image.width>0),'Opening artwork loads successfully');
+      if(profileLabel==='after'){
+        assert.equal(opening.galleryAfterOpening,true,'Gallery does not delay the opening script');
+        assert.equal(opening.galleryCSSAsync,true,'Gallery stylesheet is nonblocking');
+        assert.equal(opening.backgroundPreloaded,true,'Opening background loads with priority');
+      }
       const metricMap=response=>Object.fromEntries(response.metrics.map(metric=>[metric.name,metric.value]));
       const first=metricMap(await send('Performance.getMetrics'));
       await pause(2000);
