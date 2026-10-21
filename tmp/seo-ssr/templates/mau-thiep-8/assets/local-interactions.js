@@ -2,23 +2,25 @@
   const number = Number(document.documentElement.dataset.designNumber);
   if(number===8){
     const invitation=document.querySelector('.royal-invitation');
-    const motionPreference=window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    if(invitation&&!motionPreference?.matches&&'IntersectionObserver'in window){
+    if(invitation&&'IntersectionObserver'in window){
       const groups=[
-        ['.royal-ceremony__content > *',64],
-        ['.royal-album__heading, .royal-album__card',72],
-        ['.royal-reception',0],
-        ['.royal-venue-board',0],
-        ['.royal-schedule-panel',0],
-        ['.royal-guestbook-panel',0],
-        ['.royal-dress-code__inner > *',64],
-        ['.royal-invitation__footer > *',64]
+        ['.royal-ceremony__content',0,'bottom'],
+        ['.royal-album__heading',0,'bottom'],
+        ['.royal-album__card',90,'bottom'],
+        ['.royal-reception',0,'bottom'],
+        ['.royal-venue-board',0,'bottom'],
+        ['.royal-schedule-panel',0,'bottom'],
+        ['.royal-guestbook-panel',0,'bottom'],
+        ['.royal-dress-code__inner',0,'bottom'],
+        ['.royal-invitation__footer',0,'bottom']
       ];
+      const revealOffsets={left:'0px 18px',right:'0px 18px',top:'0px 18px',bottom:'0px 18px'};
       const targets=[];
-      groups.forEach(([selector,stagger])=>{
+      groups.forEach(([selector,stagger,direction])=>{
         invitation.querySelectorAll(selector).forEach((element,index)=>{
           element.classList.add('royal-reveal');
-          element.style.setProperty('--royal-reveal-delay',`${Math.min(index*stagger,280)}ms`);
+          element.style.setProperty('--royal-reveal-from',revealOffsets[direction]);
+          element.style.setProperty('--royal-reveal-delay',`${Math.min(index*stagger,240)}ms`);
           targets.push(element);
         });
       });
@@ -49,7 +51,7 @@
       screen.setAttribute('aria-modal','true');
       screen.setAttribute('aria-label','Thiệp mời cưới');
       screen.tabIndex=-1;
-      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-envelope-art" src="./assets/envelope-tabs-removed-v6.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" src="./assets/seal-shadow-v3.webp" alt=""></span></button><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
+      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-flap" src="./assets/royal-opening-envelope-flap-user.webp?v=opening-flap-20261021-1" alt="" aria-hidden="true"><img class="royal-opening-envelope-art" src="./assets/envelope-tabs-removed-v6.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" src="./assets/seal-shadow-v3.webp" alt=""></span></button><img class="royal-opening-bouquet" src="./assets/album-floral-bouquet-v1.webp?v=userflorals-20261021-1" alt="" aria-hidden="true" loading="eager" decoding="async"><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
       const names=sourceNames.cloneNode(true);
       names.classList.add('royal-opening-names');
       screen.querySelector('.royal-opening-caption').appendChild(names);
@@ -68,16 +70,23 @@
       const openInvitation=()=>{
         if(screen.dataset.opened==='true')return;
         screen.dataset.opened='true';
+        screen.style.transition='opacity .35s ease';
+        screen.style.opacity='0';
+        screen.style.pointerEvents='none';
         const bloomFlower=document.querySelector('.royal-flowers.royal-flowers-left');
-        if(bloomFlower){
-          bloomFlower.classList.add('is-blooming');
-        }
+        const royalPhoto=document.querySelector('.royal-photo');
+        const royalSpray=document.querySelector('.royal-right-spray');
+        const scene=document.querySelector('.royal-scene');
+        if(bloomFlower)bloomFlower.classList.add('is-blooming');
+        if(royalPhoto)royalPhoto.classList.add('is-blooming');
+        if(royalSpray)royalSpray.classList.add('is-blooming');
+        if(scene)scene.dataset.animation='opened';
         document.dispatchEvent(new Event('royal-opening-finished'));
         document.documentElement.dataset.minimalOpened='true';
         if(page)page.inert=false;
         document.documentElement.style.overflow=previousHtmlOverflow;
         document.body.style.overflow=previousBodyOverflow;
-        screen.remove();
+        setTimeout(()=>{screen.remove();},350);
         window.scrollTo({top:0,behavior:'instant'});
         document.dispatchEvent(new CustomEvent('invitation-opened'));
         const audio=document.getElementById('bg-music');
