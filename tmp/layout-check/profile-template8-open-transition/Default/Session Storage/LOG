@@ -1,2 +1,3 @@
-2026/10/21-23:29:13.145 4aa8 Creating DB C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-template8-open-transition\Default\Session Storage since it was missing.
-2026/10/21-23:29:13.165 4aa8 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-template8-open-transition\Default\Session Storage/MANIFEST-000001
+2026/10/22-07:44:30.506 21d4 Reusing MANIFEST C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-template8-open-transition\Default\Session Storage/MANIFEST-000001
+2026/10/22-07:44:30.507 21d4 Recovering log #3
+2026/10/22-07:44:30.509 21d4 Reusing old log C:\laragon\www\wedding-card-saas\tmp\layout-check\profile-template8-open-transition\Default\Session Storage/000003.log 

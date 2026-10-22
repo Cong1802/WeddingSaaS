@@ -1,4 +1,4 @@
-﻿html {
+html {
     background: #e7ded3;
     scroll-behavior: smooth;
     scrollbar-gutter: stable both-edges;
@@ -3696,33 +3696,39 @@ body {
 .royal-invitation.has-scroll-reveal .royal-reveal {
     opacity: 0;
     translate: var(--royal-reveal-from, 0 35px);
-    transition:
-        opacity 0.9s cubic-bezier(0.22, 0.68, 0.2, 1),
-        translate 1s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--royal-reveal-delay, 0ms);
     will-change: opacity, translate;
 }
 .royal-invitation.has-scroll-reveal .royal-reveal.is-visible {
     opacity: 1;
     translate: 0 0;
+    transition:
+        opacity 0.8s cubic-bezier(0.22, 0.68, 0.2, 1),
+        translate 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--royal-reveal-delay, 0ms);
     will-change: auto;
 }
 @media (prefers-reduced-motion: reduce) {
     .royal-invitation.has-scroll-reveal .royal-reveal {
         opacity: 0;
         translate: var(--royal-reveal-from, 0 35px);
+    }
+    .royal-invitation.has-scroll-reveal .royal-reveal.is-visible {
+        opacity: 1;
+        translate: 0 0;
         transition:
             opacity 0.8s cubic-bezier(0.22, 0.68, 0.2, 1)
                 var(--royal-reveal-delay, 0ms),
             translate 0.9s cubic-bezier(0.22, 1, 0.36, 1)
                 var(--royal-reveal-delay, 0ms) !important;
-        will-change: opacity, translate;
-    }
-    .royal-invitation.has-scroll-reveal .royal-reveal.is-visible {
-        opacity: 1;
-        translate: 0 0;
     }
 }
 
 /* Keep the covered invitation idle until the opening screen is dismissed. */
 html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{animation-play-state:paused!important}
+
+/* Crossfade on one animation timeline; no empty interval between screens. */
+.royal-opening-screen,.royal-opening-content{opacity:1}
+.royal-opening-screen[data-state],.royal-opening-screen[data-state] .royal-opening-content{will-change:opacity}
+.royal-opening-burst{position:fixed;inset:0 auto 0 50%;z-index:2147483002;width:min(100vw,430px);transform:translateX(-50%);overflow:hidden;contain:layout paint;pointer-events:none}
+.royal-opening-particle{position:absolute;left:var(--burst-origin-x);top:var(--burst-origin-y);display:block;font:20px/1 "Times New Roman",serif;will-change:transform,opacity;animation:royal-opening-heart-burst .8s ease-out both}
+@keyframes royal-opening-heart-burst{from{opacity:1;transform:translate3d(-50%,-50%,0) scale(.45)}to{opacity:0;transform:translate3d(calc(-50% + var(--burst-x)),calc(-50% + var(--burst-y)),0) rotate(var(--burst-turn)) scale(1)}}

@@ -83,40 +83,74 @@ let socket;
     }
     const before=await evaluate(`(()=>{
       const card=document.querySelector('.royal-invitation').getBoundingClientRect();
-      return {cardX:card.x,cardWidth:card.width,locked:getComputedStyle(document.documentElement).overflowY==='hidden'};
+      const seal=document.querySelector('.royal-opening-wax-seal').getBoundingClientRect();
+      return {cardX:card.x,cardWidth:card.width,sealX:seal.x+seal.width/2,sealY:seal.y+seal.height/2,locked:getComputedStyle(document.documentElement).overflowY==='hidden'};
     })()`);
     assert.equal(before.locked,true,'Opening screen locks scrolling');
     const immediate=await evaluate(`(()=>{
       const card=document.querySelector('.royal-invitation');
       window.__openFrames=[];
+      window.__openedEvents=0;
+      document.addEventListener('royal-opening-finished',()=>window.__openedEvents++);
       const start=performance.now();
       const sample=()=>{
         const rect=card.getBoundingClientRect();
-        window.__openFrames.push({ms:performance.now()-start,overlay:!!document.querySelector('.royal-opening-screen'),x:rect.x,width:rect.width,scrollY});
-        if(performance.now()-start<1650)requestAnimationFrame(sample);
+        const cover=document.querySelector('.royal-opening-screen');
+        const coverOpacity=cover?Number(getComputedStyle(cover).opacity):0;
+        const contentOpacity=cover?Number(getComputedStyle(cover.querySelector('.royal-opening-content')).opacity):0;
+        window.__openFrames.push({ms:performance.now()-start,overlay:!!cover,coverOpacity,contentOpacity,x:rect.x,width:rect.width,scrollY});
+        if(performance.now()-start<3000)requestAnimationFrame(sample);
       };
       document.querySelector('.royal-opening-envelope').click();
       requestAnimationFrame(sample);
-      return {overlay:!!document.querySelector('.royal-opening-screen'),opened:document.documentElement.dataset.minimalOpened,inert:document.querySelector('main').inert,scrollY,overflow:getComputedStyle(document.documentElement).overflowY};
+      return {overlay:!!document.querySelector('.royal-opening-screen'),state:document.querySelector('.royal-opening-screen')?.dataset.state,opened:document.documentElement.dataset.minimalOpened,inert:document.querySelector('main').inert,scrollY,overflow:getComputedStyle(document.documentElement).overflowY};
     })()`);
-    assert.equal(immediate.overlay,false,'Opening screen removed within the click handler');
-    assert.equal(immediate.opened,'true');
-    assert.equal(immediate.inert,false);
-    assert.notEqual(immediate.overflow,'hidden','Scrolling restored');
+    assert.equal(immediate.overlay,true,'Cover stays mounted during the fade');
+    assert.equal(immediate.state,'opening','Fade starts immediately on click');
+    assert.equal(immediate.opened,'true','Main entrance starts with the cover fade');
+    assert.equal(immediate.inert,true,'Main page stays inert during the transition');
+    assert.equal(immediate.overflow,'hidden','Scrolling remains locked while fading');
     assert.equal(immediate.scrollY,0);
-    await pause(1750);
+    await evaluate("document.querySelector('.royal-opening-screen').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))");
+    await pause(700);
+    const during=await evaluate(`(()=>{
+      const screen=document.querySelector('.royal-opening-screen');
+      const burst=document.querySelector('.royal-opening-burst');
+      const bounds=burst?.getBoundingClientRect();
+      return {state:screen?.dataset.state,coverOpacity:screen&&Number(getComputedStyle(screen).opacity),contentOpacity:screen&&Number(getComputedStyle(screen.querySelector('.royal-opening-content')).opacity),particles:burst?.children.length,colors:burst&&new Set([...burst.children].map(heart=>heart.style.color)).size,originX:bounds&&bounds.x+parseFloat(burst.style.getPropertyValue('--burst-origin-x')),originY:bounds&&bounds.y+parseFloat(burst.style.getPropertyValue('--burst-origin-y')),photoState:document.querySelector('.royal-photo').getAnimations()[0]?.playState,events:window.__openedEvents};
+    })()`);
+    assert.equal(during.state,'away','Hearts burst while the screen fades');
+    assert.ok(during.contentOpacity>0&&during.contentOpacity<1,'Opening content fades gradually rather than disappearing first');
+    assert.ok(during.coverOpacity>0&&during.coverOpacity<1,'Cover fades smoothly');
+    assert.ok(Math.abs(during.coverOpacity-during.contentOpacity)<.05,'Content and backdrop share the same animation clock');
+    assert.equal(during.particles,28,'One burst of 28 hearts');
+    assert.equal(during.colors,4,'Four reference burst colors');
+    assert.ok(Math.abs(during.originX-before.sealX)<1&&Math.abs(during.originY-before.sealY)<1,'Hearts originate at the wax seal');
+    assert.equal(during.photoState,'running','Hero emerges while the cover fades');
+    assert.equal(during.events,0,'Opening is not announced before the fade ends');
+    if(name==='mobile'){
+      const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+      fs.writeFileSync(path.join(__dirname,'template8-opening-burst-mid.png'),Buffer.from(shot.data,'base64'));
+    }
+    await pause(1800);
     await evaluate("Promise.all([...document.querySelectorAll('.royal-photo,.royal-flowers-left')].flatMap(element=>element.getAnimations().map(animation=>animation.finished.catch(()=>{}))))");
     const after=await evaluate(`(()=>{
       const photo=document.querySelector('.royal-photo');
       const flower=document.querySelector('.royal-flowers-left');
       const animation=element=>element.getAnimations().map(item=>({name:item.animationName,time:item.currentTime,duration:item.effect.getTiming().duration,state:item.playState}));
       const rect=document.querySelector('.royal-invitation').getBoundingClientRect();
-      return {frames:window.__openFrames,cardX:rect.x,cardWidth:rect.width,photo:animation(photo),flower:animation(flower),flowerTransform:getComputedStyle(flower).transform,heartLayers:document.querySelectorAll('body>.royal-falling-hearts').length};
+      return {frames:window.__openFrames,cardX:rect.x,cardWidth:rect.width,photo:animation(photo),flower:animation(flower),flowerTransform:getComputedStyle(flower).transform,heartLayers:document.querySelectorAll('body>.royal-falling-hearts').length,burstLayers:document.querySelectorAll('.royal-opening-burst').length,events:window.__openedEvents,opened:document.documentElement.dataset.minimalOpened,inert:document.querySelector('main').inert,overflow:getComputedStyle(document.documentElement).overflowY};
     })()`);
     assert.ok(after.frames.length>5,'Recorded frames during transition');
     assert.equal(after.cardWidth,before.cardWidth,'Card width remains unchanged when scrolling unlocks');
     assert.ok(Math.abs(after.cardX-before.cardX)<.1,'Card does not shift when the scrollbar returns');
-    assert.ok(after.frames.every(frame=>!frame.overlay),'No overlay reappears during animation');
+    const removedAt=after.frames.findIndex(frame=>!frame.overlay);
+    assert.ok(removedAt>0,'Cover is removed after its exit animation');
+    assert.ok(after.frames.slice(removedAt).every(frame=>!frame.overlay),'No overlay reappears after fading');
+    const fadingFrames=after.frames.filter(frame=>frame.coverOpacity>.1&&frame.coverOpacity<.9);
+    assert.ok(fadingFrames.length>10,'Fade includes many intermediate frames');
+    assert.ok(after.frames.every(frame=>frame.coverOpacity*frame.contentOpacity+1-frame.coverOpacity>=.7),'No interval shows only the empty backdrop');
+    assert.ok(after.frames[removedAt-1].coverOpacity<.05,'Cover is removed only once it is almost transparent');
     assert.ok(after.frames.every(frame=>frame.scrollY===0),'No scroll jump');
     assert.ok(after.frames.every(frame=>frame.width===after.cardWidth&&Math.abs(frame.x-after.cardX)<.1),'Stable card position after click');
     assert.equal(after.photo[0].duration,1400,'Photo animation retains 1.4 seconds');
@@ -124,6 +158,11 @@ let socket;
     assert.equal(after.photo[0].state,'finished');
     assert.equal(after.flower[0].state,'finished');
     assert.equal(after.heartLayers,1,'Falling hearts transfer to main invitation');
+    assert.equal(after.burstLayers,0,'Temporary particles are cleaned up');
+    assert.equal(after.events,1,'Repeated clicks do not duplicate the opening');
+    assert.equal(after.opened,'true');
+    assert.equal(after.inert,false);
+    assert.notEqual(after.overflow,'hidden','Scrolling resumes after the fade');
     if(name==='mobile'){
       const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
       fs.writeFileSync(path.join(__dirname,'template8-open-transition-mobile.png'),Buffer.from(shot.data,'base64'));
@@ -137,7 +176,7 @@ let socket;
       await pause(400);
       assert.equal(await evaluate("!!document.querySelector('.fancybox__container')"),true,'Album lightbox still opens with deferred gallery assets');
     }
-    reports.push({name,before,immediate,after:{cardX:after.cardX,cardWidth:after.cardWidth,frames:after.frames.length,photo:after.photo,flower:after.flower}});
+    reports.push({name,before,immediate,during,after:{cardX:after.cardX,cardWidth:after.cardWidth,frames:after.frames.length,photo:after.photo,flower:after.flower,events:after.events}});
   }
   assert.deepEqual(errors,[],'No browser script exceptions');
   console.log(JSON.stringify({reports,errors},null,2));
