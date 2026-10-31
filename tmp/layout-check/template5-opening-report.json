@@ -1,0 +1,350 @@
+{
+  "reports": [
+    {
+      "name": "mobile",
+      "visible": "visible",
+      "locked": true,
+      "scroll": 0,
+      "button": {
+        "x": 114.875,
+        "y": 740.84375,
+        "width": 163.25,
+        "height": 43
+      },
+      "inner": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "bottom": 852
+      },
+      "scene": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "bottom": 852
+      },
+      "card": {
+        "x": 70.8644790649414,
+        "y": 263.7333679199219,
+        "width": 251.25543212890625,
+        "height": 385.1114196777344,
+        "bottom": 648.8447875976562
+      },
+      "background": "url(\"http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-paper-real-v1.webp\")",
+      "images": [
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-envelope-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-ticket-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-card-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/c42dba10680eed50d1.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/d4446bf42f30ca78cf.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        }
+      ],
+      "text": "\n  \n    A JOURNEY TO FOREVER\n    \n      OurLove Story ♡\n      \n      \n      \n        \n        BOARDING PASSTO OUR WEDDING\n      \n      \n        \n        SAVE THE DATE\n        ♥\n        Phương Linh\n        ♥\n        Văn Đạt\n        CÙNG NHAU ĐI ĐẾN HẠNH PHÚCTRỌN ĐỜI\n        \n        20 . 09 . 2026\n      \n      Our favourite chapter\n      ♡\n      \n    \n    MỞ THIỆP →\n    Chạm để bắt đầu hành trình yêu thương\n  \n",
+      "fade": {
+        "opacity": 0.751406,
+        "opening": true
+      }
+    },
+    {
+      "name": "small",
+      "visible": "visible",
+      "locked": true,
+      "scroll": 0,
+      "button": {
+        "x": 78.375,
+        "y": 547,
+        "width": 163.25,
+        "height": 39
+      },
+      "inner": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 640,
+        "bottom": 640
+      },
+      "scene": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 640,
+        "bottom": 640
+      },
+      "card": {
+        "x": 58.3780403137207,
+        "y": 172.33554077148438,
+        "width": 193.61892700195312,
+        "height": 296.76641845703125,
+        "bottom": 469.1019592285156
+      },
+      "background": "url(\"http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-paper-real-v1.webp\")",
+      "images": [
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-envelope-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-ticket-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-card-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/c42dba10680eed50d1.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/d4446bf42f30ca78cf.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        }
+      ],
+      "text": "\n  \n    A JOURNEY TO FOREVER\n    \n      OurLove Story ♡\n      \n      \n      \n        \n        BOARDING PASSTO OUR WEDDING\n      \n      \n        \n        SAVE THE DATE\n        ♥\n        Phương Linh\n        ♥\n        Văn Đạt\n        CÙNG NHAU ĐI ĐẾN HẠNH PHÚCTRỌN ĐỜI\n        \n        20 . 09 . 2026\n      \n      Our favourite chapter\n      ♡\n      \n    \n    MỞ THIỆP →\n    Chạm để bắt đầu hành trình yêu thương\n  \n",
+      "fade": {
+        "opacity": 0.751528,
+        "opening": true
+      }
+    },
+    {
+      "name": "short",
+      "visible": "visible",
+      "locked": true,
+      "scroll": 0,
+      "button": {
+        "x": 114.875,
+        "y": 547,
+        "width": 163.25,
+        "height": 39
+      },
+      "inner": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 640,
+        "bottom": 640
+      },
+      "scene": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 640,
+        "bottom": 640
+      },
+      "card": {
+        "x": 71.6999740600586,
+        "y": 170.77249145507812,
+        "width": 237.78753662109375,
+        "height": 364.4706726074219,
+        "bottom": 535.2431640625
+      },
+      "background": "url(\"http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-paper-real-v1.webp\")",
+      "images": [
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-envelope-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-ticket-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-card-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/c42dba10680eed50d1.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/d4446bf42f30ca78cf.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        }
+      ],
+      "text": "\n  \n    A JOURNEY TO FOREVER\n    \n      OurLove Story ♡\n      \n      \n      \n        \n        BOARDING PASSTO OUR WEDDING\n      \n      \n        \n        SAVE THE DATE\n        ♥\n        Phương Linh\n        ♥\n        Văn Đạt\n        CÙNG NHAU ĐI ĐẾN HẠNH PHÚCTRỌN ĐỜI\n        \n        20 . 09 . 2026\n      \n      Our favourite chapter\n      ♡\n      \n    \n    MỞ THIỆP →\n    Chạm để bắt đầu hành trình yêu thương\n  \n",
+      "fade": {
+        "opacity": 0.700479,
+        "opening": true
+      }
+    },
+    {
+      "name": "desktop",
+      "visible": "visible",
+      "locked": true,
+      "scroll": 0,
+      "button": {
+        "x": 638.375,
+        "y": 785,
+        "width": 163.25,
+        "height": 43
+      },
+      "inner": {
+        "x": 480,
+        "y": 0,
+        "width": 480,
+        "height": 900,
+        "bottom": 900
+      },
+      "scene": {
+        "x": 480,
+        "y": 0,
+        "width": 480,
+        "height": 900,
+        "bottom": 900
+      },
+      "card": {
+        "x": 566.5543823242188,
+        "y": 277.1400146484375,
+        "width": 306.8756103515625,
+        "height": 470.360595703125,
+        "bottom": 747.5006103515625
+      },
+      "background": "url(\"http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-paper-real-v1.webp\")",
+      "images": [
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-envelope-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-ticket-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-card-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/c42dba10680eed50d1.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/d4446bf42f30ca78cf.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        }
+      ],
+      "text": "\n  \n    A JOURNEY TO FOREVER\n    \n      OurLove Story ♡\n      \n      \n      \n        \n        BOARDING PASSTO OUR WEDDING\n      \n      \n        \n        SAVE THE DATE\n        ♥\n        Phương Linh\n        ♥\n        Văn Đạt\n        CÙNG NHAU ĐI ĐẾN HẠNH PHÚCTRỌN ĐỜI\n        \n        20 . 09 . 2026\n      \n      Our favourite chapter\n      ♡\n      \n    \n    MỞ THIỆP →\n    Chạm để bắt đầu hành trình yêu thương\n  \n",
+      "fade": {
+        "opacity": 0.751112,
+        "opening": true
+      }
+    },
+    {
+      "name": "landscape",
+      "visible": "visible",
+      "locked": true,
+      "scroll": 0,
+      "button": {
+        "x": 357.484375,
+        "y": 329,
+        "width": 137,
+        "height": 30
+      },
+      "inner": {
+        "x": 315.953125,
+        "y": 0,
+        "width": 220.078125,
+        "height": 393,
+        "bottom": 393
+      },
+      "scene": {
+        "x": 315.953125,
+        "y": 0,
+        "width": 220.078125,
+        "height": 393,
+        "bottom": 393
+      },
+      "card": {
+        "x": 356.097900390625,
+        "y": 93.53744506835938,
+        "width": 133.16357421875,
+        "height": 204.09698486328125,
+        "bottom": 297.6344299316406
+      },
+      "background": "url(\"http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-paper-real-v1.webp\")",
+      "images": [
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-envelope-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-ticket-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-card-real-v1.webp",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/c42dba10680eed50d1.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/local/d4446bf42f30ca78cf.jpg",
+          "loaded": true
+        },
+        {
+          "url": "http://127.0.0.1:8000/templates/mau-thiep-5/assets/opening-flowers-real-v1.webp",
+          "loaded": true
+        }
+      ],
+      "text": "\n  \n    A JOURNEY TO FOREVER\n    \n      OurLove Story ♡\n      \n      \n      \n        \n        BOARDING PASSTO OUR WEDDING\n      \n      \n        \n        SAVE THE DATE\n        ♥\n        Phương Linh\n        ♥\n        Văn Đạt\n        CÙNG NHAU ĐI ĐẾN HẠNH PHÚCTRỌN ĐỜI\n        \n        20 . 09 . 2026\n      \n      Our favourite chapter\n      ♡\n      \n    \n    MỞ THIỆP →\n    Chạm để bắt đầu hành trình yêu thương\n  \n",
+      "fade": {
+        "opacity": 0.750872,
+        "opening": true
+      }
+    }
+  ],
+  "errors": []
+}

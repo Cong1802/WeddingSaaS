@@ -1,0 +1,324 @@
+/* Independent photographic stationery layers; all invitation copy stays editable. */
+#opening.stationery-opening {
+  height: 100svh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #eeebe5;
+  transition: opacity .85s cubic-bezier(.4, 0, .2, 1), visibility 0s !important;
+}
+
+#opening.stationery-opening .opening-inner {
+  display: block;
+  width: min(100%, 480px);
+  max-width: 480px;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #faf5eb url('./opening-paper-real-v1.webp') center / cover;
+  gap: 0;
+}
+
+.stationery-theme #opening.stationery-opening { background: #eeebe5; }
+
+.opening-heading {
+  position: absolute;
+  top: 6%;
+  left: 0;
+  right: 0;
+  z-index: 7;
+  margin: 0;
+  color: #876d48;
+  font: 400 8px/1.5 Inter, sans-serif;
+  letter-spacing: 2.7px;
+}
+
+.opening-scene {
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.opening-scene img {
+  display: block;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.opening-scene__script {
+  position: absolute;
+  top: 12%;
+  right: 21%;
+  z-index: 1;
+  color: #a48c69;
+  font: 400 8.6cqw/.95 'Wedding Pinyon', cursive;
+  text-align: center;
+  transform: rotate(-12deg);
+  opacity: .72;
+}
+
+.opening-scene__envelope {
+  position: absolute;
+  top: 32%;
+  left: -9%;
+  z-index: 2;
+  width: 90%;
+  transform: rotate(-15deg);
+}
+
+.opening-spray {
+  position: absolute;
+  width: 45%;
+}
+
+.opening-spray--upper {
+  top: -4%;
+  left: -13%;
+  z-index: 1;
+  transform: rotate(13deg);
+}
+
+.opening-spray--lower {
+  bottom: -8%;
+  left: -14%;
+  z-index: 6;
+  width: 48%;
+  transform: rotate(-13deg);
+}
+
+.opening-ticket {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  z-index: 3;
+  width: 49%;
+  aspect-ratio: 2.5;
+  transform: rotate(-6deg);
+}
+
+.opening-ticket > img { width: 100%; height: 100%; }
+
+.opening-ticket__copy {
+  position: absolute;
+  top: 22%;
+  left: 5%;
+  right: 19%;
+  color: #fffaf0;
+  font: 400 2.55cqw/1.45 Inter, sans-serif;
+  letter-spacing: .35px;
+}
+
+.opening-ticket > .icon-plane {
+  position: absolute;
+  top: 24%;
+  right: 11%;
+  width: 5cqw;
+  height: 5cqw;
+  color: #fffaf0;
+  fill: #fffaf0;
+}
+
+.opening-card {
+  position: absolute;
+  top: 32%;
+  left: 22%;
+  z-index: 4;
+  width: 56%;
+  aspect-ratio: 971 / 1620;
+  margin: 0;
+  color: #806039;
+  text-align: center;
+  transform: rotate(-5deg);
+}
+
+.opening-card__art { width: 100%; }
+
+.opening-card__save {
+  position: absolute;
+  top: 7%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  font: 400 2.9cqw/1.3 Philosopher, serif;
+  letter-spacing: 1.4px;
+}
+
+.opening-card__rule {
+  position: absolute;
+  top: 13%;
+  left: 24%;
+  right: 24%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqw;
+  color: #a68042;
+  font-size: 2.5cqw;
+  line-height: 1;
+}
+
+.opening-card__rule::before,
+.opening-card__rule::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: #b99a69;
+}
+
+.opening-card__rule--names { top: 31%; }
+
+.opening-card__name {
+  position: absolute;
+  top: 18%;
+  left: -5%;
+  right: -5%;
+  margin: 0;
+  color: #946922;
+  font: 400 8.7cqw/1.3 'Wedding Moritza', 'Wedding Pinyon', cursive;
+  white-space: nowrap;
+}
+
+.opening-card__name--groom { top: 33%; }
+
+.opening-card__message {
+  position: absolute;
+  top: 47.5%;
+  left: 3%;
+  right: 3%;
+  margin: 0;
+  color: #795f40;
+  font: 400 1.85cqw/1.65 Inter, sans-serif;
+  letter-spacing: .35px;
+}
+
+.opening-card__route {
+  position: absolute;
+  bottom: 11%;
+  left: 12%;
+  width: 76%;
+  height: 13%;
+  color: #b58d42;
+}
+
+.opening-card__date {
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  color: #705537;
+  font: 400 3.4cqw/1.4 Philosopher, serif;
+  letter-spacing: 2.3px;
+}
+
+.opening-polaroid {
+  position: absolute;
+  top: 35%;
+  right: -2%;
+  z-index: 3;
+  width: 34%;
+  aspect-ratio: .72;
+  margin: 0;
+  padding: 1.8% 1.8% 0;
+  background: #fffdf6 url('./opening-paper-real-v1.webp') 48% 40% / 500%;
+  box-shadow: 1px 4px 7px #72583e38;
+  transform: rotate(13deg);
+}
+
+.opening-polaroid > img {
+  width: 100%;
+  height: 84%;
+  object-fit: cover;
+  object-position: 48% 33%;
+}
+
+.opening-polaroid > figcaption {
+  padding-top: 4%;
+  color: #9b7a4c;
+  font: 400 3.7cqw/1.5 'Wedding Pinyon', cursive;
+}
+
+.opening-polaroid--small {
+  top: 62%;
+  right: 3%;
+  z-index: 5;
+  width: 25%;
+  aspect-ratio: .76;
+  transform: rotate(15deg);
+}
+
+.opening-polaroid--small > img { height: 80%; object-position: 58% 38%; }
+.opening-polaroid--small > figcaption { padding-top: 1%; font-size: 4.5cqw; }
+
+#opening.stationery-opening #open-invitation {
+  position: absolute;
+  bottom: clamp(54px, 8svh, 78px);
+  left: 50%;
+  z-index: 8;
+  width: max-content;
+  max-width: calc(100% - 40px);
+  margin: 0;
+  padding: 13px 29px;
+  border: 1px solid #c0a06a;
+  border-radius: 30px;
+  background: #96723e;
+  box-shadow: 0 3px 10px #70533220;
+  color: #fffaf0;
+  font: 500 10px/1.5 Inter, sans-serif;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  opacity: 1;
+  transform: translateX(-50%);
+  transition: background-color .2s;
+}
+
+#opening.stationery-opening #open-invitation:hover { background: #846231; }
+#opening.stationery-opening #open-invitation:focus-visible { outline: 2px solid #73542a; outline-offset: 5px; }
+#opening.stationery-opening .opening-note {
+  position: absolute;
+  bottom: clamp(28px, 4svh, 42px);
+  left: 0;
+  right: 0;
+  z-index: 8;
+  margin: 0;
+  color: #8c7557;
+  font: 400 9px/1.5 Inter, sans-serif;
+  opacity: 1;
+}
+#opening.stationery-opening.is-opening { opacity: 0; pointer-events: none; }
+#opening.stationery-opening.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@media (max-height: 680px) {
+  #opening.stationery-opening .opening-inner { width: min(100%, 480px, 62svh); }
+  .opening-heading { top: 4%; font-size: 7px; }
+  .opening-scene__script { top: 10%; }
+  .opening-ticket { top: 21%; }
+  .opening-card { top: 28%; width: 53%; }
+  .opening-scene__envelope { top: 28%; }
+  .opening-polaroid { top: 30%; }
+  .opening-polaroid--small { top: 57%; }
+  #opening.stationery-opening #open-invitation { padding-block: 11px; }
+}
+
+@media (max-height: 500px) {
+  #opening.stationery-opening .opening-inner { width: min(100%, 56svh); }
+  .opening-heading { top: 3%; font-size: 6px; }
+  .opening-scene__script { top: 8%; }
+  .opening-ticket { top: 18%; }
+  .opening-card { top: 25%; width: 53%; }
+  .opening-scene__envelope { top: 25%; }
+  .opening-polaroid { top: 27%; }
+  .opening-polaroid--small { top: 53%; }
+  #opening.stationery-opening #open-invitation { bottom: 34px; padding: 8px 22px; font-size: 8px; }
+  #opening.stationery-opening .opening-note { bottom: 12px; font-size: 7px; }
+}
+
+html[data-wedding-motion=off] #opening.stationery-opening { transition-duration: .08s !important; }

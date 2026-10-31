@@ -1,0 +1,65 @@
+{
+  "source": "laravel-backend/public/templates/mau-thiep-2/w.ladicdn.com/644bd195fdccd700206206ea/imgi_8_thiet-ke-chua-co-ten-1-20260614052835-lwso_-20260827085346-mytm-.gif",
+  "reference": "laravel-backend\\public\\templates\\mau-thiep-8\\assets\\royal-butterflies-burgundy-gold-reference-v1.png",
+  "frames": 156,
+  "palettes": 1,
+  "gifPath": "laravel-backend\\public\\templates\\mau-thiep-8\\assets\\royal-butterflies-burgundy-gold-v1.gif",
+  "webpPath": "laravel-backend\\public\\templates\\mau-thiep-8\\assets\\royal-butterflies-burgundy-gold-v1.webp",
+  "referenceColors": {
+    "stops": [
+      [
+        0,
+        [
+          35,
+          0,
+          0
+        ]
+      ],
+      [
+        0.35,
+        [
+          73,
+          0,
+          0
+        ]
+      ],
+      [
+        0.65,
+        [
+          130,
+          18,
+          23
+        ]
+      ],
+      [
+        0.86,
+        [
+          146,
+          68,
+          62
+        ]
+      ],
+      [
+        0.96,
+        [
+          226,
+          207,
+          171
+        ]
+      ],
+      [
+        1,
+        [
+          246,
+          237,
+          219
+        ]
+      ]
+    ],
+    "gold": [
+      226,
+      189,
+      131
+    ]
+  }
+}

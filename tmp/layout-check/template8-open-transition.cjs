@@ -84,7 +84,8 @@ let socket;
     const before=await evaluate(`(()=>{
       const card=document.querySelector('.royal-invitation').getBoundingClientRect();
       const seal=document.querySelector('.royal-opening-wax-seal').getBoundingClientRect();
-      return {cardX:card.x,cardWidth:card.width,sealX:seal.x+seal.width/2,sealY:seal.y+seal.height/2,locked:getComputedStyle(document.documentElement).overflowY==='hidden'};
+      const petals=[...document.querySelectorAll('.royal-petal')].map(petal=>{const rect=petal.getBoundingClientRect();return{x:rect.x,y:rect.y,transform:getComputedStyle(petal).transform};});
+      return {cardX:card.x,cardWidth:card.width,sealX:seal.x+seal.width/2,sealY:seal.y+seal.height/2,petals,locked:getComputedStyle(document.documentElement).overflowY==='hidden'};
     })()`);
     assert.equal(before.locked,true,'Opening screen locks scrolling');
     const immediate=await evaluate(`(()=>{
@@ -117,7 +118,8 @@ let socket;
       const screen=document.querySelector('.royal-opening-screen');
       const burst=document.querySelector('.royal-opening-burst');
       const bounds=burst?.getBoundingClientRect();
-      return {state:screen?.dataset.state,coverOpacity:screen&&Number(getComputedStyle(screen).opacity),contentOpacity:screen&&Number(getComputedStyle(screen.querySelector('.royal-opening-content')).opacity),particles:burst?.children.length,colors:burst&&new Set([...burst.children].map(heart=>heart.style.color)).size,originX:bounds&&bounds.x+parseFloat(burst.style.getPropertyValue('--burst-origin-x')),originY:bounds&&bounds.y+parseFloat(burst.style.getPropertyValue('--burst-origin-y')),photoState:document.querySelector('.royal-photo').getAnimations()[0]?.playState,events:window.__openedEvents};
+      const petals=[...document.querySelectorAll('.royal-petal')].map(petal=>({y:petal.getBoundingClientRect().y,falling:petal.classList.contains('is-falling')}));
+      return {state:screen?.dataset.state,coverOpacity:screen&&Number(getComputedStyle(screen).opacity),contentOpacity:screen&&Number(getComputedStyle(screen.querySelector('.royal-opening-content')).opacity),particles:burst?.children.length,colors:burst&&new Set([...burst.children].map(heart=>heart.style.color)).size,originX:bounds&&bounds.x+parseFloat(burst.style.getPropertyValue('--burst-origin-x')),originY:bounds&&bounds.y+parseFloat(burst.style.getPropertyValue('--burst-origin-y')),photoState:document.querySelector('.royal-photo').getAnimations()[0]?.playState,petals,events:window.__openedEvents};
     })()`);
     assert.equal(during.state,'away','Hearts burst while the screen fades');
     assert.ok(during.contentOpacity>0&&during.contentOpacity<1,'Opening content fades gradually rather than disappearing first');
@@ -128,20 +130,33 @@ let socket;
     assert.ok(Math.abs(during.originX-before.sealX)<1&&Math.abs(during.originY-before.sealY)<1,'Hearts originate at the wax seal');
     assert.equal(during.photoState,'running','Hero emerges while the cover fades');
     assert.equal(during.events,0,'Opening is not announced before the fade ends');
+    assert.equal(during.petals.length,3);
+    assert.ok(during.petals.every((petal,index)=>petal.falling&&petal.y<before.petals[index].y-5),'Each petal falls down from above its landing position');
     if(name==='mobile'){
       const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
       fs.writeFileSync(path.join(__dirname,'template8-opening-burst-mid.png'),Buffer.from(shot.data,'base64'));
     }
     await pause(1800);
     await evaluate("Promise.all([...document.querySelectorAll('.royal-photo,.royal-flowers-left')].flatMap(element=>element.getAnimations().map(animation=>animation.finished.catch(()=>{}))))");
+    await evaluate("Promise.all([...document.querySelectorAll('.royal-petal')].flatMap(element=>element.getAnimations().filter(animation=>animation.animationName==='royal-petal-arrive').map(animation=>animation.finished.catch(()=>{}))))");
     const after=await evaluate(`(()=>{
       const photo=document.querySelector('.royal-photo');
       const flower=document.querySelector('.royal-flowers-left');
       const animation=element=>element.getAnimations().map(item=>({name:item.animationName,time:item.currentTime,duration:item.effect.getTiming().duration,state:item.playState}));
       const rect=document.querySelector('.royal-invitation').getBoundingClientRect();
-      return {frames:window.__openFrames,cardX:rect.x,cardWidth:rect.width,photo:animation(photo),flower:animation(flower),flowerTransform:getComputedStyle(flower).transform,heartLayers:document.querySelectorAll('body>.royal-falling-hearts').length,burstLayers:document.querySelectorAll('.royal-opening-burst').length,events:window.__openedEvents,opened:document.documentElement.dataset.minimalOpened,inert:document.querySelector('main').inert,overflow:getComputedStyle(document.documentElement).overflowY};
+      const petals=[...document.querySelectorAll('.royal-petal')].map(petal=>{const bounds=petal.getBoundingClientRect();return{x:bounds.x,y:bounds.y,transform:getComputedStyle(petal).transform,opacity:getComputedStyle(petal).opacity,falling:petal.classList.contains('is-falling')};});
+      return {frames:window.__openFrames,cardX:rect.x,cardWidth:rect.width,photo:animation(photo),flower:animation(flower),flowerTransform:getComputedStyle(flower).transform,heartLayers:document.querySelectorAll('body>.royal-falling-hearts').length,burstLayers:document.querySelectorAll('.royal-opening-burst').length,petals,events:window.__openedEvents,opened:document.documentElement.dataset.minimalOpened,inert:document.querySelector('main').inert,overflow:getComputedStyle(document.documentElement).overflowY};
     })()`);
     assert.ok(after.frames.length>5,'Recorded frames during transition');
+    const heroImage=await evaluate(`(()=>{
+      const image=document.querySelector('.royal-photo__print img');
+      return image&&{url:image.currentSrc,loaded:image.complete&&image.naturalWidth>0,width:image.naturalWidth,height:image.naturalHeight,fit:getComputedStyle(image).objectFit,clip:getComputedStyle(image).clipPath};
+    })()`);
+    assert.ok(heroImage?.loaded&&heroImage.url.includes('royal-photo-dsc09598-v1.webp'),'Selected user photo loads in the envelope');
+    assert.equal(heroImage.width,1200);
+    assert.equal(heroImage.height,1800);
+    assert.equal(heroImage.fit,'cover');
+    assert.equal(heroImage.clip,'none','Old baked-frame clipping does not cut off the replacement photo');
     assert.equal(after.cardWidth,before.cardWidth,'Card width remains unchanged when scrolling unlocks');
     assert.ok(Math.abs(after.cardX-before.cardX)<.1,'Card does not shift when the scrollbar returns');
     const removedAt=after.frames.findIndex(frame=>!frame.overlay);
@@ -163,6 +178,12 @@ let socket;
     assert.equal(after.opened,'true');
     assert.equal(after.inert,false);
     assert.notEqual(after.overflow,'hidden','Scrolling resumes after the fade');
+    after.petals.forEach((petal,index)=>{
+      assert.ok(Math.abs(petal.x-before.petals[index].x)<.5&&Math.abs(petal.y-before.petals[index].y)<.5,'Petal lands at its original anchor');
+      assert.equal(petal.transform,before.petals[index].transform,'Petal keeps its original rotation');
+      assert.equal(petal.opacity,'1');
+      assert.equal(petal.falling,false,'Temporary animation state is released after landing');
+    });
     if(name==='mobile'){
       const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
       fs.writeFileSync(path.join(__dirname,'template8-open-transition-mobile.png'),Buffer.from(shot.data,'base64'));
@@ -176,7 +197,7 @@ let socket;
       await pause(400);
       assert.equal(await evaluate("!!document.querySelector('.fancybox__container')"),true,'Album lightbox still opens with deferred gallery assets');
     }
-    reports.push({name,before,immediate,during,after:{cardX:after.cardX,cardWidth:after.cardWidth,frames:after.frames.length,photo:after.photo,flower:after.flower,events:after.events}});
+    reports.push({name,before,immediate,during,after:{cardX:after.cardX,cardWidth:after.cardWidth,frames:after.frames.length,photo:after.photo,flower:after.flower,petals:after.petals,events:after.events}});
   }
   assert.deepEqual(errors,[],'No browser script exceptions');
   console.log(JSON.stringify({reports,errors},null,2));

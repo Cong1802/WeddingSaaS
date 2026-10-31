@@ -185,6 +185,12 @@
         if(royalNames)royalNames.classList.add('is-blooming');
         if(royalDivider)royalDivider.classList.add('is-blooming');
         if(scene)scene.dataset.animation='opened';
+        scene?.querySelectorAll('.royal-petal').forEach(petal=>{
+          petal.classList.add('is-falling');
+          petal.addEventListener('animationend',event=>{
+            if(event.animationName==='royal-petal-arrive')petal.classList.remove('is-falling');
+          },{once:true});
+        });
         window.scrollTo({top:0,left:0,behavior:'instant'});
         document.documentElement.dataset.minimalOpened='true';
         document.dispatchEvent(new Event('royal-opening-started'));
