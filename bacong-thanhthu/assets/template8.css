@@ -3779,3 +3779,9 @@ html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{an
 
 .wedding-gift__qr-image { display: block; width: min(220px, 100%); height: auto; margin: 0 auto; }
 .wedding-gift__account { margin: 10px 0 2px; font-size: 14px; line-height: 1.5; color: #74171d; }
+
+/* Avoid Safari rendering a rectangular shadow around the opening envelope. */
+@media (max-width: 600px) {
+    .royal-opening-envelope { filter: none; }
+    .royal-opening-screen::before { box-shadow: none; }
+}
