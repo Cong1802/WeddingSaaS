@@ -8,19 +8,6 @@ body {
     background: #e7ded3 !important;
     overflow-x: hidden;
 }
-@media (max-width: 600px) {
-    html {
-        background-color: #f5ecdf;
-        background-image: url(./royal-paper-background.webp);
-        background-position: center top;
-        background-size: 430px auto;
-        background-repeat: repeat-y;
-    }
-    body,
-    [data-testid="minimalism-darkred-template"] {
-        background: transparent !important;
-    }
-}
 [data-testid="minimalism-darkred-template"] {
     background: none !important;
 }
