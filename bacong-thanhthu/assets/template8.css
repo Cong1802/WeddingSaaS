@@ -3780,6 +3780,22 @@ html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{an
 .wedding-gift__qr-image { display: block; width: min(220px, 100%); height: auto; margin: 0 auto; }
 .wedding-gift__account { margin: 10px 0 2px; font-size: 14px; line-height: 1.5; color: #74171d; }
 
+@font-face {
+    font-family: "Great Vibes";
+    src: url("../fonts/great-vibes.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+.royal-ceremony__couple h3,
+.royal-opening-names {
+    font-family: "Great Vibes", Charm, cursive !important;
+    font-weight: 400;
+}
+.royal-opening-names {
+    letter-spacing: 0 !important;
+}
+
 /* Avoid Safari rendering a rectangular shadow around the opening envelope. */
 @media (max-width: 600px) {
     .royal-opening-envelope { filter: none; }

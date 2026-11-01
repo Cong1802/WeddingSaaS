@@ -3785,3 +3785,8 @@ html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{an
     .royal-opening-envelope { filter: none; }
     .royal-opening-screen::before { box-shadow: none; }
 }
+
+@font-face { font-family: "Great Vibes"; src: url("../fonts/great-vibes.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+.royal-ceremony__couple h3 { font-family: "Great Vibes", Charm, cursive !important; font-weight: 400; }
+
+.royal-opening-names { font-family: "Great Vibes", Charm, cursive !important; font-weight: 400; letter-spacing: 0 !important; }
