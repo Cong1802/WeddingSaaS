@@ -8,6 +8,17 @@ body {
     background: #e7ded3 !important;
     overflow-x: hidden;
 }
+@media (max-width: 600px) {
+    html {
+        background: #f5ecdf url(./royal-paper-background.webp) center top / 430px auto repeat-y;
+    }
+    body,
+    div.min-h-screen[style*="background-color: rgb(255, 250, 247)"],
+    [data-testid="minimalism-darkred-template"] {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+}
 [data-testid="minimalism-darkred-template"] {
     background: none !important;
 }
