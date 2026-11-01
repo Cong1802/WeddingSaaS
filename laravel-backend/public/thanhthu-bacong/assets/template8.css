@@ -493,8 +493,9 @@ body {
 }
 
 .royal-opening-screen {
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    inset: 0 0 auto;
+    height: 100svh;
     z-index: 2147483000;
     display: grid;
     place-items: safe center;
@@ -514,8 +515,9 @@ body {
 }
 .royal-opening-screen:before {
     content: "";
-    position: fixed;
-    inset: 0 auto 0 50%;
+    position: absolute;
+    inset: 0 auto auto 50%;
+    height: 100%;
     width: min(100vw, 430px);
     transform: translateX(-50%);
     pointer-events: none;
@@ -3755,7 +3757,7 @@ html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{an
 /* Crossfade on one animation timeline; no empty interval between screens. */
 .royal-opening-screen,.royal-opening-content{opacity:1}
 .royal-opening-screen[data-state],.royal-opening-screen[data-state] .royal-opening-content{will-change:opacity}
-.royal-opening-burst{position:fixed;inset:0 auto 0 50%;z-index:2147483002;width:min(100vw,430px);transform:translateX(-50%);overflow:hidden;contain:layout paint;pointer-events:none}
+.royal-opening-burst{position:absolute;inset:0 auto auto 50%;z-index:2147483002;width:min(100vw,430px);height:100svh;transform:translateX(-50%);overflow:hidden;contain:layout paint;pointer-events:none}
 .royal-opening-particle{position:absolute;left:var(--burst-origin-x);top:var(--burst-origin-y);display:block;font:20px/1 "Times New Roman",serif;will-change:transform,opacity;animation:royal-opening-heart-burst .8s ease-out both}
 @keyframes royal-opening-heart-burst{from{opacity:1;transform:translate3d(-50%,-50%,0) scale(.45)}to{opacity:0;transform:translate3d(calc(-50% + var(--burst-x)),calc(-50% + var(--burst-y)),0) rotate(var(--burst-turn)) scale(1)}}
 /* The three decorative petals fall into their existing anchors once on opening. */
