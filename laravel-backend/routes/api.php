@@ -19,7 +19,7 @@ Route::post('/auth/google', [AuthController::class, 'googleLogin'])->middleware(
 // Public Card & Dynamic Catalog Routes
 Route::post('/cards/save', [WeddingCardController::class, 'saveCard'])->middleware('auth:sanctum');
 Route::post('/cards/view/{slug}/rsvp', [\App\Http\Controllers\CardRsvpController::class, 'store'])->middleware('throttle:5,1');
-Route::post('/wedding-wishes/{slug}', [WeddingWishController::class, 'store'])->middleware('throttle:3,1');
+Route::post('/wedding-wishes/{slug}', [WeddingWishController::class, 'store'])->middleware('throttle:10,1');
 Route::get('/cards/view/{slug}', [WeddingCardController::class, 'getCardBySlug']);
 Route::get('/public/templates', [AdminController::class, 'getPublicTemplates']);
 Route::get('/public/plans', [AdminController::class, 'getPublicPlans']);

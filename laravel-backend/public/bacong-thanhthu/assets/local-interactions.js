@@ -269,7 +269,7 @@
     const wishSlug = document.documentElement.dataset.wishSlug;
     if (wishSlug) {
       const response=await fetch(`/api/wedding-wishes/${encodeURIComponent(wishSlug)}`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({name,message,source_url:window.location.origin+window.location.pathname,website:''})});
-      const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw Error(result.message||'Chưa gửi được lời chúc.');return result.message;
+      const result=await response.json().catch(()=>({}));if(response.status===429)throw Error('Bạn thao tác hơi nhanh. Vui lòng đợi khoảng 1 phút rồi gửi lại.');if(!response.ok||!result.success)throw Error(result.message||'Chưa gửi được lời chúc.');return result.message;
     }
     const slug = document.documentElement.dataset.cardSlug;
     if (!slug) return 'Đây là bản xem mẫu. Phản hồi chỉ được gửi qua link thiệp đã xuất bản.';
