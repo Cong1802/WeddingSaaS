@@ -116,7 +116,7 @@
     }
   }
   if(number===8){
-    const sourceNames=document.querySelector('.royal-hero .royal-names');
+    const sourceNames=document.querySelector('.royal-hero .royal-names');if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);
     if(sourceNames){
       const screen=document.createElement('section');
       screen.className='royal-opening-screen';
@@ -169,7 +169,7 @@
         audio?.play?.().catch(()=>{});
       };
       openButton.addEventListener('click',openInvitation);
-      screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});
+      screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});screen.addEventListener('touchmove',event=>{if(screen.dataset.opened!=='true')event.preventDefault();},{passive:false});
       document.body.appendChild(screen);
       document.documentElement.dataset.openingReady='true';
       requestAnimationFrame(()=>screen.focus({preventScroll:true}));
