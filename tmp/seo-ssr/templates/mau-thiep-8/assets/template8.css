@@ -2565,7 +2565,14 @@ body {
     border-radius: 6px !important;
     background-color: rgba(255, 252, 247, 0.78) !important;
     color: #511419 !important;
-    font-size: 14px !important;
+    font-size: 16px !important;
+    touch-action: manipulation;
+}
+@media (min-width: 768px) {
+    .royal-guestbook-panel input,
+    .royal-guestbook-panel textarea {
+        font-size: 14px !important;
+    }
 }
 .royal-guestbook-panel input::placeholder,
 .royal-guestbook-panel textarea::placeholder {
