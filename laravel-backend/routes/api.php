@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\WeddingWishController;
 
 // Public Auth Routes
 Route::post('/auth/forgot-password', [\App\Http\Controllers\PasswordRecoveryController::class, 'forgot'])->middleware('throttle:3,1');
@@ -18,6 +19,7 @@ Route::post('/auth/google', [AuthController::class, 'googleLogin'])->middleware(
 // Public Card & Dynamic Catalog Routes
 Route::post('/cards/save', [WeddingCardController::class, 'saveCard'])->middleware('auth:sanctum');
 Route::post('/cards/view/{slug}/rsvp', [\App\Http\Controllers\CardRsvpController::class, 'store'])->middleware('throttle:5,1');
+Route::post('/wedding-wishes/{slug}', [WeddingWishController::class, 'store'])->middleware('throttle:3,1');
 Route::get('/cards/view/{slug}', [WeddingCardController::class, 'getCardBySlug']);
 Route::get('/public/templates', [AdminController::class, 'getPublicTemplates']);
 Route::get('/public/plans', [AdminController::class, 'getPublicPlans']);

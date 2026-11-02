@@ -266,6 +266,11 @@
     }
   }
   const send = async (name, message, attendance = 'yes', guestCount = 1) => {
+    const wishSlug = document.documentElement.dataset.wishSlug;
+    if (wishSlug) {
+      const response=await fetch(`/api/wedding-wishes/${encodeURIComponent(wishSlug)}`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({name,message,source_url:window.location.origin+window.location.pathname,website:''})});
+      const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw Error(result.message||'Chưa gửi được lời chúc.');return result.message;
+    }
     const slug = document.documentElement.dataset.cardSlug;
     if (!slug) return 'Đây là bản xem mẫu. Phản hồi chỉ được gửi qua link thiệp đã xuất bản.';
     const response=await fetch(`/api/cards/view/${encodeURIComponent(slug)}/rsvp`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({name,message,attendance,guest_count:guestCount})});
@@ -283,7 +288,7 @@
       const count=Number(form.querySelector('[name="form_item14"][type],#RSVP_GUEST_COUNT_SELECT select')?.value||1)||1;
       if(!name){alert('Vui lòng nhập họ tên.');return;}
       form.dataset.submitting='true';
-      try{alert(await send(name,message,attendance,count));if(document.documentElement.dataset.cardSlug)form.reset();}catch(error){alert(error.message);}finally{delete form.dataset.submitting;}
+      try{alert(await send(name,message,attendance,count));if(document.documentElement.dataset.cardSlug||document.documentElement.dataset.wishSlug)form.reset();}catch(error){alert(error.message);}finally{delete form.dataset.submitting;}
     };
     form.addEventListener('submit',submit);
     form.querySelectorAll('.ladi-button').forEach(button=>{button.setAttribute('role','button');button.tabIndex=0;button.addEventListener('click',event=>{event.preventDefault();form.requestSubmit();});button.addEventListener('keydown',event=>{if(event.key==='Enter')form.requestSubmit();});});

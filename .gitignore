@@ -15,6 +15,8 @@ node_modules
 # Environment and dependencies
 .env
 .env.*
+!.env.example
+!laravel-backend/.env.example
 vendor
 scratch/
 /laravel-backend/vendor
