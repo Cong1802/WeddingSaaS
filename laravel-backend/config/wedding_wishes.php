@@ -14,9 +14,5 @@ return [
             'label' => 'Thiệp nhà gái — Thanh Thu & Bá Công',
             'chat_id' => env('TELEGRAM_BRIDE_WISH_CHAT_ID', ''),
         ],
-        'mau-thiep-8' => [
-            'label' => 'Mẫu thiệp 8 — Bản quảng cáo',
-            'chat_id' => env('TELEGRAM_GROOM_WISH_CHAT_ID', ''),
-        ],
     ],
 ];
