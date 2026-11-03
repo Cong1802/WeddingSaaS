@@ -260,17 +260,49 @@
     if(openingScreen){
       openingScreen.prepend(hearts);
       const moveHeartsToPage=zIndex=>{
-        hearts.style.cssText=`position:fixed;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:${zIndex};overflow:hidden;pointer-events:none`;
+        hearts.style.cssText=`position:absolute;top:0;height:100vh;height:100dvh;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:${zIndex};overflow:hidden;pointer-events:none`;
         if(hearts.parentNode!==document.body)document.body.appendChild(hearts);
       };
       document.addEventListener('royal-opening-started',()=>moveHeartsToPage(2147483001),{once:true});
       document.addEventListener('royal-opening-finished',()=>moveHeartsToPage(35),{once:true});
     }else{
-      hearts.style.cssText='position:fixed;top:0;bottom:0;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:35;overflow:hidden;pointer-events:none';
+      hearts.style.cssText='position:absolute;top:0;height:100vh;height:100dvh;left:50%;width:min(100vw,430px);transform:translateX(-50%);z-index:35;overflow:hidden;pointer-events:none';
       document.body.appendChild(hearts);
     }
   }
+  const wishNoticeStyle=document.createElement('style');
+  wishNoticeStyle.textContent=`
+    .royal-wish-notice{position:fixed;inset:0;z-index:2147483600;display:grid;place-items:center;padding:20px;background:rgba(34,8,12,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;transition:opacity .22s ease}
+    .royal-wish-notice.is-visible{opacity:1}.royal-wish-notice__panel{position:relative;width:min(360px,calc(100vw - 32px));overflow:hidden;border:1px solid rgba(197,151,74,.72);border-radius:22px;padding:30px 24px 22px;text-align:center;color:#511419;background:linear-gradient(145deg,#fffaf1 0%,#f5e8d5 100%);box-shadow:0 22px 60px rgba(35,7,11,.4);transform:translateY(16px) scale(.96);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+    .royal-wish-notice.is-visible .royal-wish-notice__panel{transform:none}.royal-wish-notice__panel::before{content:"";position:absolute;inset:7px;border:1px solid rgba(167,111,37,.3);border-radius:16px;pointer-events:none}.royal-wish-notice__icon{position:relative;display:grid;place-items:center;width:62px;height:62px;margin:0 auto 15px;border-radius:50%;color:#fff;background:#761622;box-shadow:0 8px 20px rgba(81,20,25,.28),inset 0 0 0 3px #d6a954;font:700 31px/1 Georgia,serif}.royal-wish-notice--error .royal-wish-notice__icon{background:#9a2730}.royal-wish-notice__title{position:relative;margin:0 0 8px;font:700 21px/1.25 "Times New Roman",serif;letter-spacing:.03em}.royal-wish-notice__message{position:relative;margin:0 auto 20px;max-width:280px;color:#6d3a35;font:15px/1.55 Baskerville,"Times New Roman",serif}.royal-wish-notice__close{position:relative;min-width:148px;min-height:44px;border:1px solid #d1a14b;border-radius:999px;padding:10px 24px;color:#fff;background:#761622;box-shadow:0 5px 14px rgba(81,20,25,.22);font:700 14px/1 "Times New Roman",serif;letter-spacing:.04em;cursor:pointer}.royal-wish-notice__close:focus-visible{outline:3px solid rgba(205,159,77,.45);outline-offset:3px}
+    button.royal-wish-submit--loading{position:relative!important;cursor:wait!important;opacity:.88!important;transform:none!important}button.royal-wish-submit--loading>*{visibility:hidden}button.royal-wish-submit--loading::before{content:"";position:absolute;left:calc(50% - 11px);top:calc(50% - 11px);width:22px;height:22px;border:2px solid rgba(255,255,255,.38);border-top-color:#fff;border-radius:50%;animation:royal-wish-spin .72s linear infinite}button.royal-wish-submit--loading::after{content:"ĐANG GỬI...";position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);padding-left:36px;color:inherit;font:inherit;letter-spacing:inherit}@keyframes royal-wish-spin{to{transform:rotate(360deg)}}
+    @media(max-width:600px){.royal-wish-notice{place-items:center;padding:calc(16px + env(safe-area-inset-top)) 12px calc(16px + env(safe-area-inset-bottom))}.royal-wish-notice__panel{width:100%;border-radius:24px;padding:27px 20px 20px;transform:translateY(16px) scale(.96)}.royal-wish-notice__icon{width:58px;height:58px}.royal-wish-notice__close{width:100%;min-height:48px}}
+    @media(prefers-reduced-motion:reduce){.royal-wish-notice,.royal-wish-notice__panel{transition:none}button.royal-wish-submit--loading::before{animation-duration:1.4s}}
+  `;
+  document.head.appendChild(wishNoticeStyle);
+  const showWishNotice=(message,type='success')=>{
+    document.querySelector('.royal-wish-notice')?.remove();
+    const notice=document.createElement('div');
+    notice.className=`royal-wish-notice royal-wish-notice--${type}`;
+    notice.setAttribute('role','dialog');notice.setAttribute('aria-modal','true');notice.setAttribute('aria-labelledby','royal-wish-notice-title');
+    const panel=document.createElement('div');panel.className='royal-wish-notice__panel';
+    const icon=document.createElement('div');icon.className='royal-wish-notice__icon';icon.setAttribute('aria-hidden','true');icon.textContent=type==='success'?'✓':'!';
+    const title=document.createElement('h3');title.id='royal-wish-notice-title';title.className='royal-wish-notice__title';title.textContent=type==='success'?'ĐÃ GỬI LỜI CHÚC':'CHƯA GỬI ĐƯỢC';
+    const copy=document.createElement('p');copy.className='royal-wish-notice__message';copy.textContent=message;
+    const close=document.createElement('button');close.type='button';close.className='royal-wish-notice__close';close.textContent=type==='success'?'CẢM ƠN BẠN':'ĐÓNG';
+    panel.append(icon,title,copy,close);notice.appendChild(panel);document.body.appendChild(notice);
+    let onKey;
+    const dismiss=()=>{document.removeEventListener('keydown',onKey);notice.classList.remove('is-visible');setTimeout(()=>notice.remove(),220)};
+    close.addEventListener('click',dismiss);notice.addEventListener('click',event=>{if(event.target===notice)dismiss()});
+    onKey=event=>{if(event.key==='Escape')dismiss()};document.addEventListener('keydown',onKey);
+    requestAnimationFrame(()=>{notice.classList.add('is-visible');close.focus({preventScroll:true})});
+  };
   const send = async (name, message, attendance = 'yes', guestCount = 1) => {
+    const wishSlug = document.documentElement.dataset.wishSlug;
+    if (wishSlug) {
+      const response=await fetch(`/api/wedding-wishes/${encodeURIComponent(wishSlug)}`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({name,message,source_url:window.location.origin+window.location.pathname,website:''})});
+      const result=await response.json().catch(()=>({}));if(response.status===429)throw Error('Bạn thao tác hơi nhanh. Vui lòng đợi khoảng 1 phút rồi gửi lại.');if(!response.ok||!result.success)throw Error(result.message||'Chưa gửi được lời chúc.');return result.message;
+    }
     const slug = document.documentElement.dataset.cardSlug;
     if (!slug) return 'Đây là bản xem mẫu. Phản hồi chỉ được gửi qua link thiệp đã xuất bản.';
     const response=await fetch(`/api/cards/view/${encodeURIComponent(slug)}/rsvp`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({name,message,attendance,guest_count:guestCount})});
@@ -286,9 +318,11 @@
       const selection=form.querySelector('select[name="form_item17"],select[name="form_item7"],input[type="radio"]:checked')?.value||'yes';
       const attendance=/không|xin lỗi|tiếc/i.test(selection)?'no':'yes';
       const count=Number(form.querySelector('[name="form_item14"][type],#RSVP_GUEST_COUNT_SELECT select')?.value||1)||1;
-      if(!name){alert('Vui lòng nhập họ tên.');return;}
+      if(!name){showWishNotice('Vui lòng nhập họ tên để gửi lời chúc.','error');return;}
       form.dataset.submitting='true';
-      try{alert(await send(name,message,attendance,count));if(document.documentElement.dataset.cardSlug)form.reset();}catch(error){alert(error.message);}finally{delete form.dataset.submitting;}
+      const submitButton=form.querySelector('button[type="submit"],.ladi-button');
+      if(submitButton){submitButton.disabled=true;submitButton.classList.add('royal-wish-submit--loading');submitButton.setAttribute('aria-busy','true');}
+      try{const responseMessage=await send(name,message,attendance,count);showWishNotice(responseMessage,'success');if(document.documentElement.dataset.cardSlug||document.documentElement.dataset.wishSlug)form.reset();}catch(error){showWishNotice(error.message,'error');}finally{delete form.dataset.submitting;if(submitButton){submitButton.disabled=false;submitButton.classList.remove('royal-wish-submit--loading');submitButton.removeAttribute('aria-busy');}}
     };
     form.addEventListener('submit',submit);
     form.querySelectorAll('.ladi-button').forEach(button=>{button.setAttribute('role','button');button.tabIndex=0;button.addEventListener('click',event=>{event.preventDefault();form.requestSubmit();});button.addEventListener('keydown',event=>{if(event.key==='Enter')form.requestSubmit();});});
@@ -296,7 +330,7 @@
   if(number===3||number===8){
     const opening=document.getElementById('minimal-opening');
     const countdownGrid=document.querySelector('.royal-reception__countdown-grid');
-    if(countdownGrid){
+    if(number===3 && countdownGrid){
       const cells=Array.from(countdownGrid.querySelectorAll(':scope > div'));
       if(cells.length>=4){
         const target=Date.now()+7*24*60*60*1000;
@@ -320,7 +354,6 @@
     document.addEventListener('invitation-opened',update);
     const audio=document.getElementById('bg-music');document.querySelector('main button')?.addEventListener('click',()=>{if(audio)audio.paused?audio.play().catch(()=>{}):audio.pause();});
     document.querySelectorAll('button').forEach(button=>{if(button.textContent.trim()==='XÁC NHẬN THAM DỰ')button.onclick=()=>document.querySelector('form')?.scrollIntoView({behavior:'smooth',block:'center'});});
-    document.querySelectorAll('img').forEach(image=>{if(!image.closest('#minimal-opening, .royal-opening-screen, .royal-album'))image.addEventListener('click',()=>{if(/flower|background|envelope|paper|castle/.test(image.src))return;const dialog=document.createElement('dialog');dialog.style.cssText='padding:10px;border:0;border-radius:10px;background:#fff;max-width:90vw';const picture=document.createElement('img');picture.src=image.src;picture.style.cssText='max-width:85vw;max-height:85vh';dialog.appendChild(picture);dialog.onclick=()=>{dialog.close();dialog.remove();};document.body.appendChild(dialog);dialog.showModal();});});
   }
   if(number===5){
     const attach=(id,callback)=>document.getElementById(id)?.addEventListener('click',async()=>{try{const message=await callback();if(message)alert(message);}catch(error){alert(error.message);}});
