@@ -8,6 +8,17 @@ body {
     background: #e7ded3 !important;
     overflow-x: hidden;
 }
+@media (max-width: 600px) {
+    html {
+        background: #f5ecdf url(./royal-paper-background.webp) center top / 430px auto repeat-y;
+    }
+    body,
+    div.min-h-screen[style*="background-color: rgb(255, 250, 247)"],
+    [data-testid="minimalism-darkred-template"] {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+}
 [data-testid="minimalism-darkred-template"] {
     background: none !important;
 }
@@ -141,17 +152,17 @@ body {
 }
 .royal-photo__print {
     position: absolute;
-    left: 5.2%;
-    top: 11.5%;
-    width: 88%;
+    left: 0.2%;
+    top: 8.5%;
+    width: 91%;
     aspect-ratio: 955 / 1242;
-    padding: 4.5%;
+    padding: 1.5%;
     background: #fffdf8;
     box-shadow: 1px 2px 3px rgba(45, 22, 14, 0.12);
 }
 .royal-photo .royal-photo__print img {
     object-fit: cover;
-    object-position: center 25%;
+    object-position: center -2%;
     clip-path: none;
 }
 @keyframes royal-photo-emerge {
@@ -171,8 +182,8 @@ body {
     left: -4%;
     top: 0;
     z-index: 4;
-    width: 96%;
-    height: 96%;
+    width: 86%;
+    height: 99%;
     transform-origin: 30% 80%;
     pointer-events: none;
     filter: saturate(0.72) brightness(0.91) contrast(0.98)
@@ -484,6 +495,9 @@ body {
 .royal-opening-screen {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
     z-index: 2147483000;
     display: grid;
     place-items: safe center;
@@ -505,6 +519,8 @@ body {
     content: "";
     position: absolute;
     inset: 0 auto 0 50%;
+    height: 100%;
+    height: 100dvh;
     width: min(100vw, 430px);
     transform: translateX(-50%);
     pointer-events: none;
@@ -3751,7 +3767,7 @@ html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{an
 /* Crossfade on one animation timeline; no empty interval between screens. */
 .royal-opening-screen,.royal-opening-content{opacity:1}
 .royal-opening-screen[data-state],.royal-opening-screen[data-state] .royal-opening-content{will-change:opacity}
-.royal-opening-burst{position:absolute;inset:0 auto 0 50%;z-index:2147483002;width:min(100vw,430px);height:100vh;height:100dvh;transform:translateX(-50%);overflow:hidden;contain:layout paint;pointer-events:none}
+.royal-opening-burst{position:absolute;inset:0 auto 0 50%;z-index:2147483002;width:min(100vw,430px);height:100%;height:100dvh;transform:translateX(-50%);overflow:hidden;contain:layout paint;pointer-events:none}
 .royal-opening-particle{position:absolute;left:var(--burst-origin-x);top:var(--burst-origin-y);display:block;font:20px/1 "Times New Roman",serif;will-change:transform,opacity;animation:royal-opening-heart-burst .8s ease-out both}
 @keyframes royal-opening-heart-burst{from{opacity:1;transform:translate3d(-50%,-50%,0) scale(.45)}to{opacity:0;transform:translate3d(calc(-50% + var(--burst-x)),calc(-50% + var(--burst-y)),0) rotate(var(--burst-turn)) scale(1)}}
 /* The three decorative petals fall into their existing anchors once on opening. */
@@ -3761,3 +3777,55 @@ html[data-design-number="8"][data-minimal-opened="false"] .royal-invitation *{an
 .royal-petal.is-falling{will-change:transform,opacity;animation:royal-petal-arrive var(--petal-duration) cubic-bezier(.33,.5,.45,1) var(--petal-delay) both}
 @keyframes royal-petal-arrive{0%{opacity:0;transform:translate3d(var(--petal-start-x),var(--petal-start-y),0) rotate(calc(var(--petal-angle) + 12deg))}100%{opacity:1;transform:translate3d(0,0,0) rotate(var(--petal-angle))}}
 @media(prefers-reduced-motion:reduce){.royal-invitation .royal-petal.is-falling{animation:royal-petal-arrive var(--petal-duration) cubic-bezier(.33,.5,.45,1) var(--petal-delay) both!important}}
+
+/* Center a single reception time. */
+.royal-reception__times--single { grid-template-columns: 1fr; }
+.royal-reception__times--single::before { display: none; }
+
+.royal-venue-name { font-size: 24px !important; }
+
+/* Wedding gift demo */
+.wedding-gift { position: relative; z-index: 1; padding: 30px 24px; text-align: center; color: #74171d; font-family: "Times New Roman", serif; }
+.wedding-gift__panel { max-width: 380px; margin: 0 auto; padding: 26px 22px 22px; border: 1px solid rgba(159, 104, 65, .38); border-radius: 10px; background: rgba(255, 249, 239, .72); box-shadow: 0 5px 16px rgba(81, 20, 25, .08); }
+.wedding-gift h2 { margin: 0; color: #74171d; font-size: 20px; font-weight: 700; }
+.wedding-gift__divider { display: block; width: 150px; max-width: 60%; height: auto; margin: 6px auto 9px; }
+.wedding-gift__intro { max-width: 265px; margin: 0 auto 16px; font-size: 14px; line-height: 1.45; }
+.wedding-gift__qr { position: relative; display: grid; place-items: center; width: 158px; height: 158px; margin: auto; border: 1px solid #d0ad75; border-radius: 8px; background: #fffaf2; box-shadow: 0 3px 10px rgba(81,20,25,.1); }
+.wedding-gift__corner { position: absolute; width: 24px; height: 24px; border: 4px solid #8c3a3b; border-radius: 3px; opacity: .6; }
+.wedding-gift__corner--tl { top: 12px; left: 12px; }
+.wedding-gift__corner--tr { top: 12px; right: 12px; }
+.wedding-gift__corner--bl { bottom: 12px; left: 12px; }
+.wedding-gift__qr-label { color: #8c3a3b; font-size: 16px; font-weight: bold; letter-spacing: .08em; line-height: 1.35; }
+.wedding-gift__qr-label small { font-size: 11px; letter-spacing: .16em; }
+.wedding-gift__note { margin: 12px 0 4px; color: #925e52; font-size: 12px; }
+.wedding-gift__heart { color: #ad6f52; font-size: 14px; }
+
+.wedding-gift__qr-image { display: block; width: min(220px, 100%); height: auto; margin: 0 auto; }
+.wedding-gift__account { margin: 10px 0 2px; font-size: 14px; line-height: 1.5; color: #74171d; }
+
+@font-face {
+    font-family: "Great Vibes";
+    src: url("../fonts/great-vibes.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+.royal-ceremony__couple h3,
+.royal-opening-names {
+    font-family: "Great Vibes", Charm, cursive !important;
+    font-weight: 400;
+}
+.royal-opening-names {
+    letter-spacing: 0 !important;
+}
+.royal-hero .royal-names {
+    font-family: "Great Vibes", Charm, cursive !important;
+    font-weight: 400;
+    letter-spacing: 0 !important;
+}
+
+/* Avoid Safari rendering a rectangular shadow around the opening envelope. */
+@media (max-width: 600px) {
+    .royal-opening-envelope { filter: none; }
+    .royal-opening-screen::before { box-shadow: none; }
+}
