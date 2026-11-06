@@ -124,7 +124,7 @@
       screen.setAttribute('aria-modal','true');
       screen.setAttribute('aria-label','Thiệp mời cưới');
       screen.tabIndex=-1;
-      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-flap" width="720" height="360" decoding="async" src="./assets/royal-opening-envelope-flap-user.webp?v=opening-flap-20261021-1" alt="" aria-hidden="true"><img class="royal-opening-envelope-art" width="1120" height="747" decoding="async" fetchpriority="high" src="./assets/royal-envelope-display-v1.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" width="256" height="259" decoding="async" src="./assets/royal-seal-display-v1.webp" alt=""></span></button><img class="royal-opening-bouquet" width="450" height="675" src="./assets/royal-opening-bouquet-screen-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async"><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p></div>';
+      screen.innerHTML='<div class="royal-opening-content"><p class="royal-opening-kicker">SAVE THE DATE</p><div class="royal-opening-kicker-rule" aria-hidden="true"><span>✥</span></div><button class="royal-opening-envelope" type="button" aria-label="Mở thiệp"><img class="royal-opening-flap" width="720" height="360" decoding="async" src="./assets/royal-opening-envelope-flap-user.webp?v=opening-flap-20261021-1" alt="" aria-hidden="true"><img class="royal-opening-envelope-art" width="1120" height="747" decoding="async" fetchpriority="high" src="./assets/royal-envelope-display-v1.webp" alt=""><span class="royal-opening-wax-seal" aria-hidden="true"><img class="royal-opening-wax-seal-art" width="256" height="259" decoding="async" src="./assets/royal-seal-display-v1.webp" alt=""></span></button><img class="royal-opening-bouquet" width="450" height="675" src="./assets/royal-opening-bouquet-screen-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async"><div class="royal-opening-caption"></div><div class="royal-opening-divider" aria-hidden="true"><span>❧</span></div><p class="royal-opening-date"></p><button class="royal-opening-hint" type="button" aria-label="Chạm để mở thiệp"><span class="royal-opening-hint__ornament" aria-hidden="true">✦</span><span class="royal-opening-hint__text">Chạm để mở thiệp</span><span class="royal-opening-hint__ornament" aria-hidden="true">✦</span></button></div>';
       const names=sourceNames.cloneNode(true);
       names.classList.add('royal-opening-names');
       screen.querySelector('.royal-opening-caption').appendChild(names);
@@ -140,6 +140,7 @@
       document.body.style.overflow='hidden';
       if(page)page.inert=true;
       const openButton=screen.querySelector('.royal-opening-envelope');
+      const hintButton=screen.querySelector('.royal-opening-hint');
       const burstHearts=()=>{
         const seal=screen.querySelector('.royal-opening-wax-seal').getBoundingClientRect();
         const burst=document.createElement('div');
@@ -173,6 +174,7 @@
         screen.dataset.state='opening';
         openButton.disabled=true;
         openButton.setAttribute('aria-busy','true');
+        if(hintButton){hintButton.disabled=true;hintButton.setAttribute('aria-busy','true');}
         const bloomFlower=document.querySelector('.royal-flowers.royal-flowers-left');
         const royalPhoto=document.querySelector('.royal-photo');
         const royalSpray=document.querySelector('.royal-right-spray');
@@ -223,6 +225,8 @@
         audio?.play?.().catch(()=>{});
       };
       openButton.addEventListener('click',openInvitation);
+      hintButton?.addEventListener('click',openInvitation);
+      screen.querySelector('.royal-opening-content')?.addEventListener('click',openInvitation);
       screen.addEventListener('keydown',event=>{if(event.key==='Escape')openInvitation();});screen.addEventListener('touchmove',event=>{if(screen.dataset.opened!=='true')event.preventDefault();},{passive:false});
       document.body.appendChild(screen);
       document.documentElement.dataset.openingReady='true';
